@@ -37,11 +37,12 @@
   when: yay_check.rc != 0
   tags: bootstrap, yay
 
-- name: Build and install yay as user
+- name: Build and install yay as user with sudo access
   command: makepkg -si --noconfirm
   args:
     chdir: /tmp/yay-git
   become_user: "{{ user }}"
+  become: true
   when: yay_check.rc != 0
   tags: bootstrap, yay
 
