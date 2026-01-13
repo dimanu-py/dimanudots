@@ -1,0 +1,40 @@
+---
+# Base system filesystem setup
+# Creates essential user directories and sets proper permissions
+
+- name: Create essential user directories
+  file:
+    path: "{{ home }}/{{ item.name }}"
+    state: directory
+    owner: "{{ user }}"
+    group: "{{ user }}"
+    mode: '0755'
+  loop: "{{ base_directories }}"
+  loop_control:
+    label: "{{ item.name }}"
+  tags: base, filesystem
+
+- name: Verify directories exist
+  stat:
+    path: "{{ home }}/{{ item.name }}"
+  register: dir_check
+  loop: "{{ base_directories }}"
+  loop_control:
+    label: "{{ item.name }}"
+  tags: base, verification
+
+- name: Display created directories
+  debug:
+    msg: "Directory '{{ item.name }}' created successfully: {{ item.reason }}"
+  loop: "{{ base_directories }}"
+  loop_control:
+    label: "{{ item.name }}"
+  tags: base, info
+
+- name: Assert all directories were created
+  assert:
+    that:
+      - dir_check.results | selectattr('stat.exists', 'equalto', true) | list | length == base_directories | length
+    success_msg: "All base system directories created successfully"
+    fail_msg: "Some base system directories failed to create"
+  tags: base, verification

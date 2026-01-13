@@ -56,3 +56,14 @@ base_system_packages:
   - name: tree
     category: disk
     reason: "Directory tree visualization tool"
+
+# Base system directories - Essential user directories
+base_directories:
+  - name: Documents
+    reason: "Document storage and organization"
+  - name: Downloads
+    reason: "Downloaded files and internet content"
+  - name: Pictures
+    reason: "Image and photo storage"
+  - name: Developer
+    reason: "Development projects and code storage"
