@@ -3,8 +3,7 @@
 # Installs essential collections required for this automation project
 
 - name: Install required Ansible collections
-  community.general.command:
-    cmd: "ansible-galaxy collection install {{ item.name }}:{{ item.version }}"
+  command: "ansible-galaxy collection install {{ item.name }}:{{ item.version }}"
   register: collection_install
   failed_when: false
   changed_when: "'already present' not in collection_install.stderr"

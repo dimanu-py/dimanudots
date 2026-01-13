@@ -1,5 +1,5 @@
 [localhost]
-127.0.0.1 ansible_connection=local ansible_user={{ lookup('env', 'USER') }}
+127.0.0.1 ansible_connection=local ansible_user=$USER
 
 [arch_hosts:children]
 localhost
