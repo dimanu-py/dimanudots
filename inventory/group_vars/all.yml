@@ -1,0 +1,22 @@
+---
+# Global variables for all hosts
+# These variables are used across all playbooks and roles
+
+# User configuration
+user: "{{ lookup('env', 'USER') }}"
+home: "{{ lookup('env', 'HOME') }}"
+
+# Bootstrap phase packages - Essential for system preparation
+bootstrap_packages:
+  - name: base-devel
+    reason: "Build tools for AUR packages (make, gcc, etc.)"
+  - name: git
+    reason: "Version control for cloning repositories"
+  - name: wget
+    reason: "File downloader (fallback tool)"
+  - name: curl
+    reason: "Primary file transfer tool"
+  - name: python
+    reason: "Ansible runtime dependency"
+  - name: ansible
+    reason: "Automation tool itself"
