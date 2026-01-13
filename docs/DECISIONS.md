@@ -111,3 +111,40 @@ Implement full idempotency pattern: check for existing yay, skip if present, oth
 - **Negative**: Requires careful condition management
 
 ---
+
+## ADR-004: Use Custom Implementation Instead of External Galaxy Roles
+
+### Status
+Accepted
+
+### Context
+The existing `requirements.yml` contains external Galaxy roles (geerlingguy.git, geerlingguy.pip) alongside collections. However, the project already has custom implementations for git, development tools, and package management in the `tasks/` directory. Installing external roles would create conflicts with existing custom logic.
+
+### Alternatives Considered
+1. **Keep external roles**: Use geerlingguy.git and geerlingguy.pip from Galaxy
+   - Pro: Pre-built, tested, maintained by community
+   - Con: Conflicts with existing custom tasks, generic not tailored
+   - Con: Different patterns than project's custom implementation
+
+2. **Remove external roles**: Use only custom implementation in `tasks/`
+   - Pro: Consistent with existing codebase patterns
+   - Pro: Tailored to specific project needs
+   - Pro: No external dependencies beyond collections
+   - Con: Custom code requires maintenance
+
+3. **Hybrid approach**: Mix external roles for some tasks, custom for others
+   - Pro: Leverages community expertise where beneficial
+   - Con: Inconsistent patterns, maintenance complexity
+
+### Decision
+Remove all external roles from `requirements.yml` and keep only the collections section. Use custom implementation exclusively for all automation tasks.
+
+### Consequences
+- **Positive**: Consistent codebase with unified patterns
+- **Positive**: Tailored to specific Arch Linux + Hyprland needs
+- **Positive**: No external role dependencies to maintain
+- **Positive**: No conflicts between custom and external logic
+- **Negative**: Custom code requires project maintenance
+- **Negative**: Loses community expertise for generic tasks
+
+---
