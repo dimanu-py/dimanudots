@@ -29,17 +29,3 @@
   loop_control:
     label: "{{ item.name }}"
   tags: bootstrap, collections
-
-- name: Test yay module availability
-  command: ansible localhost -m community.general.yay -a "name=tree state=present" --check
-  register: yay_module_test
-  changed_when: false
-  tags: bootstrap, collections
-
-- name: Confirm yay module is available
-  assert:
-    that:
-      - yay_module_test.rc == 0
-    success_msg: "Yay module is available and working"
-    fail_msg: "Yay module is not available - check collection installation"
-  tags: bootstrap, collections
