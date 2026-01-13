@@ -1,0 +1,23 @@
+---
+# Base system setup playbook - Phase 2: Base System Setup
+# Executes essential system configuration tasks
+
+- name: Base System Phase 2 - Essential Setup
+  hosts: localhost
+  become: true
+  gather_facts: yes
+  
+  tasks:
+    - name: Import system utilities tasks
+      include_tasks: ../tasks/base_system_utilities.yml
+      tags:
+        - base
+        - system
+        - utilities
+
+    # Placeholder for future steps:
+    # - name: Import filesystem tasks
+    #   include_tasks: ../tasks/base_filesystem.yml
+    #   tags:
+    #     - base
+    #     - filesystem

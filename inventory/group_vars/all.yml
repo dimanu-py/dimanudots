@@ -32,3 +32,27 @@ ansible_collections:
   - name: community.crypto
     version: ">=2.0.0"
     reason: "Provides cryptographic and SSL modules for security tasks"
+
+# Base system packages - Essential system utilities
+base_system_packages:
+  - name: btop
+    category: monitoring
+    reason: "Advanced system monitor with resource usage"
+  - name: fastfetch
+    category: monitoring
+    reason: "Fast system information display tool"
+  - name: ranger
+    category: filemanagement
+    reason: "Terminal-based file manager with vim-like navigation"
+  - name: nautilus
+    category: filemanagement
+    reason: "GUI file manager for desktop environment"
+  - name: sushi
+    category: filemanagement
+    reason: "Quick file preview tool for nautilus"
+  - name: ncdu
+    category: disk
+    reason: "NCurses disk usage analyzer for large directories"
+  - name: tree
+    category: disk
+    reason: "Directory tree visualization tool"
