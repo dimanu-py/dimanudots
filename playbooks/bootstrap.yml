@@ -1,0 +1,27 @@
+---
+# Bootstrap playbook - Phase 1: Bootstrap & Foundation
+# Executes all bootstrap tasks in sequence
+
+- name: Bootstrap Phase 1 - Foundation Setup
+  hosts: localhost
+  become: true
+  gather_facts: yes
+  
+  tasks:
+    - name: Import system preparation tasks
+      include_tasks: ../tasks/bootstrap_system.yml
+      tags:
+        - bootstrap
+        - system
+
+    - name: Import yay installation tasks
+      include_tasks: ../tasks/bootstrap_yay.yml
+      tags:
+        - bootstrap
+        - yay
+
+    - name: Import Ansible collections tasks
+      include_tasks: ../tasks/bootstrap_collections.yml
+      tags:
+        - bootstrap
+        - collections

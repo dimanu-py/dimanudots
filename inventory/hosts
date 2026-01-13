@@ -1,8 +1,11 @@
 [localhost]
-127.0.0.1 ansible_connection=local
+127.0.0.1 ansible_connection=local ansible_user={{ lookup('env', 'USER') }}
 
 [arch_hosts:children]
 localhost
 
 [desktop_hosts:children]
+localhost
+
+[bootstrap_hosts:children]
 localhost
