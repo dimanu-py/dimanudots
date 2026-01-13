@@ -1,0 +1,33 @@
+# Ansible specific
+*.retry
+*.tmp
+.vault_pass
+.ansible_vault_pass
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+venv/
+env/
+ENV/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Editor backups
+*~
+*.swp
+*.swo
+.vscode/
+.idea/
+
+# Logs
+*.log
+
+# Secrets (should be encrypted anyway, but double protection)
+secrets.yml
+.vault/decrypted/
