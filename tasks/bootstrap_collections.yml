@@ -1,0 +1,46 @@
+---
+# Ansible collections setup for extended functionality
+# Installs essential collections required for this automation project
+
+- name: Install required Ansible collections
+  community.general.command:
+    cmd: "ansible-galaxy collection install {{ item.name }}:{{ item.version }}"
+  register: collection_install
+  failed_when: false
+  changed_when: "'already present' not in collection_install.stderr"
+  loop: "{{ ansible_collections }}"
+  loop_control:
+    label: "{{ item.name }}"
+  tags: bootstrap, collections
+
+- name: Verify collection installation
+  command: "ansible-galaxy collection list {{ item.name }}"
+  register: collection_check
+  failed_when: collection_check.rc != 0
+  changed_when: false
+  loop: "{{ ansible_collections }}"
+  loop_control:
+    label: "{{ item.name }}"
+  tags: bootstrap, collections
+
+- name: Display installed collections
+  debug:
+    msg: "Collection {{ item.name }} installed successfully"
+  loop: "{{ ansible_collections }}"
+  loop_control:
+    label: "{{ item.name }}"
+  tags: bootstrap, collections
+
+- name: Test yay module availability
+  command: ansible localhost -m community.general.yay -a "name=tree state=present" --check
+  register: yay_module_test
+  changed_when: false
+  tags: bootstrap, collections
+
+- name: Confirm yay module is available
+  assert:
+    that:
+      - yay_module_test.rc == 0
+    success_msg: "Yay module is available and working"
+    fail_msg: "Yay module is not available - check collection installation"
+  tags: bootstrap, collections
