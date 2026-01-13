@@ -1,0 +1,20 @@
+# Ansible lint configuration
+exclude_paths:
+  - .git
+  - .github
+  - .venv
+  - .tox
+  - files/
+  - vault/
+
+skip_list:
+  - '204'  # Lines should be no longer than 120 chars
+  - '503'  # Tasks that run when changed should likely be handlers
+  - '602'  # Don't compare to empty string
+  - '701'  # meta/main.yml should contain relevant info
+
+warn_list:
+  - '106'  # Role name {} does not match ^[a-z][a-z0-9_]+$ pattern
+  - '208'  # File permissions not mentioned
+
+profile: production

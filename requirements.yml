@@ -1,0 +1,23 @@
+---
+# Ansible collections - provide additional modules and filters beyond core Ansible
+collections:
+  # community.general: Large collection of modules for various systems and tools
+  # Includes modules for pacman, aur, systemd, user management, and more
+  - community.general
+  # ansible.posix: Core POSIX-compliant system modules
+  # Includes modules for mount, selinux, firewalld, and sysctl
+  - ansible.posix
+
+# Ansible roles - reusable playbooks for specific tasks
+roles:
+  # Git role from geerlingguy: Handles git installation and configuration
+  # Provides consistent git setup across different systems
+  - src: geerlingguy.git
+    # Use main branch for latest features and bug fixes
+    version: main
+  
+  # Pip role from geerlingguy: Manages Python package installation
+  # Useful for installing Python-based development tools and dependencies
+  - src: geerlingguy.pip
+    # Use main branch for latest features and bug fixes
+    version: main
