@@ -20,6 +20,8 @@ bootstrap_packages:
     reason: "Ansible runtime dependency"
   - name: ansible
     reason: "Automation tool itself"
+  - name: go
+    reason: "Dependency for yay"
 
 # Required Ansible collections for extended functionality
 ansible_collections:

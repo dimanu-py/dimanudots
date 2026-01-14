@@ -37,13 +37,23 @@
   when: yay_check.rc != 0
   tags: bootstrap, yay
 
-- name: Build and install yay as user with sudo access
-  command: makepkg -si --noconfirm
+- name: Build yay package (no install, no sudo inside)
+  command: makepkg -s --noconfirm --needed
   args:
     chdir: /tmp/yay-git
-  become_user: "{{ user }}"
   become: true
-  when: yay_check.rc != 0
+  become_user: "{{ user }}"
+  tags: bootstrap, yay
+
+- name: Find built yay package file
+  shell: ls -1 /tmp/yay-git/*.pkg.tar.* | tail -n 1
+  register: yay_pkg
+  changed_when: false
+  tags: bootstrap, yay
+
+- name: Install yay package as root
+  command: pacman -U --noconfirm "{{ yay_pkg.stdout }}"
+  become: true
   tags: bootstrap, yay
 
 - name: Clean up yay build directory
