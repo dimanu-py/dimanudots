@@ -28,15 +28,6 @@
   when: yay_check.rc != 0
   tags: bootstrap, yay
 
-- name: Change yay directory ownership to user
-  file:
-    path: /tmp/yay-git
-    owner: "{{ user }}"
-    group: "{{ user }}"
-    recurse: yes
-  when: yay_check.rc != 0
-  tags: bootstrap, yay
-
 - name: Clean any existing yay build artifacts
   command: makepkg -c --noconfirm
   args:
@@ -48,7 +39,7 @@
   tags: bootstrap, yay
 
 - name: Build yay package (no install, no sudo inside)
-  command: makepkg -sf --noconfirm --needed
+  command: makepkg -f --noconfirm --needed
   args:
     chdir: /tmp/yay-git
   become: true
@@ -57,13 +48,20 @@
   tags: bootstrap, yay
 
 - name: Find built yay package file
-  shell: ls -1 /tmp/yay-git/*.pkg.tar.* | tail -n 1
+  find:
+    paths: /tmp/yay-git
+    patterns: "*.pkg.tar"
+    file_type: file
   register: yay_pkg
+  when: yay_check.rc != 0
   changed_when: false
   tags: bootstrap, yay
 
 - name: Install yay package as root
-  command: pacman -U --noconfirm "{{ yay_pkg.stdout }}"
+  pacman:
+    name: "{{ (yay_pkg.files | sort(attribute='mtime', reverse=true) | first).path }}"
+    state: present
+  when: yay_check != 0
   become: true
   tags: bootstrap, yay
 
@@ -81,16 +79,10 @@
   failed_when: false
   tags: bootstrap, yay
 
-- name: Display yay version
-  debug:
-    msg: "Yay is available: {{ yay_verify.stdout | default('version check failed') }}"
-  when: yay_check.rc == 0 or yay_verify.rc == 0
-  tags: bootstrap, yay
-
 - name: Confirm yay is available
   assert:
     that:
-      - yay_check.rc == 0 or yay_verify.rc == 0
+      - yay_verify.rc == 0
     success_msg: "Yay is installed and functional"
     fail_msg: "Yay installation failed or yay is not in PATH"
   tags: bootstrap, yay
