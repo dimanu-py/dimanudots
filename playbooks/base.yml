@@ -12,7 +12,6 @@
       include_tasks: ../tasks/base_system_utilities.yml
       tags:
         - base
-        - system
         - utilities
 
     - name: Import filesystem tasks
