@@ -8,11 +8,11 @@
   gather_facts: yes
   
   tasks:
-    - name: Import GPU drivers setup
-      include_tasks: ../tasks/hardware_gpu.yml
-      tags:
-        - hardware
-        - gpu
+    # - name: Import GPU drivers setup
+    #   include_tasks: ../tasks/hardware_gpu.yml
+    #   tags:
+    #     - hardware
+    #     - gpu
 
     - name: Import audio system setup
       include_tasks: ../tasks/hardware_audio.yml
