@@ -37,12 +37,23 @@
   when: yay_check.rc != 0
   tags: bootstrap, yay
 
-- name: Build yay package (no install, no sudo inside)
-  command: makepkg -s --noconfirm --needed
+- name: Clean any existing yay build artifacts
+  command: makepkg -c --noconfirm
   args:
     chdir: /tmp/yay-git
   become: true
   become_user: "{{ user }}"
+  when: yay_check.rc != 0
+  failed_when: false
+  tags: bootstrap, yay
+
+- name: Build yay package (no install, no sudo inside)
+  command: makepkg -sf --noconfirm --needed
+  args:
+    chdir: /tmp/yay-git
+  become: true
+  become_user: "{{ user }}"
+  when: yay_check.rc != 0
   tags: bootstrap, yay
 
 - name: Find built yay package file
@@ -67,18 +78,19 @@
   command: yay --version
   register: yay_verify
   changed_when: false
+  failed_when: false
   tags: bootstrap, yay
 
 - name: Display yay version
   debug:
-    msg: "Yay installed successfully: {{ yay_verify.stdout }}"
-  when: yay_check.rc != 0
+    msg: "Yay is available: {{ yay_verify.stdout | default('version check failed') }}"
+  when: yay_check.rc == 0 or yay_verify.rc == 0
   tags: bootstrap, yay
 
 - name: Confirm yay is available
   assert:
     that:
-      - yay_verify.rc == 0
+      - yay_check.rc == 0 or yay_verify.rc == 0
     success_msg: "Yay is installed and functional"
     fail_msg: "Yay installation failed or yay is not in PATH"
   tags: bootstrap, yay
