@@ -55,4 +55,3 @@
   debug:
     msg: "Pipewire audio system installed with comprehensive control tools (backend: {{ audio_backend }})"
   tags: hardware, audio, info
-  handlers: "{{ handlers/hardware_handlers.yml }}"

@@ -8,30 +8,33 @@
   gather_facts: yes
   
   tasks:
-    # - name: Import GPU drivers setup
-    #   include_tasks: ../tasks/hardware_gpu.yml
-    #   tags:
-    #     - hardware
-    #     - gpu
+    - name: Import GPU drivers setup
+      include_tasks: ../tasks/hardware_gpu.yml
+      tags:
+        - hardware
+        - gpu
+        - drivers
 
     - name: Import audio system setup
       include_tasks: ../tasks/hardware_audio.yml
       tags:
         - hardware
         - audio
+        - pipewire
 
     - name: Import Bluetooth services setup
       include_tasks: ../tasks/hardware_bluetooth.yml
       tags:
         - hardware
         - bluetooth
+        - services
 
     - name: Import network configuration
       include_tasks: ../tasks/hardware_network.yml
-      handlers: ../tasks/hardware_handlers.yml
       tags:
         - hardware
         - network
+        - connectivity
 
     # Verification tasks
     - name: Verify GPU hardware detection

@@ -41,7 +41,6 @@
   debug:
     msg: "NetworkManager installed and active (WiFi: {{ 'available' if 'wifi' in wifi_check.stdout else 'not detected' }})"
   tags: hardware, network, info
-  handlers: "{{ handlers/hardware_handlers.yml }}"
 
 - name: Assert network configuration is working
   assert:
