@@ -41,9 +41,6 @@ base_system_packages:
   - name: fastfetch
     category: monitoring
     reason: "Fast system information display tool"
-  - name: ranger
-    category: filemanagement
-    reason: "Terminal-based file manager with vim-like navigation"
   - name: nautilus
     category: filemanagement
     reason: "GUI file manager for desktop environment"

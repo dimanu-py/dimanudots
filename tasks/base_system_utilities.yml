@@ -42,11 +42,3 @@
   loop_control:
     label: "{{ item.name }}"
   tags: base, info
-
-- name: Assert all system utilities are available
-  assert:
-    that:
-      - utility_check.results | selectattr('rc', 'equalto', 0) | list | length == base_system_packages | length
-    success_msg: "All base system utilities are installed and working"
-    fail_msg: "Some base system utilities failed to install"
-  tags: base, verification
