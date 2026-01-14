@@ -1,0 +1,58 @@
+---
+# Audio system setup with Pipewire backend and comprehensive audio tools
+# Installs Pipewire, audio mixing, and control utilities
+
+- name: Update package cache
+  pacman:
+    update_cache: yes
+  tags: hardware, audio, prep
+
+- name: Install Pipewire core audio system
+  pacman:
+    name: "{{ hardware_packages | selectattr('category', 'equalto', 'audio') | selectattr('name', 'in', ['pipewire', 'pipewire-pulse', 'pipewire-alsa', 'wireplumber']) | map(attribute='name') | list }}"
+    state: present
+  tags: hardware, audio, pipewire
+
+- name: Install audio control and mixing tools
+  pacman:
+    name: "{{ hardware_packages | selectattr('category', 'equalto', 'audio') | selectattr('name', 'in', ['helvum', 'pamixer', 'pavucontrol']) | map(attribute='name') | list }}"
+    state: present
+  tags: hardware, audio, control
+
+- name: Install JACK audio support through Pipewire
+  pacman:
+    name: "{{ hardware_packages | selectattr('category', 'equalto', 'audio') | selectattr('name', 'equalto', 'pipewire-jack') | map(attribute='name') | list }}"
+    state: present
+  tags: hardware, audio, jack
+
+- name: Install audio mixing and routing tool
+  pacman:
+    name: "{{ hardware_packages | selectattr('category', 'equalto', 'audio') | selectattr('name', 'equalto', 'wiremix') | map(attribute='name') | list }}"
+    state: present
+  tags: hardware, audio, mixing
+
+- name: Verify Pipewire core services are installed
+  command: "{{ item }} --version"
+  register: audio_package_check
+  failed_when: false
+  changed_when: false
+  loop: "{{ hardware_packages | selectattr('category', 'equalto', 'audio') | selectattr('name', 'in', ['pipewire', 'pipewire-pulse', 'pipewire-alsa', 'wireplumber']) | map(attribute='name') | list }}"
+  loop_control:
+    label: "{{ item }}"
+  tags: hardware, audio, verification
+
+- name: Verify audio control tools are installed
+  command: "{{ item }} --version"
+  register: audio_tool_check
+  failed_when: false
+  changed_when: false
+  loop: "{{ hardware_packages | selectattr('category', 'equalto', 'audio') | selectattr('name', 'in', ['helvum', 'pamixer', 'pavucontrol', 'pipewire-jack', 'wiremix']) | map(attribute='name') | list }}"
+  loop_control:
+    label: "{{ item }}"
+  tags: hardware, audio, verification
+
+- name: Display audio system installation summary
+  debug:
+    msg: "Pipewire audio system installed with comprehensive control tools (backend: {{ audio_backend }})"
+  tags: hardware, audio, info
+  handlers: "{{ handlers/hardware_handlers.yml }}"

@@ -1,0 +1,19 @@
+---
+# Hardware support handlers
+# Manages service restarts for hardware components
+
+- name: restart bluetooth
+  systemd:
+    name: bluetooth
+    state: restarted
+    daemon_reload: yes
+  listen: restart bluetooth
+  become: true
+
+- name: restart networkmanager
+  systemd:
+    name: NetworkManager
+    state: restarted
+    daemon_reload: yes
+  listen: restart networkmanager
+  become: true
