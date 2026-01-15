@@ -50,7 +50,8 @@
 - name: Find built yay package file
   find:
     paths: /tmp/yay-git
-    patterns: "*.pkg.tar"
+    patterns: "yay-git-*.pkg.tar.*"
+    excludes: "*-debug-*.pkg.tar.*"
     file_type: file
   register: yay_pkg
   when: yay_check.rc != 0
@@ -58,10 +59,8 @@
   tags: bootstrap, yay
 
 - name: Install yay package as root
-  pacman:
-    name: "{{ (yay_pkg.files | sort(attribute='mtime', reverse=true) | first).path }}"
-    state: present
-  when: yay_check != 0
+  command: pacman -U --noconfirm {{ (yay_pkg.files | sort(attribute='mtime', reverse=true) | first).path }}
+  when: yay_check.rc != 0
   become: true
   tags: bootstrap, yay
 
