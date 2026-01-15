@@ -66,13 +66,21 @@
   failed_when: false
   tags: display, themes, gtk, aur
 
-- name: Install icon and cursor themes
+- name: Install icon theme from repos
+  become: true
   pacman:
     name:
       - papirus-icon-theme
-      - bibata-cursor-theme
     state: present
   tags: display, themes, gtk
+
+- name: Install Bibata cursor theme from AUR
+  command: yay -S --noconfirm --needed bibata-cursor-theme
+  become: true
+  become_user: "{{ user }}"
+  register: bibata_install
+  failed_when: false
+  tags: display, themes, gtk, aur
 
 # Theme Environment Configuration
 - name: Create theme environment configuration
