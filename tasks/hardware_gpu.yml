@@ -32,10 +32,9 @@
   tags: hardware, gpu, nvidia
 
 - name: Install NVIDIA AUR packages
-  community.general.yay:
-    name: "{{ hardware_packages | selectattr('category', 'equalto', 'gpu') | selectattr('name', 'equalto', 'nvidia') | selectattr('name', 'equalto', 'nvidia') | map(attribute='name') | list }}"
-    state: present
-    become: false
+  command: yay -S --noconfirm --needed {{ hardware_packages | selectattr('category', 'equalto', 'gpu') | selectattr('name', 'equalto', 'nvidia') | selectattr('aur', 'equalto', true) | map(attribute='name') | join(' ') }}
+  become: true
+  become_user: "{{ user }}"
   when: gpu_type == 'nvidia' or gpu_driver == 'nvidia'
   tags: hardware, gpu, nvidia
 
