@@ -1,0 +1,11 @@
+---
+# Base system role main tasks
+# Essential directories and system utilities
+
+- name: Import filesystem setup tasks
+  include_tasks: filesystem.yml
+  tags: base, filesystem
+
+- name: Import system utilities installation tasks
+  include_tasks: system_utilities.yml
+  tags: base, system

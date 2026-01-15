@@ -1,0 +1,19 @@
+---
+# Hardware role main tasks
+# GPU, audio, bluetooth, and network setup
+
+- name: Import GPU drivers setup
+  include_tasks: gpu.yml
+  tags: hardware, gpu
+
+- name: Import audio system setup
+  include_tasks: audio.yml
+  tags: hardware, audio
+
+- name: Import Bluetooth services setup
+  include_tasks: bluetooth.yml
+  tags: hardware, bluetooth
+
+- name: Import network configuration
+  include_tasks: network.yml
+  tags: hardware, network

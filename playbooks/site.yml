@@ -1,0 +1,21 @@
+---
+# Main site playbook using role-based architecture
+# Executes all phases in logical order
+
+- name: Complete Arch Linux + Hyprland Desktop Setup
+  hosts: localhost
+  become: true
+  gather_facts: yes
+  vars_files:
+    - ../inventory/group_vars/all.yml
+  
+  roles:
+    - { role: bootstrap, tags: [bootstrap, foundation] }
+    - { role: base, tags: [base, system] }
+    - { role: hardware, tags: [hardware, gpu, audio, bluetooth, network] }
+    - { role: display, tags: [display, sddm, fonts, themes] }
+    # Future roles to be added:
+    # - { role: hyprland, tags: [hyprland, desktop, wayland] }
+    # - { role: development, tags: [development, terminal, tools] }
+    # - { role: applications, tags: [applications, user] }
+    # - { role: dotfiles, tags: [dotfiles, config, final] }

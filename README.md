@@ -42,8 +42,15 @@ ansible-playbook playbooks/site.yml
 # Or run phases progressively
 ansible-playbook playbooks/site.yml --tags bootstrap,base
 ansible-playbook playbooks/site.yml --tags hardware
+ansible-playbook playbooks/site.yml --tags display
 ansible-playbook playbooks/site.yml --tags desktop
 ansible-playbook playbooks/site.yml --tags development
+
+# Or run specific roles
+ansible-playbook playbooks/site.yml --tags bootstrap
+ansible-playbook playbooks/site.yml --tags base
+ansible-playbook playbooks/site.yml --tags hardware
+ansible-playbook playbooks/site.yml --tags display
 ```
 
 ## Modular Execution
@@ -65,12 +72,12 @@ ansible-playbook playbooks/site.yml --tags development
 
 ```bash
 # Desktop environment only
-ansible-playbook playbooks/desktop.yml --tags hyprland
+ansible-playbook playbooks/site.yml --tags display
 
 # Development environment only
-ansible-playbook playbooks/development.yml
+ansible-playbook playbooks/site.yml --tags base
 
-# Specific components
+# Specific hardware components
 ansible-playbook playbooks/site.yml --tags audio,bluetooth
 
 # Update specific packages
@@ -79,9 +86,28 @@ ansible-playbook playbooks/site.yml --tags development --extra-vars "update_pack
 
 ## Configuration
 
+### Role-Based Architecture
+
+This project now uses Ansible roles for better organization:
+
+```
+roles/
+├── bootstrap/    # Yay installation, base tools
+├── base/         # Essential directories, utilities
+├── hardware/     # GPU, audio, bluetooth, network
+├── display/      # SDDM, fonts, themes
+└── [future roles] # hyprland, development, applications, dotfiles
+```
+
 ### Variables
 
-Global variables are in `inventory/group_vars/all.yml`:
+Each role has its own variables in `roles/{role}/vars/main.yml`:
+- **Bootstrap role**: Essential packages and collections
+- **Base role**: Directories and system utilities
+- **Hardware role**: GPU, audio, bluetooth, network packages
+- **Display role**: SDDM, fonts, themes configuration
+
+Global variables remain in `inventory/group_vars/all.yml`:
 
 ```yaml
 # User configuration

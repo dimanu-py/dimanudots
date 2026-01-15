@@ -1,0 +1,63 @@
+---
+# GPU drivers installation with auto-detection and NVIDIA support
+# Installs appropriate GPU drivers based on hardware detection
+
+- name: Detect GPU hardware
+  command: lspci | grep -i 'VGA\|3D'
+  register: gpu_detection
+  changed_when: false
+  tags: hardware, gpu, detection
+
+- name: Set GPU type fact
+  set_fact:
+    gpu_type: "{{ 'nvidia' if 'NVIDIA' in gpu_detection.stdout else ('amd' if 'AMD' in gpu_detection.stdout else ('intel' if 'Intel' in gpu_detection.stdout and ('VGA' in gpu_detection.stdout or '3D' in gpu_detection.stdout) else 'unknown') }}"
+  tags: hardware, gpu, detection
+
+- name: Display detected GPU type
+  debug:
+    msg: "Detected GPU: {{ gpu_type }} (driver: {{ gpu_driver }})"
+  tags: hardware, gpu, info
+
+- name: Install DKMS support
+  pacman:
+    name: "{{ gpu_packages | selectattr('vendor', 'equalto', 'universal') | map(attribute='name') | list }}"
+    state: present
+  tags: hardware, gpu, dkms
+
+- name: Install NVIDIA GPU drivers
+  pacman:
+    name: "{{ gpu_packages | selectattr('vendor', 'equalto', 'nvidia') | map(attribute='name') | list }}"
+    state: present
+  when: gpu_type == 'nvidia' or gpu_driver == 'nvidia'
+  tags: hardware, gpu, nvidia
+
+- name: Install AMD GPU drivers
+  pacman:
+    name: "{{ gpu_packages | selectattr('vendor', 'equalto', 'amd') | map(attribute='name') | list }}"
+    state: present
+  when: gpu_type == 'amd' or gpu_driver == 'amd'
+  tags: hardware, gpu, amd
+
+- name: Install Intel GPU drivers
+  pacman:
+    name: "{{ gpu_packages | selectattr('vendor', 'equalto', 'intel') | map(attribute='name') | list }}"
+    state: present
+  when: gpu_type == 'intel' or gpu_driver == 'intel'
+  tags: hardware, gpu, intel
+
+- name: Verify GPU drivers are installed
+  command: "{{ item }} --version"
+  register: gpu_package_check
+  failed_when: false
+  changed_when: false
+  loop: "{{ gpu_packages | map(attribute='name') | list }}"
+  loop_control:
+    label: "{{ item }}"
+  when: gpu_type != 'unknown'
+  tags: hardware, gpu, verification
+
+- name: Display GPU installation summary
+  debug:
+    msg: "GPU support installed for {{ gpu_type }} (driver: {{ gpu_driver }})"
+  when: gpu_type != 'unknown'
+  tags: hardware, gpu, info

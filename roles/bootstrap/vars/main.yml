@@ -1,0 +1,25 @@
+---
+# Bootstrap role variables
+# Essential packages and collections needed for Ansible automation
+
+bootstrap_packages:
+  - name: base-devel
+    category: system
+    description: "Base development tools for building packages"
+  - name: git
+    category: system
+    description: "Version control system"
+  - name: wget
+    category: system
+    description: "File download utility"
+  - name: curl
+    category: system
+    description: "Data transfer utility"
+  - name: ansible
+    category: system
+    description: "Configuration management tool"
+
+ansible_collections:
+  - name: community.general
+    version: ">=8.0.0"
+    description: "Community maintained Ansible collections"

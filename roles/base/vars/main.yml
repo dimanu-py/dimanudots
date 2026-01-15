@@ -1,0 +1,56 @@
+---
+# Base system role variables
+# Essential directories and system utilities
+
+base_directories:
+  - name: Documents
+    description: "User documents folder"
+  - name: Downloads
+    description: "Downloaded files folder"
+  - name: Music
+    description: "Music files folder"
+  - name: Pictures
+    description: "Image files folder"
+  - name: Videos
+    description: "Video files folder"
+  - name: Projects
+    description: "Development projects folder"
+  - name: .config
+    description: "Configuration files folder"
+
+base_system_packages:
+  # System monitoring tools
+  - name: htop
+    category: monitoring
+    description: "Interactive process viewer"
+  - name: btop
+    category: monitoring
+    description: "Advanced system monitor"
+  - name: neofetch
+    category: monitoring
+    description: "System information tool"
+  - name: fastfetch
+    category: monitoring
+    description: "Fast system information display"
+  
+  # File management tools
+  - name: ranger
+    category: filemanagement
+    description: "Terminal file manager"
+  - name: ncdu
+    category: filemanagement
+    description: "NCurses disk usage analyzer"
+  - name: tree
+    category: filemanagement
+    description: "Directory tree display"
+  
+  # Disk and archive tools
+  - name: zip
+    category: disk
+    description: "Archive compression utility"
+  - name: unzip
+    category: disk
+    description: "Archive extraction utility"
+  - name: p7zip
+    category: disk
+    description: "7z archive support"

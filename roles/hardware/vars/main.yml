@@ -1,0 +1,88 @@
+---
+# Hardware role variables
+# GPU, audio, bluetooth, and network packages
+
+# GPU packages by vendor
+gpu_packages:
+  # NVIDIA
+  - name: nvidia
+    vendor: nvidia
+    aur: false
+  - name: nvidia-settings
+    vendor: nvidia
+    aur: false
+  - name: nvidia-utils
+    vendor: nvidia
+    aur: false
+  
+  # AMD
+  - name: xf86-video-amdgpu
+    vendor: amd
+    aur: false
+  - name: mesa
+    vendor: amd
+    aur: false
+  
+  # Intel
+  - name: xf86-video-intel
+    vendor: intel
+    aur: false
+  - name: mesa
+    vendor: intel
+    aur: false
+  
+  # Universal
+  - name: dkms
+    vendor: universal
+    aur: false
+  - name: hwinfo
+    vendor: universal
+    aur: false
+
+# Audio packages
+audio_packages:
+  - name: pipewire
+    category: core
+    aur: false
+  - name: wireplumber
+    category: core
+    aur: false
+  - name: pipewire-pulse
+    category: core
+    aur: false
+  - name: pipewire-alsa
+    category: core
+    aur: false
+  - name: pipewire-jack
+    category: core
+    aur: false
+  - name: pulseaudio-utils
+    category: tools
+    aur: false
+
+# Bluetooth packages
+bluetooth_packages:
+  - name: bluez
+    category: core
+    aur: false
+  - name: bluez-utils
+    category: core
+    aur: false
+  - name: bluetui
+    category: tui
+    aur: false
+
+# Network packages
+network_packages:
+  - name: networkmanager
+    category: core
+    aur: false
+  - name: network-manager-applet
+    category: tools
+    aur: false
+  - name: nm-connection-editor
+    category: tools
+    aur: false
+  - name: whois
+    category: tools
+    aur: false

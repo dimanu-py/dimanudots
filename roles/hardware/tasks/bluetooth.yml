@@ -1,0 +1,71 @@
+---
+# Bluetooth services setup with TUI and management tools
+# Installs bluez stack and terminal-based management interface
+
+- name: Update package cache
+  pacman:
+    update_cache: yes
+  tags: hardware, bluetooth, prep
+
+- name: Install Bluetooth core services
+  pacman:
+    name: "{{ hardware_packages | selectattr('category', 'equalto', 'bluetooth') | selectattr('name', 'in', ['bluez', 'bluez-utils']) | map(attribute='name') | list }}"
+    state: present
+  tags: hardware, bluetooth, core
+
+- name: Install Bluetooth TUI management tool
+  pacman:
+    name: "{{ hardware_packages | selectattr('category', 'equalto', 'bluetooth') | selectattr('name', 'equalto', 'bluetui') | map(attribute='name') | list }}"
+    state: present
+  tags: hardware, bluetooth, tui
+
+- name: Enable and start Bluetooth service
+  systemd:
+    name: bluetooth
+    state: started
+    enabled: yes
+    daemon_reload: yes
+  tags: hardware, bluetooth, service
+
+- name: Configure Bluetooth auto-power-on
+  lineinfile:
+    path: /etc/bluetooth/main.conf
+    regexp: '^#AutoEnable='
+    line: 'AutoEnable=true'
+    backup: yes
+    create: yes
+  tags: hardware, bluetooth, config
+
+- name: Restart Bluetooth service to apply configuration
+  systemd:
+    name: bluetooth
+    state: restarted
+    daemon_reload: yes
+  tags: hardware, bluetooth, service
+
+- name: Verify Bluetooth core packages are installed
+  command: "{{ item }} --version"
+  register: bluetooth_package_check
+  failed_when: false
+  changed_when: false
+  loop: "{{ hardware_packages | selectattr('category', 'equalto', 'bluetooth') | selectattr('name', 'in', ['bluez', 'bluez-utils']) | map(attribute='name') | list }}"
+  loop_control:
+    label: "{{ item }}"
+  tags: hardware, bluetooth, verification
+
+- name: Verify Bluetooth TUI tool is installed
+  command: bluetui --version
+  register: bluetui_check
+  failed_when: false
+  changed_when: false
+  tags: hardware, bluetooth, verification
+
+- name: Verify Bluetooth service is running
+  command: systemctl is-active bluetooth
+  register: bluetooth_service_check
+  tags: hardware, bluetooth, verification
+
+- name: Display Bluetooth installation summary
+  debug:
+    msg: "Bluetooth services installed and configured (TUI: bluetui, Service: {{ 'active' if bluetooth_service_check.stdout == 'active' else 'inactive' }})"
+  tags: hardware, bluetooth, info
