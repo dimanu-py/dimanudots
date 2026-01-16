@@ -7,7 +7,7 @@
   become: true
   gather_facts: yes
   vars_files:
-    - ../inventory/group_vars/all.yml
+    - ../inventory/global_vars.yml
   
   roles:
     - { role: bootstrap, tags: [bootstrap, foundation] }
