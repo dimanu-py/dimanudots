@@ -55,9 +55,3 @@
     label: "{{ item }}"
   when: gpu_type != 'unknown'
   tags: hardware, gpu, verification
-
-- name: Display GPU installation summary
-  debug:
-    msg: "GPU support installed for {{ gpu_type }} (driver: {{ gpu_driver }})"
-  when: gpu_type != 'unknown'
-  tags: hardware, gpu, info

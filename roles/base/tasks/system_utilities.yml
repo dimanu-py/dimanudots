@@ -7,23 +7,11 @@
     update_cache: yes
   tags: base, system
 
-- name: Install system monitoring tools
+- name: Install system utilities tools
   pacman:
-    name: "{{ base_system_packages | selectattr('category', 'equalto', 'monitoring') | map(attribute='name') | list }}"
+    name: "{{ base_system_packages | map(attribute='name') | list }}"
     state: present
-  tags: base, monitoring
-
-- name: Install file management tools
-  pacman:
-    name: "{{ base_system_packages | selectattr('category', 'equalto', 'filemanagement') | map(attribute='name') | list }}"
-    state: present
-  tags: base, filemanagement
-
-- name: Install disk usage and directory tools
-  pacman:
-    name: "{{ base_system_packages | selectattr('category', 'equalto', 'disk') | map(attribute='name') | list }}"
-    state: present
-  tags: base, disk
+  tags: base, system_utilities
 
 - name: Verify system utilities are installed
   command: "{{ item.name }} --version"
@@ -34,11 +22,3 @@
   loop_control:
     label: "{{ item.name }}"
   tags: base, verification
-
-- name: Display installed system utilities
-  debug:
-    msg: "{{ item.name }} ({{ item.category }}) installed successfully: {{ item.description }}"
-  loop: "{{ base_system_packages }}"
-  loop_control:
-    label: "{{ item.name }}"
-  tags: base, info

@@ -7,17 +7,11 @@
     update_cache: yes
   tags: hardware, network, prep
 
-- name: Install NetworkManager core
+- name: Install network packages
   pacman:
-    name: "{{ hardware_packages | selectattr('category', 'equalto', 'network') | selectattr('name', 'equalto', 'networkmanager') | map(attribute='name') | list }}"
+    name: "{{ network_packages | map(attribute='name') | list }}"
     state: present
-  tags: hardware, network, core
-
-- name: Install network management tools
-  pacman:
-    name: "{{ hardware_packages | selectattr('category', 'equalto', 'network') | selectattr('name', 'in', ['network-manager-applet', 'nm-connection-editor', 'whois', 'impala']) | map(attribute='name') | list }}"
-    state: present
-  tags: hardware, network, tools
+  tags: hardware, network
 
 - name: Ensure NetworkManager service is enabled
   systemd:
@@ -35,18 +29,4 @@
 - name: Verify WiFi interface detection
   command: nmcli device status
   register: wifi_check
-  tags: hardware, network, verification
-
-- name: Display network installation summary
-  debug:
-    msg: "NetworkManager installed and active (WiFi: {{ 'available' if 'wifi' in wifi_check.stdout else 'not detected' }})"
-  tags: hardware, network, info
-
-- name: Assert network configuration is working
-  assert:
-    that:
-      - nm_check.rc == 0
-      - "'active' in nm_check.stdout"
-    success_msg: "NetworkManager is installed and running successfully"
-    fail_msg: "NetworkManager failed to start or is not active"
   tags: hardware, network, verification

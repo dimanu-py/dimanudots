@@ -1,0 +1,23 @@
+---
+# Audio system setup with Pipewire backend and comprehensive audio tools
+
+- name: Update package cache
+  pacman:
+    update_cache: yes
+  tags: hardware, audio, prep
+
+- name: Install Pipewire core audio system
+  pacman:
+    name: "{{ audio_packages | map(attribute='name') | list }}"
+    state: present
+  tags: hardware, audio, pipewire
+
+- name: Verify packages are installed
+  command: "{{ item }} --version"
+  register: audio_package_check
+  failed_when: false
+  changed_when: false
+  loop: "{{ audio_packages | map(attribute='name') | list }}"
+  loop_control:
+    label: "{{ item }}"
+  tags: hardware, audio, verification

@@ -7,17 +7,11 @@
     update_cache: yes
   tags: hardware, bluetooth, prep
 
-- name: Install Bluetooth core services
+- name: Install Bluetooth tools
   pacman:
-    name: "{{ hardware_packages | selectattr('category', 'equalto', 'bluetooth') | selectattr('name', 'in', ['bluez', 'bluez-utils']) | map(attribute='name') | list }}"
+    name: "{{ bluetooth_packages | map(attribute='name') | list }}"
     state: present
   tags: hardware, bluetooth, core
-
-- name: Install Bluetooth TUI management tool
-  pacman:
-    name: "{{ hardware_packages | selectattr('category', 'equalto', 'bluetooth') | selectattr('name', 'equalto', 'bluetui') | map(attribute='name') | list }}"
-    state: present
-  tags: hardware, bluetooth, tui
 
 - name: Enable and start Bluetooth service
   systemd:
@@ -48,24 +42,12 @@
   register: bluetooth_package_check
   failed_when: false
   changed_when: false
-  loop: "{{ hardware_packages | selectattr('category', 'equalto', 'bluetooth') | selectattr('name', 'in', ['bluez', 'bluez-utils']) | map(attribute='name') | list }}"
+  loop: "{{ bluetooth_packages | map(attribute='name') | list }}"
   loop_control:
     label: "{{ item }}"
-  tags: hardware, bluetooth, verification
-
-- name: Verify Bluetooth TUI tool is installed
-  command: bluetui --version
-  register: bluetui_check
-  failed_when: false
-  changed_when: false
   tags: hardware, bluetooth, verification
 
 - name: Verify Bluetooth service is running
   command: systemctl is-active bluetooth
   register: bluetooth_service_check
   tags: hardware, bluetooth, verification
-
-- name: Display Bluetooth installation summary
-  debug:
-    msg: "Bluetooth services installed and configured (TUI: bluetui, Service: {{ 'active' if bluetooth_service_check.stdout == 'active' else 'inactive' }})"
-  tags: hardware, bluetooth, info

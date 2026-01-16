@@ -15,11 +15,23 @@ bootstrap_packages:
   - name: curl
     category: system
     description: "Data transfer utility"
+  - name: python
+    category: system
+    reason: "Ansible runtime dependency"
   - name: ansible
     category: system
     description: "Configuration management tool"
+  - name: go
+    category: system
+    reason: "Yay runtime dependency"
 
 ansible_collections:
   - name: community.general
     version: ">=8.0.0"
-    description: "Community maintained Ansible collections"
+    reason: "Community maintained Ansible collections"
+  - name: ansible.posix
+    version: ">=1.5.0"
+    reason: "Provides filesystem and POSIX system modules"
+  - name: community.crypto
+    version: ">=2.0.0"
+    reason: "Provides cryptographic and SSL modules for security tasks"

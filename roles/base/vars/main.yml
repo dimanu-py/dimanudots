@@ -7,50 +7,35 @@ base_directories:
     description: "User documents folder"
   - name: Downloads
     description: "Downloaded files folder"
-  - name: Music
-    description: "Music files folder"
   - name: Pictures
     description: "Image files folder"
-  - name: Videos
-    description: "Video files folder"
-  - name: Projects
+  - name: Developer
     description: "Development projects folder"
   - name: .config
     description: "Configuration files folder"
 
 base_system_packages:
-  # System monitoring tools
-  - name: htop
-    category: monitoring
-    description: "Interactive process viewer"
   - name: btop
     category: monitoring
-    description: "Advanced system monitor"
-  - name: neofetch
-    category: monitoring
-    description: "System information tool"
+    reason: "Advanced system monitor"
   - name: fastfetch
     category: monitoring
-    description: "Fast system information display"
-  
-  # File management tools
-  - name: ranger
+    reason: "Fast system information display"
+  - name: nautilus
     category: filemanagement
-    description: "Terminal file manager"
+    reason: "GUI file manager for desktop environment"
+  - name: sushi
+    category: filemanagement
+    reason: "Quick file preview tool for nautilus"
   - name: ncdu
-    category: filemanagement
-    description: "NCurses disk usage analyzer"
+    category: disk
+    reason: "NCurses disk usage analyzer for large directories"
   - name: tree
-    category: filemanagement
-    description: "Directory tree display"
-  
-  # Disk and archive tools
+    category: disk
+    reason: "Directory tree visualization tool" 
   - name: zip
     category: disk
-    description: "Archive compression utility"
+    reason: "Archive compression utility"
   - name: unzip
     category: disk
-    description: "Archive extraction utility"
-  - name: p7zip
-    category: disk
-    description: "7z archive support"
+    reason: "Archive extraction utility"

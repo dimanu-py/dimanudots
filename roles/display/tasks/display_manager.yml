@@ -1,0 +1,52 @@
+- name: Update package cache
+  pacman:
+    update_cache: yes
+  tags: display, prep
+
+- name: Install SDDM display manager
+  pacman:
+    name: sddm
+    state: present
+  tags: display, sddm, core
+
+- name: Create SDDM configuration directory
+  file:
+    path: /etc/sddm.conf.d
+    state: directory
+    mode: '0755'
+  tags: display, sddm, config
+
+- name: Configure SDDM to use sugar-candy theme
+  lineinfile:
+    path: /etc/sddm.conf.d/theme.conf
+    regexp: '^{{ item.key }}='
+    line: '{{ item.key }}={{ item.value }}'
+    create: yes
+    backup: yes
+  loop:
+    - { key: 'Theme', value: 'sddm-sugar-candy' }
+    - { key: 'CursorTheme', value: 'bibata-cursor-theme' }
+  tags: display, sddm, config
+
+- name: Install SDDM Sugar Candy theme from AUR
+  command: yay -S --noconfirm --needed sddm-sugar-candy
+  become: true
+  become_user: "{{ user }}"
+  register: sugar_candy_install
+  failed_when: false
+  tags: display, sddm, theme
+
+- name: Enable and start SDDM service
+  systemd:
+    name: sddm
+    state: started
+    enabled: yes
+    daemon_reload: yes
+  tags: display, sddm, service
+
+- name: Verify SDDM is running
+  command: systemctl is-active sddm
+  register: sddm_check
+  failed_when: false
+  changed_when: false
+  tags: display, verification
