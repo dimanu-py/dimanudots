@@ -60,6 +60,12 @@
   changed_when: "'is already installed' not in uv_install.stdout"
   tags: development, python, uv
 
+- name: Install opencode AI agent tool
+  command: "curl -fsSL https://opencode.ai/install | bash"
+  register: opencode_install
+  failed_when: false
+  tags: development, ai
+
 - name: Install database and API tools from AUR
   loop: "{{ dev_tools | map(attribute='name') | list }}"
   command: yay -S --noconfirm --needed {{ item }}
