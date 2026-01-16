@@ -1,3 +1,0 @@
-[submodule "files/dotfiles"]
-	path = files/dotfiles
-	url = https://github.com/dimanu-py/dotfiles.git
