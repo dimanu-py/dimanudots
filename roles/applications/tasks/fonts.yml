@@ -1,0 +1,15 @@
+---
+# Font utilities and file management
+# Input method support and device management
+
+- name: Install font packages from repos
+  pacman:
+    name: "{{ font_packages | map(attribute='name') | list }}"
+    state: present
+  tags: applications, fonts, core
+
+- name: Install file manager packages from repos
+  pacman:
+    name: "{{ filemanager_packages | map(attribute='name') | list }}"
+    state: present
+  tags: applications, filemanager, core

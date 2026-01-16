@@ -1,0 +1,14 @@
+---
+# Web browser installation
+# Brave browser with Wayland support
+
+- name: Install web browser from AUR
+  loop: "{{ browser_packages | map(attribute='name') | list }}"
+  command: yay -S --noconfirm --needed {{ item }}
+  become: true
+  become_user: "{{ user }}"
+  register: browser_install
+  failed_when: false
+  loop_control:
+    label: "{{ item }}"
+  tags: applications, browser, aur

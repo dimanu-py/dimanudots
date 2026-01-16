@@ -1,0 +1,25 @@
+---
+# System and security packages
+# GNOME keyring, PolicyKit, and password managers
+
+- name: Update package cache
+  pacman:
+    update_cache: yes
+  tags: applications, system, prep
+
+- name: Install system packages from repos
+  pacman:
+    name: "{{ system_packages | selectattr('aur', 'equalto', false) | map(attribute='name') | list }}"
+    state: present
+  tags: applications, system, core
+
+- name: Install security packages from AUR
+  loop: "{{ system_packages | selectattr('aur', 'equalto', true) | map(attribute='name') | list }}"
+  command: yay -S --noconfirm --needed {{ item }}
+  become: true
+  become_user: "{{ user }}"
+  register: system_aur_install
+  failed_when: false
+  loop_control:
+    label: "{{ item }}"
+  tags: applications, system, aur
