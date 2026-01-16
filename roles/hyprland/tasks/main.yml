@@ -1,0 +1,25 @@
+---
+# Hyprland desktop environment role
+# Core compositor, desktop components, and session management
+
+- name: Import core Hyprland installation
+  include_tasks: core.yml
+  tags: hyprland, core
+
+- name: Import desktop components setup
+  include_tasks: desktop.yml
+  tags: hyprland, desktop, components
+
+- name: Import session management setup
+  include_tasks: session.yml
+  tags: hyprland, session, management
+
+- name: Display Hyprland installation summary
+  debug:
+    msg: |
+      Hyprland Desktop Environment Complete:
+      - Core: hyprland compositor and utilities
+      - Desktop: waybar, swaync, walker with elephant plugins
+      - Session: UWSM session manager with clipboard persistence
+      - Services: systemd user services enabled
+  tags: hyprland, summary

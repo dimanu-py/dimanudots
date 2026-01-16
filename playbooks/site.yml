@@ -14,8 +14,9 @@
     - { role: base, tags: [base, system] }
     - { role: hardware, tags: [hardware, gpu, audio, bluetooth, network] }
     - { role: display, tags: [display, sddm, fonts, themes] }
+    - { role: hyprland, tags: [hyprland, desktop, wayland] }
     # Future roles to be added:
-    # - { role: hyprland, tags: [hyprland, desktop, wayland] }
     # - { role: development, tags: [development, terminal, tools] }
     # - { role: applications, tags: [applications, user] }
     # - { role: dotfiles, tags: [dotfiles, config, final] }
+    # - { role: development, tags: [development, terminal, tools] }

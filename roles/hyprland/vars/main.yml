@@ -1,0 +1,141 @@
+---
+# Hyprland role variables
+# Core packages, desktop components, and utilities with AUR categorization
+
+hyprland_packages:
+  - name: hyprland
+    category: compositor
+    aur: false
+    reason: "Main Wayland compositor and window manager"
+  - name: hyplrand-guiutils
+    category: utilities
+    aur: false
+    reason: "GUI utilities for screen management and effects"
+  - name: hypridle
+    category: session
+    aur: false
+    reason: "Idle management daemon for lock screens"
+  - name: hyprlock
+    category: utilities
+    aur: false
+    reason: "Screen locking utility with blur effects"
+  - name: hyprpicker
+    category: utilities
+    aur: false
+    reason: "Color picker tool for theming"
+  - name: hyprsunset
+    category: utilities
+    aur: false
+    reason: "Utility to manage Hyprland variables"
+  - name: xdg-desktop-portal-hyprland
+    category: integration
+    aur: false
+    reason: "Hyprland desktop portal integration"
+  - name: xdg-desktop-portal-gtk
+    category: integration
+    aur: false
+    reason: "GTK desktop portal support"
+  - name: qt5-wayland
+    category: integration
+    aur: false
+    reason: "Qt5 Wayland compatibility layer"
+  - name: qt6-wayland
+    category: integration
+    aur: false
+    reason: "Qt6 Wayland compatibility layer"
+  - name: xdg-terminal-exec
+    category: utilities
+    aur: false
+    reason: "Terminal execution utility for app launchers"
+  - name: swayosd
+    category: utilities
+    aur: true
+    reason: "Additional Wayland utilities and helpers"
+
+desktop_components:
+  - name: waybar
+    category: statusbar
+    aur: false
+    reason: "Highly customizable Wayland status bar"
+  - name: swaync
+    category: notifications
+    aur: false
+    reason: "Lightweight notification daemon for Wayland"
+  - name: swaybg
+    category: wallpaper
+    aur: false
+    reason: "Static wallpaper management tool"
+  - name: wl-clipboard
+    category: clipboard
+    aur: false
+    reason: "Wayland clipboard management utility"
+  - name: wl-clip-persist
+    category: clipboard
+    aur: false
+    reason: "Persistent clipboard history for Wayland"
+  - name: uwsm
+    category: session
+    aur: false
+    reason: "Wayland session manager and startup"
+
+app_launcher:
+  - name: walker
+    category: launcher
+    aur: true
+    reason: "Modern Wayland-native application launcher"
+  - name: walker-bin-debug
+    category: launcher
+    aur: true
+    reason: "Debug version of Walker launcher"
+  - name: elephant
+    category: launcher
+    reason: "Backend for app launcher"
+    aur: true
+  - name: elephant-calc
+    category: utilities
+    aur: true
+    reason: "Calculator plugin for Walker"
+  - name: elephant-clipboard
+    category: clipboard
+    aur: true
+    reason: "Clipboard management plugin for Walker"
+  - name: elephant-bluetooth
+    category: bluetooth
+    aur: true
+    reason: "Bluetooth management plugin for Walker"
+  - name: elephant-desktopapplications
+    category: applications
+    aur: true
+    reason: "Desktop applications plugin for Walker"
+  - name: elephant-files
+    category: files
+    aur: true
+    reason: "File management plugin for Walker"
+  - name: elephant-menus
+    category: applications
+    aur: true
+    reason: "Application menu plugin for Walker"
+  - name: elephant-providerlist
+    category: utilities
+    aur: true
+    reason: "Provider listing plugin for Walker"
+  - name: elephant-runner
+    category: utilities
+    aur: true
+    reason: "Command runner plugin for Walker"
+  - name: elephant-unicode
+    category: utilities
+    aur: true
+    reason: "Unicode symbol picker plugin for Walker"
+  - name: elephant-websearch
+    category: web
+    aur: true
+    reason: "Web search plugin for Walker"
+  - name: elephant-todo
+    category: productivity
+    aur: true
+    reason: "Task management plugin for Walker"
+  - name: elephant-symbols
+    category: utilities
+    aur: true
+    reason: "Symbol picker plugin for Walker"
