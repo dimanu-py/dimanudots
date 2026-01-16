@@ -13,10 +13,3 @@
     - ".config/zsh"
     - ".local/share/zsh"
   tags: development, shell, config
-
-- name: Verify shell setup
-  command: zsh --version && starship --version
-  register: shell_check
-  failed_when: false
-  changed_when: false
-  tags: development, verification

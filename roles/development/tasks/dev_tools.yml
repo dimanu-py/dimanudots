@@ -70,13 +70,3 @@
   loop_control:
     label: "{{ item }}"
   tags: development, tools, aur
-
-- name: Verify development tools
-  command: "{{ item }} --version"
-  register: dev_check
-  failed_when: false
-  changed_when: false
-  loop: "{{ editors | map(attribute='name') | list + git_tools | map(attribute='name') | list + container_tools | map(attribute='name') | list }}"
-  loop_control:
-    label: "{{ item }}"
-  tags: development, verification

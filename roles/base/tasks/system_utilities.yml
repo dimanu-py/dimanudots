@@ -13,12 +13,3 @@
     state: present
   tags: base, system_utilities
 
-- name: Verify system utilities are installed
-  command: "{{ item.name }} --version"
-  register: utility_check
-  failed_when: false
-  changed_when: false
-  loop: "{{ base_system_packages }}"
-  loop_control:
-    label: "{{ item.name }}"
-  tags: base, verification

@@ -13,12 +13,3 @@
   loop_control:
     label: "{{ item.name }}"
   tags: base, filesystem
-
-- name: Verify directories exist
-  stat:
-    path: "{{ home }}/{{ item.name }}"
-  register: dir_check
-  loop: "{{ base_directories }}"
-  loop_control:
-    label: "{{ item.name }}"
-  tags: base, verification

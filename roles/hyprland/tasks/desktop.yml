@@ -18,13 +18,3 @@
   loop_control:
     label: "{{ item }}"
   tags: hyprland, desktop, launcher, aur
-
-- name: Verify desktop components
-  command: "{{ item }} --version"
-  register: desktop_check
-  failed_when: false
-  changed_when: false
-  loop: "{{ desktop_components | map(attribute='name') | list }}"
-  loop_control:
-    label: "{{ item }}"
-  tags: hyprland, desktop, verification

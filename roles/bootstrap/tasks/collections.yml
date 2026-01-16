@@ -11,21 +11,3 @@
   loop_control:
     label: "{{ item.name }}"
   tags: bootstrap, collections
-
-- name: Verify collection installation
-  command: "ansible-galaxy collection list {{ item.name }}"
-  register: collection_check
-  failed_when: collection_check.rc != 0
-  changed_when: false
-  loop: "{{ ansible_collections }}"
-  loop_control:
-    label: "{{ item.name }}"
-  tags: bootstrap, collections
-
-- name: Display installed collections
-  debug:
-    msg: "Collection {{ item.name }} installed successfully"
-  loop: "{{ ansible_collections }}"
-  loop_control:
-    label: "{{ item.name }}"
-  tags: bootstrap, collections

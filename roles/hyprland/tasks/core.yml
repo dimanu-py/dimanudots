@@ -23,13 +23,3 @@
   loop_control:
     label: "{{ item }}"
   tags: hyprland, core, aur
-
-- name: Verify core packages are installed
-  command: "{{ item }} --version"
-  register: core_package_check
-  failed_when: false
-  changed_when: false
-  loop: "{{ hyprland_core_packages | map(attribute='name') | list }}"
-  loop_control:
-    label: "{{ item }}"
-  tags: hyprland, core, verification
