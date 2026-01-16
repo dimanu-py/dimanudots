@@ -1,26 +1,19 @@
-- name: Install Catppuccin GTK theme from AUR
-  command: yay -S --noconfirm --needed catppuccin-gtk-theme-mocha
+- name: Install AUR theme packages
+  loop: "{{ aur_theme_packages | selectattr('aur', 'equalto', 'true') | map(attribute='name') | list }}"
+  command: yay -S --noconfirm --needed {{ item.name }}
   become: true
   become_user: "{{ user }}"
-  register: catppuccin_install
+  register: aur_theme_install
   failed_when: false
+  loop_control:
+    label: "{{ item.name }}"
   tags: display, themes, gtk, aur
 
-- name: Install icon theme from repos
-  become: true
+- name: Install theme packages from repos
   pacman:
-    name:
-      - papirus-icon-theme
+    name: "{{ theme_packages | selectattr('aur', 'equalto', 'false') | map(attribute='name') | list }}"
     state: present
   tags: display, themes, gtk
-
-- name: Install Bibata cursor theme from AUR
-  command: yay -S --noconfirm --needed bibata-cursor-theme
-  become: true
-  become_user: "{{ user }}"
-  register: bibata_install
-  failed_when: false
-  tags: display, themes, gtk, aur
 
 - name: Create theme environment configuration
   lineinfile:
@@ -30,7 +23,7 @@
     create: yes
     backup: yes
   loop:
-    - { key: 'GTK_THEME', value: 'Catppuccin-Mocha-Standard-Rosewater-Dark' }
+    - { key: 'GTK_THEME', value: '{{ gtk_theme }}' }
     - { key: 'QT_QPA_PLATFORMTHEME', value: 'gtk2' }
   tags: display, themes, environment
 
@@ -41,10 +34,7 @@
     owner: "{{ user }}"
     group: "{{ user }}"
     mode: '0755'
-  loop:
-    - .config
-    - .local/share/icons
-    - .local/share/themes
+  loop: "{{ user_config_dirs }}"
   tags: display, themes, user
 
 - name: Configure GTK settings for user
@@ -56,10 +46,10 @@
     mode: '0644'
     block: |
       [Settings]
-      gtk-theme-name=Catppuccin-Mocha-Standard-Rosewater-Dark
-      gtk-icon-theme-name=Papirus
-      gtk-cursor-theme-name=Bibata-Modern-Classic
-      gtk-font-name=Cascadia Code Nerd Font 11
+        gtk-theme-name={{ gtk_theme }}
+        gtk-icon-theme-name={{ gtk_icon_theme }}
+        gtk-cursor-theme-name={{ gtk_cursor_theme }}
+        gtk-font-name={{ gtk_font }}
   tags: display, themes, gtk, user
 
 - name: Copy GTK settings to GTK-4

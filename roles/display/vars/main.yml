@@ -1,55 +1,38 @@
 ---
 # Display role variables
-# SDDM, fonts, themes, and visual configuration
 
-# SDDM display manager
 sddm_theme: "sddm-sugar-candy"
 cursor_theme: "bibata-cursor-theme"
-
-# Font packages
-font_packages:
-  - name: ttf-font-awesome
-    category: icons
-    aur: false
-  - name: ttf-cascadia-mono-nerd
-    category: programming
-    aur: false
-  - name: noto-fonts
-    category: base
-    aur: false
-  - name: noto-fonts-emoji
-    category: base
-    aur: false
-  - name: ttf-jetbrains-mono-nerd
-    category: programming
-    aur: false
-  - name: noto-fonts-cjk
-    category: international
-    aur: false
-  - name: noto-fonts-extra
-    category: base
-    aur: false
-  - name: woff2-font-awesome
-    category: icons
-    aur: false
-
-# Theme packages (AUR)
-aur_theme_packages:
-  - name: catppuccin-gtk-theme-mocha
-    category: gtk
-    theme_name: "Catppuccin-Mocha-Standard-Rosewater-Dark"
-  - name: bibata-cursor-theme
-    category: cursor
-    theme_name: "Bibata-Modern-Classic"
-
-# Theme packages (repos)
-theme_packages:
-  - name: papirus-icon-theme
-    category: icons
-    aur: false
-
-# GTK configuration
 gtk_theme: "Catppuccin-Mocha-Standard-Rosewater-Dark"
 gtk_icon_theme: "Papirus"
 gtk_cursor_theme: "Bibata-Modern-Classic"
 gtk_font: "Cascadia Code Nerd Font 11"
+
+font_packages:
+  - ttf-font-awesome
+  - ttf-cascadia-mono-nerd
+  - noto-fonts
+  - noto-fonts-emoji
+  - ttf-jetbrains-mono-nerd
+  - noto-fonts-cjk
+  - noto-fonts-extra
+  - woff2-font-awesome
+
+theme_packages:
+  - name: catppuccin-gtk-theme-mocha
+    category: theme
+    reason: "Catppuccin mocha theme for file manager"
+    aur: true
+  - name: bibata-cursor-theme
+    category: theme
+    reason: "Theme for cursor"
+    aur: true
+  - name: papirus-icon-theme
+    category: theme
+    reason: "Icon theme"
+    aur: false
+
+user_config_dirs:
+  - .config
+  - .local/share/icons
+  - .local/share/themes

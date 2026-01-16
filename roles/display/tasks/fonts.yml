@@ -1,13 +1,5 @@
 - name: Install base fonts
   pacman:
-    name:
-      - ttf-font-awesome
-      - ttf-cascadia-mono-nerd
-      - noto-fonts
-      - noto-fonts-emoji
-      - ttf-jetbrains-mono-nerd
-      - noto-fonts-cjk
-      - noto-fonts-extra
-      - woff2-font-awesome
+    name: "{{ font_packages }}"
     state: present
   tags: display, fonts

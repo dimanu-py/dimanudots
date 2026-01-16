@@ -24,12 +24,12 @@
     create: yes
     backup: yes
   loop:
-    - { key: 'Theme', value: 'sddm-sugar-candy' }
-    - { key: 'CursorTheme', value: 'bibata-cursor-theme' }
+    - { key: 'Theme', value: '{{ sddm_theme }}' }
+    - { key: 'CursorTheme', value: '{{ cursor_theme }}' }
   tags: display, sddm, config
 
 - name: Install SDDM Sugar Candy theme from AUR
-  command: yay -S --noconfirm --needed sddm-sugar-candy
+  command: yay -S --noconfirm --needed {{ sddm_theme }}
   become: true
   become_user: "{{ user }}"
   register: sugar_candy_install
