@@ -83,6 +83,10 @@ dev_tools:
     category: env
     aur: true
     reason: "Development environment manager for multiple runtimes"
+  - name: github-cli
+    category: vcs
+    aur: false
+    reason: "CLI application to manage GitHub"
 
 terminal_utilities:
   - name: fzf
