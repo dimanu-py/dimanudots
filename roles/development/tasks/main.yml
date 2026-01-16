@@ -1,0 +1,15 @@
+---
+# Development environment role
+# Terminal, editors, tools, and shell configuration
+
+- name: Import terminal setup
+  include_tasks: terminal.yml
+  tags: development, terminal
+
+- name: Import development tools installation
+  include_tasks: dev_tools.yml
+  tags: development, tools, editors
+
+- name: Import shell configuration and integration
+  include_tasks: shell.yml
+  tags: development, shell, environment

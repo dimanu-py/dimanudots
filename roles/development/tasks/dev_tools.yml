@@ -1,0 +1,82 @@
+---
+# Development tools installation
+# Editors, Git tools, containers, and API tools
+
+- name: Install editors and IDEs
+  pacman:
+    name: "{{ editors | selectattr('aur', 'equalto', true) | map(attribute='name') | list }}"
+    state: present
+  tags: development, editors, core
+
+- name: Install development tools from AUR
+  loop: "{{ editors | selectattr('aur', 'equalto', true) | map(attribute='name') | list }}"
+  command: yay -S --noconfirm --needed {{ item }}
+  become: true
+  become_user: "{{ user }}"
+  register: editors_aur_install
+  failed_when: false
+  loop_control:
+    label: "{{ item }}"
+  tags: development, editors, aur
+
+- name: Install Git and version control tools
+  pacman:
+    name: "{{ git_tools | selectattr('aur', 'equalto', false) | map(attribute='name') | list }}"
+    state: present
+  tags: development, git, core
+
+- name: Install Git tools from AUR
+  loop: "{{ git_tools | selectattr('aur', 'equalto', true) | map(attribute='name') | list }}"
+  command: yay -S --noconfirm --needed {{ item }}
+  become: true
+  become_user: "{{ user }}"
+  register: git_aur_install
+  failed_when: false
+  loop_control:
+    label: "{{ item }}"
+  tags: development, git, aur
+
+- name: Install container tools
+  pacman:
+    name: "{{ container_tools | selectattr('aur', 'equalto', false) |map(attribute='name') | list }}"
+    state: present
+  tags: development, containers, core
+
+- name: Install container tools from AUR
+  loop: "{{ container_tools | selectattr('aur', 'equalto', true) | map(attribute='name') | list }}"
+  command: yay -S --noconfirm --needed {{ item }}
+  become: true
+  become_user: "{{ user }}"
+  register: container_aur_install
+  failed_when: false
+  loop_control:
+    label: "{{ item }}"
+  tags: development, containers, aur
+
+- name: Install Python development tools
+  command: "curl -LsSf https://astral.sh/uv/install.sh | sh"
+  register: uv_install
+  failed_when: false
+  changed_when: "'is already installed' not in uv_install.stdout"
+  tags: development, python, uv
+
+- name: Install database and API tools from AUR
+  loop: "{{ dev_tools | map(attribute='name') | list }}"
+  command: yay -S --noconfirm --needed {{ item }}
+  become: true
+  become_user: "{{ user }}"
+  register: dev_tools_install
+  failed_when: false
+  loop_control:
+    label: "{{ item }}"
+  tags: development, tools, aur
+
+- name: Verify development tools
+  command: "{{ item }} --version"
+  register: dev_check
+  failed_when: false
+  changed_when: false
+  loop: "{{ editors | map(attribute='name') | list + git_tools | map(attribute='name') | list + container_tools | map(attribute='name') | list }}"
+  loop_control:
+    label: "{{ item }}"
+  tags: development, verification
