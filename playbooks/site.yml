@@ -13,8 +13,8 @@
     - { role: bootstrap, tags: [bootstrap, foundation] }
     - { role: base, tags: [base, system] }
     - { role: hardware, tags: [hardware, gpu, audio, bluetooth, network] }
-    - { role: display, tags: [display, sddm, fonts, themes] }
     - { role: hyprland, tags: [hyprland, desktop, wayland] }
+    - { role: display, tags: [display, sddm, fonts, themes] }
     - { role: development, tags: [development, terminal, tools] }
     # Future roles to be added:
     # - { role: applications, tags: [applications, user] }
