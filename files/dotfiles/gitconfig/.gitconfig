@@ -1,0 +1,70 @@
+[user]
+  name = dimanu-py
+  email = dimanu.py@gmail.com
+
+[core]
+  pager = delta
+  editor = nano
+  excludesfile = /home/dimanu/.gitignore
+	autocrlf = input
+
+[alias]
+  sw = switch
+  br = branch
+  cm = commit -m
+  st = status
+  local-name = config user.name
+  local-email = config user.email
+  author = commit --amend --author="dimanu-py <diegomtz126@gmail.com>"
+  clear = reset --hard HEAD
+  force = push --force-with-lease
+  continue = rebase --continue
+  stop = rebase --abort
+  showalias = config --get-regexp alias
+  lg = log --pretty='%C(red)%h%Creset%C(yellow)%d%Creset% s% C(cyan)(%ar)% Creset%C(magenta)% aN%Creset'
+  new = lg main..HEAD
+  missing = lg HEAD..main
+  tree = lg --graph --decorate --oneline
+  fixup = commit --fixup
+  patch = add --patch
+  purge = fetch -p
+	delete = branch -d
+	create = switch -c
+	push-new = "!f() { branch=\"${1:-$(git branch --show-current)}\"; git push -u origin \"$branch\"; }; f"
+
+[pull]
+  rebase = true
+
+[push]
+  autoSetupRemote = true
+
+[rebase]
+  autoStash = true
+  autoSquash = true
+
+[rerere]
+  enabled = true
+  autoupdate = true
+
+[diff]
+  algorithm = histogram
+  colorMoves = plain
+  mnemonicPrefix = true
+
+[commit]
+  verbose = true
+
+[branch]
+  sort = -commiterdate
+
+[tag]
+  sort = -version:refname
+
+[interactive]
+  diffFilter = diff-so-fancy --patch
+
+[color]
+  ui = true
+
+[init]
+  defaultBranch = main

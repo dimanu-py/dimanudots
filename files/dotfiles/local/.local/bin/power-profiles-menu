@@ -1,0 +1,37 @@
+#!/bin/bash
+
+list_power_profiles() {
+    powerprofilesctl list |
+        awk '/^\s*[* ]\s*[a-zA-Z0-9\-]+:$/ { gsub(/^[*[:space:]]+|:$/,""); print }' |
+        tac
+}
+
+show_menu() {
+    local prompt="$1"
+    local options="$2"
+    local preselect="$3"
+
+    local args=()
+
+    if [[ -n "$preselect" ]]; then
+        local index
+        index=$(echo -e "$options" | grep -nxF "$preselect" | cut -d: -f1)
+        if [[ -n "$index" ]]; then
+            args+=("-c" "$index")
+        fi
+    fi
+
+    echo -e "$options" | launch-walker --dmenu --width 295 --minheight 1 --maxheight 630 -p "$prompt" "${args[@]}" 2>/dev/null
+}
+
+select_power_profile_from_menu() {
+    profile=$(show_menu "Power Profile" "$(list_power_profiles)" "$(powerprofilesctl get)")
+
+    if [[ "$profile" == "CNCLD" || -z "$profile" ]]; then
+        exit
+    else
+        powerprofilesctl set "$profile"
+    fi
+}
+
+select_power_profile_from_menu

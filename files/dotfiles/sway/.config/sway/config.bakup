@@ -1,0 +1,9 @@
+# Read `man 5 sway` for a complete reference
+set $config_path /home/dimanu/.config/sway
+
+include $config_path/keybindings.conf
+include $config_path/appearance.conf
+include $config_path/workspaces.conf
+include $config_path/bar.conf
+include $config_path/binding_modes.conf
+include /etc/sway/config.d/*

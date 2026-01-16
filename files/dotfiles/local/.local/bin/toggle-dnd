@@ -1,0 +1,9 @@
+#!/bin/bash
+
+swaync-client --toggle-dnd
+
+if [ "$(swaync-client --get-dnd)" = "true" ]; then
+  notify-send -u critical "🔕 Notifications silenced"
+else
+  notify-send "🔔 Notifications enabled"
+fi

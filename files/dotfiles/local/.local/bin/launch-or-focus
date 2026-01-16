@@ -1,0 +1,52 @@
+#!/bin/bash
+
+get_window_name_pattern() {
+    echo "$1"
+}
+
+get_launch_command() {
+    local pattern=$1
+    local command=$2
+    if [[ -n "$command" ]]; then
+        echo "$command"
+    else
+        echo "uwsm-app -- $pattern"
+    fi
+}
+
+find_matching_active_window() {
+    local pattern=$1
+    hyprctl clients -j | jq -r --arg p "$pattern" \
+        '.[]|select((.class|test("\\b" + $p + "\\b";"i")) or (.title|test("\\b" + $p + "\\b";"i")))|.address' \
+        | head -n1
+}
+
+window_exists() {
+    [[ -n "$1" ]]
+}
+
+focuswindow() {
+    local address="$1"
+    hyprctl dispatch focuswindow "address:$address"
+}
+
+launch_application() {
+    local command="$1"
+    eval exec setsid $command
+}
+
+launch_or_focus_active() {
+    local pattern="$1"
+    local command="$2"
+    local window_address
+
+    window_address="$(find_matching_active_window "$pattern")"
+
+    if window_exists "$window_address"; then
+        focuswindow "$window_address"
+    else
+        launch_application "$command"
+    fi
+}
+
+launch_or_focus_active "$(get_window_name_pattern "$1")" "$(get_launch_command "$1" "$2")"

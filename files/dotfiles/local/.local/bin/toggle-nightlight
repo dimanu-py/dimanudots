@@ -1,0 +1,64 @@
+#!/bin/bash
+
+ON_TEMP=4000
+OFF_TEMP=6000
+
+is_hyprsunset_running() {
+    pgrep -x hyprsunset > /dev/null
+}
+
+start_hyprsunset() {
+    setsid uwsm-app -- hyprsunset &
+    sleep 1
+}
+
+ensure_hyprsunset_is_running() {
+    if ! is_hyprsunset_running; then
+        start_hyprsunset
+    fi
+}
+
+get_current_screen_temperature() {
+    hyprctl hyprsunset tmperature 2>/dev/null | grep -oE '[0-9]+'
+}
+
+set_temperature() {
+    hyprctl hyprsunset temperature "$1"
+}
+
+has_nightlight_waybar_module() {
+    grep -q "custom/nightlight" ~/.config/waybar/config.jsonc
+}
+
+restart_waybar() {
+    pkill -x waybar
+    setsid uwsm-app -- waybar > /dev/null 2>&1 &
+}
+
+restart_waybar_if_needed() {
+    if has_nightlight_waybar_module; then
+        restart-waybar
+    fi
+}
+
+notify() {
+    notify-send "$1"
+}
+
+toggle_nightlight() {
+    local get_current_screen_temperature
+    current_temperature=$(get_current_screen_temperature)
+
+    if [[ "$current_temperature" == "$OFF_TEMP" ]]; then
+        set_temperature "$ON_TEMP"
+        notify "Nightlight screen temperature"
+    else
+        set_temperature "$OFF_TEMP"
+        notify "Daylight screen temperature"
+    fi
+
+    restart_waybar_if_needed
+}
+
+ensure_hyprsunset_is_running
+toggle_nightlight

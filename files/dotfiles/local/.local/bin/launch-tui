@@ -1,0 +1,5 @@
+#!/bin/bash
+
+# This script will create a new terminal session with a custom id, execute the first argument
+# and passing the rest of the arguments to the command
+exec setsid uwsm-app -- xdg-terminal-exec --app-id=dimanu.$(basename $1) -e "$1" "${@:2}"

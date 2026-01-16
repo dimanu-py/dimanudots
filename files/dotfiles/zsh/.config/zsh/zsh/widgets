@@ -1,0 +1,15 @@
+chpwd() {
+    ls
+    if [[ -d .venv ]]; then
+        source .venv/bin/activate
+    elif [[ -d venv ]]; then
+        source venv/bin/activate
+    fi
+}
+
+copy_command() {
+  echo -n "$BUFFER" | wl-copy
+  zle -M "Copied to clipboard"
+}
+zle -N copy_command
+bindkey '^Jc' copy_command

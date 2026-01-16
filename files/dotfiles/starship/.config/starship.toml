@@ -1,0 +1,247 @@
+format = """
+$os \
+$directory \
+$all\
+$character
+"""
+
+#right_format = """
+#$docker_context\
+#$conda\
+#$python\
+#$java\
+#$kotlin\
+#$php\
+#$golang\
+#$rust\
+#$nodejs\
+#$line_break\
+#$character
+#"""
+
+# Apply or not a new line at the start of the prompt
+add_newline = false
+
+palette = "everforest"
+
+## Make prompt a single line or two lines
+[line_break]
+disabled = false
+
+[os]
+style = "fg:grey2"
+format = "[$symbol]($style)"
+disabled = false
+
+[os.symbols]
+Windows = ' '
+Arch = '󰣇'
+Ubuntu = ''
+Macos = '󰀵'
+
+[directory]
+style = "fg:orange"
+read_only_style = "fg:orange"
+format = "[$path ]($style)[$read_only]($read_only_style)"
+truncation_length = 2
+home_symbol = "  "
+read_only = '  '
+truncate_to_repo = false
+
+[directory.substitutions]
+"~/Documents" = " "
+"~/Developer" = "dimanu"
+
+[username]
+style_user = "fg:blue"
+style_root = "fg:red"
+format = '[$user]($style)'
+disabled = false
+show_always = true
+
+[git_branch]
+symbol = ""
+style = "fg:green"
+format = ' in [ $symbol $branch ]($style)'
+
+[git_status]
+style = "fg:green"
+format = '[($all_status$ahead_behind )]($style)'
+conflicted = '[ ${count}](fg:red) '
+up_to_date = '[󰘽 ](fg:green) '
+untracked = '[󰋗 ${count}](fg:untracked) '
+ahead = ' ${count}(fg:purple) '
+diverged = ' ${ahead_count}  ${behind_count}'
+behind = ' ${count}(fg:purple) '
+stashed = '[ ${count}](fg:blue) '
+modified = '[󰛿 ${count}](fg:yellow) '
+staged = '[󰐗 ${count}](fg:green) '
+renamed = '[󱍸 ${count}](fg:orange) '
+deleted = '[󰍶 ${count}](fg:red) '
+
+#[git_metrics]
+#format = "([+$added]($added_style))[]($added_style)"
+#added_style = "fg:#1C3A5E bg:#FCF392"
+#deleted_style = "fg:bright-red bg:235"
+#disabled = false
+
+[git_state]
+format = '\([$state( $progress_current/$progress_total)]($style)\) '
+style = "lavender"
+
+[status]
+disabled = false
+format = "[$symbol $status]($style) "
+not_found_symbol = ""
+not_executable_symbol = ""
+sigint_symbol = "ﭦ"
+map_symbol = true
+
+[cmd_duration]
+format = "[  $duration ]($style)"
+style = "fg:green"
+
+[jobs]
+symbol = " "
+style = "fg:orange"
+number_threshold = 1
+format = "[$symbol]($style)"
+
+[character]
+success_symbol = "[❯ ](bold green)"
+error_symbol = '[✗ ](bold red)'
+
+[fill]
+symbol = "-"
+
+[conda]
+format = "[$symbol$environment]($style) "
+
+[python]
+format = '[${symbol}${pyenv_prefix}(${version} )(\[${virtualenv}\])]($style)'
+symbol = " "
+detect_folders = [".venv"]
+detect_extensions = ["py"]
+version_format = "${raw}"
+
+[java]
+format = "[${symbol}(${version} )]($style)"
+symbol = " "
+
+[kotlin]
+format = "[${symbol}(${version} )]($style)"
+symbol = " "
+
+[docker_context]
+symbol = " "
+style = "fg:#7aa2f7"  # Tokyo Night blue
+format = " [$symbol$context]($style) "
+only_with_files = true
+detect_files = ["docker-compose.yml", "docker-compose.yaml", "Dockerfile"]
+detect_folders = []
+disabled = false
+
+[nodejs]
+symbol = ""
+style = "bg:#212736"
+format = '[[ $symbol ($version) ](fg:#769ff0 bg:#212736)]($style)'
+
+[rust]
+symbol = ""
+style = "bg:#212736"
+format = '[[ $symbol ($version) ](fg:#769ff0 bg:#212736)]($style)'
+
+[golang]
+symbol = ""
+style = "bg:#212736"
+format = '[[ $symbol ($version) ](fg:#769ff0 bg:#212736)]($style)'
+
+[php]
+symbol = ""
+style = "bg:#212736"
+format = '[[ $symbol ($version) ](fg:#769ff0 bg:#212736)]($style)'
+
+[aws]
+disabled = true
+
+[time]
+disabled = true
+time_format = "%R" # Hour:Minute Format
+style = "bg:#1d2230"
+format = '[[  $time ](fg:#a0a9cb bg:#1d2230)]($style)'
+
+
+[palettes.everforest]
+bg_dim = "#232a2e"
+bg_0 = "#2d353b"
+bg_1 = "#343f44"
+bg_2 = "#3d484d"
+bg_3 = "#475258"
+bg_4 = "#4f585e"
+bg_5 = "#56635f"
+bg_visual = "#543a48"
+bg_red = "#514045"
+bg_green = "#425047"
+bg_blue = "3a515d"
+bg_yellow = "#4d4c42"
+
+fg = "#d3c6aa"
+
+red = "e67e80"
+orange = "#dbbc7f"
+yellow = "#dbbc7f"
+green = "a7c080"
+aqua = "#83c092"
+blue = "#7fbbb3"
+purple = "#d699b6"
+grey0 = "#7a8478"
+grey1 = "#859289"
+grey2 = "#9da9a0"
+lavender = "#b4befe"
+
+statusline1 = "#a7c080"
+statusline2 = "#d3c6aa"
+statusline3 = "#e67e80"
+
+[palettes.mocha]
+black = "#1a1b26"
+red = "#f38ba8"
+green = "#9ece6a"
+yellow = "#e0af68"
+blue = "#7aa2f7"
+magenta = "#bb9af7"
+cyan = "#7dcfff"
+white = "#a9b1d6"
+bright-black = "#414868"
+bright-red = "#f7768e"
+bright-green = "#9ece6a"
+bright-yellow = "#e0af68"
+bright-blue = "#7aa2f7"
+bright-magenta = "#bb9af7"
+bright-cyan = "#7dcfff"
+bright-white = "#c0caf5"
+rosewater = "#f5e0dc"
+flamingo = "#f2cdcd"
+pink = "#f5c2e7"
+mauve = "#cba6f7"
+maroon = "#eba0ac"
+peach = "#fab387"
+pale_yellow = "#f9e2af"
+pale_green = "#a6e3a1"
+teal = "#94e2d5"
+sky = "#89dceb"
+sapphire = "#74c7ec"
+pale_blue = "#89b4fa"
+lavender = "#b4befe"
+text = "#cdd6f4"
+subtext1 = "#bac2de"
+subtext0 = "#a6adc8"
+overlay2 = "#9399b2"
+overlay1 = "#7f849c"
+overlay0 = "#6c7086"
+surface2 = "#585b70"
+surface1 = "#45475a"
+surface0 = "#313244"
+base = "#1e1e2e"
+mantle = "#181825"
+crust = "#11111b"

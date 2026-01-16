@@ -1,0 +1,15 @@
+#!/bin/bash
+
+browser=$(xdg-settings get default-web-browser)
+
+get_brave_executable() {        
+    sed -n 's/^Exec=\([^ ]*\).*/\1/p' \
+        /usr/share/applications/$browser 2>/dev/null \
+        | head -1
+}
+
+launch_webapp() {
+    exec setsid uwsm-app -- "$(get_brave_executable)" --app="$1" "${@:2}"
+}
+
+launch_webapp

@@ -1,0 +1,10 @@
+# Ensure custom bin is in path
+export PATH=$HOME/.local/bin:$PATH
+
+# Set default terminal
+source ~/.config/uwsm/default
+
+# Activate mise if present on the system
+# if [[ command -v mise &>/dev/null ]]; then
+#     eval "$(mise activate zsh)"
+# fi

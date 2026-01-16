@@ -1,0 +1,10 @@
+#!/bin/bash
+
+command="$*"
+
+show_done() {
+    echo
+    gum sping --spinner "globe" --title "Done! Press any key to close..." -- zsh -c 'read -n 1 -s'
+}
+
+exec setsid uwsm-app -- xdg-terminal-exec -e zsh -c "$cmd; show_done"

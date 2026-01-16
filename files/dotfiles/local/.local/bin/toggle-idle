@@ -1,0 +1,29 @@
+#!/bin/bash
+
+is_hypridle_running() {
+    pgrep -x hypridle > /dev/null
+}
+
+stop_hypridle() {
+    pkill -x hypridle
+}
+
+start_hypridle() {
+    uswm-app -- hypridle > /dev/null 2>&1 &
+}
+
+notify() {
+    notify-send "$1"
+}
+
+toggle_idle() {
+    if is_hypridle_running; then
+        stop_hypridle
+        notify "Stop locking computer when idle"
+    else
+        start_hypridle
+        notify "Now locking computer when idle"
+    fi
+}
+
+toggle_idle

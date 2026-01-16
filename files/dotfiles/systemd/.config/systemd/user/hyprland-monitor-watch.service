@@ -1,0 +1,10 @@
+[Unit]
+Description=Hyprland Monitor Change Watcher
+
+[Service]
+Type=simple
+ExecStart=/home/dimanu/.config/hypr/conf/monitors/monitor_watchdog.sh
+Restart=always
+
+[Install]
+WantedBy=default.target

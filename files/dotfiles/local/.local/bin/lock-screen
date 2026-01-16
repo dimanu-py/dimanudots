@@ -1,0 +1,30 @@
+#!/bin/bash
+
+is_hyprlock_running() {
+    pidof hyprlock > /dev/null
+}
+
+start_hyprlock() {
+   uwsm-app -- hyprlock &
+}
+
+lock_screen() {
+    is_hyprlock_running || start_hyprlock
+}
+
+is_1password_running() {
+    pgrep -x "1password" > /dev/null
+}
+
+lock_1password() {
+    1password --lock &
+}
+
+lock_1password_if_running() {
+    if is_1password_running; then
+        lock_1password
+    fi
+}
+
+lock_screen
+lock_1password_if_running

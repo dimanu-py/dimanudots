@@ -1,0 +1,19 @@
+#!/bin/bash
+
+runs_on_battery() {
+    ls /sys/class/power_supply/BAT* &> /dev/null
+}
+
+set_initial_power_profile() {
+    if runs_on_battery; then
+        powerprofilesctl set balanced || true
+    else
+        powerprofilesctl set performance || true
+}
+
+enable_battery_watchdog_timer() {
+    systemctl --user enable --now battery-watchdog.timer
+}
+
+set_initial_power_profile
+enable_battery_watchdog_timer

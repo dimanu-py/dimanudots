@@ -1,0 +1,24 @@
+#!/bin/bash
+
+get_battery_device() {
+    upower -e | grep BAT
+}
+
+get_battery_info() {
+    upower -i "$(get_battery_device)"
+}
+
+extract_percentage() {
+    awk -F: '/percentage/ {
+        gsub(/[%[:space:]]/, "", $2);
+        val=$2;
+        printf("%d\n", (val+0.5))
+        exit
+    }'
+}
+
+get_battery_remaining() {
+    get_battery_info | extract_percentage
+}
+
+get_battery_remaining

@@ -1,0 +1,19 @@
+# Node
+npm-debug.log
+
+# Mac
+.DS_Store
+
+# Windows
+Thumbs.db
+
+# JetBrains
+.idea/
+.iml
+
+# Visual Studio Code
+.vscode/
+
+# General
+log/
+*.log

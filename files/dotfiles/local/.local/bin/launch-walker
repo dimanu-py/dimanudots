@@ -1,0 +1,37 @@
+#!/bin/zsh
+
+is_elephant_running() {
+    pgrep -x elephant > /dev/null
+}
+
+start_elephant() {
+    setsid uswm-app -- elephant &
+}
+
+ensure_elephant_is_running() {
+    if ! is_elephant_running; then
+        start_elephant
+    fi
+}
+
+is_walker_service_running() {
+    pgrep -f "walker --gapplication-service" > /dev/null
+}
+
+start_walker_service() {
+    setsid uswm-app -- walker --gapplication-service &
+}
+
+ensure_walker_service_is_running() {
+    if ! is_walker_service_running; then
+        start_walker_service
+    fi
+}
+
+launch_walker() {
+    exec walker --width 644 --maxheight 300 --minheight 300 "$@"
+}
+
+ensure_elephant_is_running
+ensure_walker_service_is_running
+launch_walker "$@"

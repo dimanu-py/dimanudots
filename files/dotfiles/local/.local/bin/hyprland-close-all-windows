@@ -1,0 +1,20 @@
+#!/bin/bash
+
+get_all_windows_addresses() {
+    hyprctl clients -j | jq -r ".[].address"
+}
+
+close_window() {
+    xarg -I{} hyprctl dispatch closewindow address:{}
+}
+
+close_all_windows() {
+    get_all_windows_addresses | close_window
+}
+
+go_to_first_workspace() {
+    hyprctl dispatch workspace 1
+}
+
+close_all_windows
+go_to_first_workspace

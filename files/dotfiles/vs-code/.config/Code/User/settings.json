@@ -1,0 +1,79 @@
+{
+    // Font
+    "editor.fontFamily": "JetBrains Mono",
+    "editor.fontSize": 18,
+    "editor.fontLigatures": true,
+    "editor.rulers": [
+        140
+    ],
+    "editor.tabSize": 4,
+    "editor.wordWrap": "off",
+    "files.eol": "\n",
+    "editor.lineHeight": 1.9,
+    "editor.fontVariations": true,
+    "terminal.integrated.fontFamily": "MesloLGL Nerd Font",
+    "terminal.integrated.fontWeight": "normal",
+    // Autoconfirm
+    "explorer.confirmDelete": false,
+    "explorer.confirmDragAndDrop": false,
+    // Git
+    "explorer.excludeGitIgnore": false,
+    "search.useGlobalIgnoreFiles": false,
+    "search.useIgnoreFiles": false,
+    // Save
+    "files.autoSave": "onFocusChange",
+    // Actions
+    "editor.formatOnPaste": false,
+    "editor.formatOnSave": true,
+    "editor.suggestSelection": "first",
+    "editor.codeActionsOnSave": {
+        "source.addMissingImports": "explicit"
+    },
+    "[python]": {
+        "editor.formatOnSave": false,
+        "editor.codeActionsOnSave": [
+            "source.addMissingImports",
+            "source.fixAll.yapf"
+        ],
+    },
+    // Python
+    "python.analysis.inlayHints.functionReturnTypes": true,
+    "python.analysis.inlayHints.variableTypes": true,
+    "python.analysis.inlayHints.callArgumentNames": "all",
+    "python.analysis.autoImportCompletions": true,
+    "pylint.args": [
+        "--disable=C0115,C0116"
+    ],
+    //Style
+    "editor.matchBrackets": "never",
+    "editor.stickyScroll.enabled": true,
+    "editor.cursorBlinking": "expand",
+    "editor.cursorSmoothCaretAnimation": "on",
+    "editor.smoothScrolling": true,
+    "workbench.list.smoothScrolling": true,
+    "explorer.compactFolders": false, // For Python
+    "editor.renderWhitespace": "selection",
+    "workbench.list.horizontalScrolling": true,
+    "workbench.sideBar.location": "right",
+    "workbench.tree.indent": 20,
+    "editor.bracketPairColorization.enabled": true,
+    "workbench.iconTheme": "material-icon-theme",
+    "workbench.productIconTheme": "fluent-icons",
+    "workbench.colorTheme": "Tokyo Night",
+    // "editor.linkedEditing": true,
+    // Navigation
+    "breadcrumbs.symbolPath": "off",
+    "editor.dragAndDrop": false,
+    // Atlassian
+    "yaml.schemas": {
+        "file:///home/dmartinez/.vscode/extensions/atlassian.atlascode-3.0.10/resources/schemas/pipelines-schema.json": "bitbucket-pipelines.yml"
+    },
+    // Distractions
+    "focus.highlightRange": "block",
+    "editor.overviewRulerBorder": false,
+    "editor.scrollbar.vertical": "hidden",
+    "editor.hideCursorInOverviewRuler": true,
+    "editor.minimap.enabled": false,
+    "editor.guides.indentation": false,
+    "workbench.statusBar.visible": false,
+}

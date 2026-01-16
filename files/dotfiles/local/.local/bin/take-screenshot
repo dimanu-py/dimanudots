@@ -1,0 +1,22 @@
+#!/bin/bash
+
+is_flameshot_running() {
+    pgrep -x flameshot > /dev/null
+}
+
+start_flameshot() {
+    setsid uswm-app -- flameshot &
+}
+
+ensure_flameshot_is_running() {
+    if ! is_flameshot_running; then
+        start_flameshot
+    fi
+}
+
+take_snapshot() {
+    flameshot gui
+}
+
+ensure_flameshot_is_running
+take_snapshot

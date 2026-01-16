@@ -1,0 +1,307 @@
+{
+    "position": "top",
+    "mod": "dock",
+    "height": 40,
+    "exclusive": true,
+    "passthrough": false,
+    "gtk-layer-shell": true,
+    "modules-left": [
+        "custom/padd",
+        "custom/l_end",
+        "custom/launcher",
+        "custom/settings",
+        "hyprland/window",
+        "custom/r_end",
+        "custom/padd"
+    ],
+    "modules-center": [
+        "custom/padd",
+        "custom/l_end",
+        "hyprland/workspaces",
+        "custom/r_end",
+        "custom/padd"
+    ],
+    "modules-right": [
+        "custom/padd",
+        "custom/l_end",
+        "clock",
+        "tray",
+        "custom/weather",
+        "battery",
+        "custom/backlight",
+        "pulseaudio",
+        "bluetooth",
+        "network",
+        "group/group-tools",
+        "group/group-stats",
+        "group/group-power",
+        "custom/r_end",
+        "custom/padd"
+    ],
+    "custom/launcher": {
+        "format": "󰣇 ",
+        "tooltip": false,
+        "on-click": "sh -c '(sleep 0.1s; wofi --show drun)'"
+    },
+    "custom/settings": {
+        "format": " ",
+        "tooltip": false,
+        "on-click": "sh -c '(sleep 0.1s; kitty --class dotfiles-floating -e ~/.config/hypr/settings/settings.sh)'"
+    },
+    "hyprland/workspaces": {
+        "active-only": false,
+        "all-outputs": true,
+        "disable-scroll": false,
+        "on-scroll-up": "hyprctl dispatch workspace e-1",
+        "on-scroll-down": "hyprctl dispatch workspace e+1",
+        "on-click": "activate",
+        "format": "{icon}",
+        "format-icons": {
+            "1": "",
+            "2": "󰨞",
+            "3": "",
+            "4": "󰰒",
+            "5": "󰊢",
+            "6": "",
+            "7": "",
+            "8": "",
+            "9": "󰓇",
+            "10": "",
+            "urgent": "",
+            "active": "",
+            "default": ""
+        },
+        "persistent-workspaces": {
+            "*": 8
+        }
+    },
+    "hyprland/window": {
+        "format": "  {}",
+        "separate-outputs": true,
+        "rewrite": {
+            "vivek@ArchVivek:(.*)": "$1 ",
+            "(.*) — LibreWolf": "Librewolf 󰈹",
+            "(.*) - Visual Studio Code": "Code 󰨞",
+            "(.*) — Dolphin": "Dolphin 󰉋",
+            "(.*)Spotify": "Spotify 󰓇",
+            "(.*)Steam": "Steam 󰓓",
+            "(.*) - PyCharm": "PyCharm 󰜉"
+        }
+    },
+    "clock": {
+        "format": " {:%R 󰃭 %b %a %d}",
+        "tooltip-format": "<tt><big>{calendar}</big></tt>"
+    },
+    "tray": {
+        "spacing": 5
+    },
+    "custom/weather": {
+        "format": "{}°",
+        "tooltip": true,
+        "exec-if": "which wttrbar",
+        "exec": "~/.config/waybar/scripts/weather.sh",
+        "return-type": "json"
+    },
+    "battery": {
+        "states": {
+            "warning": 30,
+            "critical": 20
+        },
+        "format": "{icon} {capacity}%",
+        "format-charging": " {capacity}%",
+        "format-plugged": " {capacity}%",
+        "format-alt": "{time} {icon}",
+        "format-icons": [
+            "󰂎",
+            "󰁺",
+            "󰁻",
+            "󰁼",
+            "󰁽",
+            "󰁾",
+            "󰁿",
+            "󰂀",
+            "󰂁",
+            "󰂂",
+            "󰁹"
+        ]
+    },
+    "custom/backlight": {
+        "format": "{}",
+        "on-scroll-up": "~/.config/waybar/scripts/brightness.sh increase",
+        "on-scroll-down": "~/.config/waybar/scripts/brightness.sh decrease",
+        "return-type": "json",
+        "exec": "~/.config/waybar/scripts/brightness.sh",
+        "signal": 10
+    },
+    "pulseaudio": {
+        "format": "{icon} {volume}%",
+        "format-muted": "",
+        "format-icons": {
+            "headphone": " ",
+            "phone": " ",
+            "portable": " ",
+            "car": " ",
+            "default": [
+                " ",
+                " "
+            ]
+        },
+        "scroll-step": 1,
+        "on-click": "sh -c '(sleep 0.1s; pavucontrol)' & disown",
+        "ignored-sinks": [
+            "Easy Effects Sink"
+        ]
+    },
+    "bluetooth": {
+        "format-disabled": "󰂲",
+        "format-connected": "󰂱",
+        "tooltip-format": "{controller_alias}",
+        "tooltip-format-connected": "Host device: {controller_alias}\nConnected Device: {device_enumerate}, {device_battery_percentage}%",
+        "tooltip-format-enumerate-connected": "{device_alias}",
+        "on-click": "sh -c '(sleep 0.1s; blueberry)' & disown"
+    },
+    "network": {
+        //"interface": "wlp0s20f3", // (Optional) To force the use of this interface  
+        "format": "⚠  Disabled",
+        "format-wifi": " ",
+        "format-ethernet": "{ifname}: {ipaddr}/{cidr}",
+        "format-linked": "{ifname} (No IP)",
+        "format-disconnected": "⚠Disabled",
+        "format-alt": "{ifname}: {ipaddr}/{cidr}",
+        "family": "ipv4",
+        "tooltip-format-wifi": "  {ifname} @ {essid}\nIP: {ipaddr}\nStrength: {signalStrength}%\nFreq: {frequency}MHz\nUp: {bandwidthUpBits} Down: {bandwidthDownBits}",
+        "tooltip-format-ethernet": " {ifname}\nIP: {ipaddr}\n up: {bandwidthUpBits} down: {bandwidthDownBits}",
+        "on-click": "sh -c '(sleep 0.1s; kitty --class dotfile-floating -e bash ~/.config/waybar/scripts/network.sh)' & disown"
+    },
+    "group/group-tools": {
+        "orientation": "horizontal",
+        "drawer": {
+            "transition-duration": 500,
+            "transition-left-to-right": false
+        },
+        "modules": [
+            "custom/tools",
+            "custom/colorpicker",
+            "custom/clipboard"
+        ]
+    },
+    "custom/tools": {
+        "format": " ",
+        "tooltip": false
+    },
+    "custom/clipboard": {
+        "format": "󰨸 ",
+        "tooltip": false,
+        "on-click": "sh -c '(cliphist list | wofi --dmenu | cliphist decode | wl-copy)' & disown"
+    },
+    "custom/colorpicker": {
+        "format": "󰈋 ",
+        "tooltip": false,
+        "on-click": "sleep 0.1s; hyprpicker -a -f hex; notify-send '󰈋 Picked hex color and coppied to clipboard'",
+        "on-click-right": "sleep 0.1s; hyprpicker -a -f rgb; notify-send '󰈋 Picked rgb color and coppied to clipboard'"
+    },
+    "group/group-stats": {
+        "orientation": "horizontal",
+        "drawer": {
+            "transition-duration": 500,
+            "children-class": "not-power",
+            "transition-left-to-right": false
+        },
+        "modules": [
+            "custom/info",
+            "cpu",
+            "memory",
+            "disk"
+        ]
+    },
+    "custom/info": {
+        "format": " ",
+        "tooltip": false
+    },
+    "cpu": {
+        "format": "C {usage}%"
+    },
+    "memory": {
+        "format": "M {}%"
+    },
+    "disk": {
+        "interval": 60,
+        "format": "D {percentage_used}%"
+    },
+    "group/group-power": {
+        "orientation": "horizontal",
+        "drawer": {
+            "transition-duration": 500,
+            "children-class": "not-power",
+            "transition-left-to-right": false
+        },
+        "modules": [
+            "custom/power",
+            "custom/lock",
+            "custom/suspend",
+            "custom/poweroff",
+            "custom/reboot"
+        ]
+    },
+    "custom/lock": {
+        "format": "󰍁",
+        "tooltip": false,
+        "on-click": "hyprlock"
+    },
+    "custom/suspend": {
+        "format": "󰏦",
+        "tooltip": false,
+        "on-click": "suspend"
+    },
+    "custom/poweroff": {
+        "format": "󰐥",
+        "tooltip": false,
+        "on-click": "poweroff"
+    },
+    "custom/reboot": {
+        "format": "󰜉",
+        "tooltip": false,
+        "on-click": "reboot"
+    },
+    "custom/power": {
+        "format": "",
+        "tooltip": false,
+        "on-click": "wlogout -b 2"
+    },
+    // modules for padding //
+    "custom/l_end": {
+        "format": " ",
+        "interval": "once",
+        "tooltip": false
+    },
+    "custom/r_end": {
+        "format": " ",
+        "interval": "once",
+        "tooltip": false
+    },
+    "custom/sl_end": {
+        "format": " ",
+        "interval": "once",
+        "tooltip": false
+    },
+    "custom/sr_end": {
+        "format": " ",
+        "interval": "once",
+        "tooltip": false
+    },
+    "custom/rl_end": {
+        // "format": " ",
+        "interval": "once",
+        "tooltip": false
+    },
+    "custom/rr_end": {
+        "format": " ",
+        "interval": "once",
+        "tooltip": false
+    },
+    "custom/padd": {
+        "format": "  ",
+        "interval": "once",
+        "tooltip": false
+    }
+}

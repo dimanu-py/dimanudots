@@ -1,0 +1,25 @@
+#!/bin/bash
+
+find_notification_id_by_summary() {
+    local summary_pattern="$1"
+    swaync-client --get-json | jq -r --arg pattern "$summary_pattern" \
+        '.[] | select(.summary | test($pattern)) | .id' | head -n1
+}
+
+dismiss_notification() {
+    local notification_id="$1"
+    swaync-client --close-notification "$notification_id"
+}
+
+search_and_dismiss_notification() {
+    local summary_pattern="$1"
+    local notification_id
+
+    notification_id=$(find_notification_id_by_summary "$summary_pattern")
+
+    if [[ -n $notification_id ]]; then
+        dismiss_notification "$notification_id"
+    fi
+}
+
+search_and_dismiss_notification

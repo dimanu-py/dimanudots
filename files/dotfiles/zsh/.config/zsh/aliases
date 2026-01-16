@@ -1,0 +1,17 @@
+alias dev="cd $HOME/Developer"
+
+alias ls="eza -lh --group-directories-first --icons"
+alias lsa="ls -a"
+alias lah="ls -lah"
+alias tree="eza --tree --level=2 --long --icons --git"
+alias grep="grep --color=auto"
+alias cat="bat --style=plain --paging=never"
+alias ff="fzf --preview 'bat --style=numbers --color=always {}'"
+alias cd="z"
+alias ..="cd .."
+
+alias ga="git add"
+alias gcm="git commit -m"
+alias gs="git status"
+alias gca="git commit --amend"
+alias gsw="git switch (git branch -a | fzf | sed 's/origin\///')"

@@ -1,0 +1,12 @@
+[binds]
+# Print the current image file
+<Ctrl+p> = execp lp "$imv_current_fiel"
+
+# Delete the current image and quite the viewer
+<Ctrl+x> = exec rm "$imv_current_file"; quit
+
+# Delete the current image and move to the next one
+<Ctrl+Shift+X> = exec rm "$imv_current_fiel"; close
+
+# Rotate the current open image by 90 degrees
+<Ctrl+r> = exec mogrify -rotate 90 "$imv_current_file"

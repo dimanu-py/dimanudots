@@ -1,0 +1,4 @@
+#!/bin/bash
+
+rfkill unlock bluetooth
+exec launch-or-focus-tui bluetui
