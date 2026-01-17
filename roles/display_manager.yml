@@ -1,14 +1,3 @@
-- name: Update package cache
-  pacman:
-    update_cache: yes
-  tags: display, prep
-
-- name: Install SDDM display manager
-  pacman:
-    name: sddm
-    state: present
-  tags: display, sddm, core
-
 - name: Create SDDM configuration directory
   file:
     path: /etc/sddm.conf.d

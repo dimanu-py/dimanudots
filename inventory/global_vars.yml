@@ -1,5 +1,0 @@
----
-# Global variables for all hosts
-# These variables are used across all playbooks and roles
-user: "{{ lookup('env', 'USER') }}"
-home: "{{ lookup('env', 'HOME') }}"

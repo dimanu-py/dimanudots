@@ -1,30 +1,13 @@
-- name: Install AUR theme packages
-  loop: "{{ theme_packages | selectattr('aur', 'equalto', 'true') | map(attribute='name') | list }}"
-  command: yay -S --noconfirm --needed {{ item.name }}
-  become: true
-  become_user: "{{ user }}"
-  register: aur_theme_install
-  failed_when: false
-  loop_control:
-    label: "{{ item.name }}"
-  tags: display, themes, gtk, aur
-
-- name: Install theme packages from repos
-  pacman:
-    name: "{{ theme_packages | selectattr('aur', 'equalto', 'false') | map(attribute='name') | list }}"
-    state: present
-  tags: display, themes, gtk
-
 - name: Create theme environment configuration
   lineinfile:
     path: /etc/environment
-    regexp: '^{{ item.key }}='
-    line: '{{ item.key }}={{ item.value }}'
+    regexp: "^{{ item.key }}="
+    line: "{{ item.key }}={{ item.value }}"
     create: yes
     backup: yes
   loop:
-    - { key: 'GTK_THEME', value: '{{ gtk_theme }}' }
-    - { key: 'QT_QPA_PLATFORMTHEME', value: 'gtk2' }
+    - { key: "GTK_THEME", value: "{{ gtk_theme }}" }
+    - { key: "QT_QPA_PLATFORMTHEME", value: "gtk2" }
   tags: display, themes, environment
 
 - name: Ensure user config directories exist
@@ -33,7 +16,7 @@
     state: directory
     owner: "{{ user }}"
     group: "{{ user }}"
-    mode: '0755'
+    mode: "0755"
   loop: "{{ user_config_dirs }}"
   tags: display, themes, user
 
@@ -43,7 +26,7 @@
     create: yes
     owner: "{{ user }}"
     group: "{{ user }}"
-    mode: '0644'
+    mode: "0644"
     block: |
       [Settings]
         gtk-theme-name={{ gtk_theme }}
@@ -58,6 +41,6 @@
     dest: "/home/{{ user }}/.config/gtk-4.0/settings.ini"
     owner: "{{ user }}"
     group: "{{ user }}"
-    mode: '0644'
+    mode: "0644"
     remote_src: yes
   tags: display, themes, gtk, user

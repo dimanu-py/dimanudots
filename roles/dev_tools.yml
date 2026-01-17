@@ -1,0 +1,72 @@
+- name: Install Python development tools
+  command: "curl -LsSf https://astral.sh/uv/install.sh | sh"
+  register: uv_install
+  failed_when: false
+  changed_when: "'is already installed' not in uv_install.stdout"
+  tags: development, python, uv
+
+- name: Install opencode AI agent tool
+  command: "curl -fsSL https://opencode.ai/install | bash"
+  register: opencode_install
+  failed_when: false
+  tags: development, ai
+
+- name: Ensure docker dir exists
+  file:
+    path: /etc/docker
+    state: directory
+    mode: "0755"
+
+- name: Limit docker logs size
+  copy:
+    dest: /etc/docker/daemon.json
+    content: |
+      {
+        "log_driver": "json-files",
+        "log-opts": {
+          " max-size": "10m",
+          "max-file": "5"
+        }
+      }
+    owner: root
+    group: root
+    mode: "0644"
+
+- name: Start docker daemon
+  become: true
+  systemd:
+    name: "{{ item }}"
+    state: started
+    enabled: yes
+  loop:
+    - docker
+    - containerd
+
+- name: Ensure docker group exists
+  become: true
+  group:
+    name: docker
+    state: present
+
+- name: Add user to docker group
+  become: true
+  user:
+    name: "{{ user }}"
+    groups: docker
+    append: yes
+
+- name: Setup git info
+  command: |
+    git config --global user.name "dimanu-py"
+    git config --global user.email "dimanu.py@gmail.com"
+
+- name: Git configuration files
+  become: false
+  file:
+    src: "{{ home }}/.doftiles/gitconfig/{{ item }}"
+    dest: "{{ home }}/{{ item }}"
+    state: link
+    force: yes
+  loop:
+    - .gitconfig
+    - .gitignore

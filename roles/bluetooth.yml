@@ -1,0 +1,23 @@
+- name: Enable and start Bluetooth service
+  systemd:
+    name: bluetooth
+    state: started
+    enabled: yes
+    daemon_reload: yes
+  tags: hardware, bluetooth, service
+
+- name: Configure Bluetooth auto-power-on
+  lineinfile:
+    path: /etc/bluetooth/main.conf
+    regexp: "^#AutoEnable="
+    line: "AutoEnable=true"
+    backup: yes
+    create: yes
+  tags: hardware, bluetooth, config
+
+- name: Restart Bluetooth service to apply configuration
+  systemd:
+    name: bluetooth
+    state: restarted
+    daemon_reload: yes
+  tags: hardware, bluetooth, service

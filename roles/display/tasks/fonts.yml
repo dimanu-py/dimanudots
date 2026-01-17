@@ -1,5 +1,0 @@
-- name: Install base fonts
-  pacman:
-    name: "{{ font_packages }}"
-    state: present
-  tags: display, fonts
