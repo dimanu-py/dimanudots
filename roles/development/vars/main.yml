@@ -21,7 +21,7 @@ terminal:
     reason: "Terminal multiplexer for multiple sessions"
 
 editors:
-  - name: neovim
+  - name: nvim
     category: editor
     aur: false
     reason: "Modern modal text editor with LSP support"

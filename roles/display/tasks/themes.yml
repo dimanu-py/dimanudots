@@ -1,5 +1,5 @@
 - name: Install AUR theme packages
-  loop: "{{ aur_theme_packages | selectattr('aur', 'equalto', 'true') | map(attribute='name') | list }}"
+  loop: "{{ theme_packages | selectattr('aur', 'equalto', 'true') | map(attribute='name') | list }}"
   command: yay -S --noconfirm --needed {{ item.name }}
   become: true
   become_user: "{{ user }}"

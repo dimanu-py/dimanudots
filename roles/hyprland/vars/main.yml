@@ -7,7 +7,7 @@ hyprland_packages:
     category: compositor
     aur: false
     reason: "Main Wayland compositor and window manager"
-  - name: hyplrand-guiutils
+  - name: hyprland-guiutils
     category: utilities
     aur: true
     reason: "GUI utilities for screen management and effects"
