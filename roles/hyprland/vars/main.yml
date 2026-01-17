@@ -9,7 +9,7 @@ hyprland_packages:
     reason: "Main Wayland compositor and window manager"
   - name: hyplrand-guiutils
     category: utilities
-    aur: false
+    aur: true
     reason: "GUI utilities for screen management and effects"
   - name: hypridle
     category: session
@@ -45,7 +45,7 @@ hyprland_packages:
     reason: "Qt6 Wayland compatibility layer"
   - name: xdg-terminal-exec
     category: utilities
-    aur: false
+    aur: true
     reason: "Terminal execution utility for app launchers"
   - name: swayosd
     category: utilities
