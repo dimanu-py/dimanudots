@@ -1,0 +1,300 @@
+# ============================================================================
+# DIMANUDOTS - Complete package list
+# ============================================================================
+
+# ============================================================================
+# BOOTSTRAP (Essential packages for initial setup)
+# ============================================================================
+
+base-devel                  # Base development tools for building packages (gcc, make, etc.)
+git                         # Distributed version control system
+wget                        # File download utility from the web
+curl                        # Data transfer tool with multi-protocol support
+python                      # Programming language, Ansible dependency
+ansible                     # Configuration management and automation tool
+go                          # Go programming language, required to build yay (AUR helper)
+openssh                     # Secure shell protocol for remote access and file transfer
+
+# ============================================================================
+# BASE (Base system and utilities)
+# ============================================================================
+
+btop                        # Advanced system monitor with TUI interface (htop alternative)
+fastfetch                   # Fast system information display tool
+nautilus                    # GNOME graphical file manager
+sushi                       # Quick file previewer for Nautilus
+ncdu                        # Disk usage analyzer with NCurses interface
+tree                        # Directory tree visualization tool
+zip                         # File compression utility
+unzip                       # File extraction utility
+stow                        # Symlink farm manager for dotfiles management
+
+# ============================================================================
+# HARDWARE - GPU (Graphics drivers)
+# ============================================================================
+
+# -- NVIDIA --
+nvidia-dkms                 # NVIDIA proprietary drivers with DKMS support
+nvidia-open-dkms            # NVIDIA open-source drivers for better compatibility
+nvidia-utils                # NVIDIA userspace utilities
+lib32-nvidia-utils          # NVIDIA 32-bit libraries for compatibility
+libva-nvidia-driver         # NVIDIA VA-API driver for video acceleration
+
+# -- AMD --
+xf86-video-amdgpu           # Xorg driver for AMD GPUs
+mesa                        # OpenGL implementation and 3D graphics library
+amdgpu                      # AMD GPU support with integrated driver
+lib32-mesa                  # 32-bit Mesa libraries
+vulkan-radeon               # Vulkan support for AMD GPUs
+
+# -- Intel --
+xf86-video-intel            # Xorg driver for Intel integrated GPUs
+vulkan-intel                # Vulkan support for Intel GPUs
+intel-media-driver          # Intel multimedia acceleration driver
+
+# -- Universal --
+dkms                        # Dynamic Kernel Module Support for kernel modules
+hwinfo                      # Hardware information tool
+
+# ============================================================================
+# HARDWARE - Audio
+# ============================================================================
+
+pipewire                    # Modern audio server (PulseAudio replacement)
+pipewire-pulse              # PulseAudio compatibility layer
+pipewire-alsa               # ALSA support through Pipewire
+pipewire-jack               # JACK support for professional audio
+wireplumber                 # Session manager for Pipewire
+helvum                      # Graphical interface for Pipewire audio routing
+pamixer                     # Command-line audio mixer
+pavucontrol                 # Audio control panel with GUI
+wiremix                     # Audio mixing and routing tool
+
+# ============================================================================
+# HARDWARE - Bluetooth
+# ============================================================================
+
+bluez                       # Bluetooth protocol stack
+bluez-utils                 # Bluetooth management utilities (bluetoothctl)
+bluetui                     # TUI interface for Bluetooth management
+
+# ============================================================================
+# HARDWARE - Network
+# ============================================================================
+
+networkmanager              # Network connection management daemon
+network-manager-applet      # System tray applet for NetworkManager
+nm-connection-editor        # Graphical network connection editor
+whois                       # Domain information lookup tool
+impala                      # TUI interface for WiFi management
+power-profiles-daemon       # Power management profiles (power saving, balanced, performance)
+
+# ============================================================================
+# DISPLAY (Display manager and themes)
+# ============================================================================
+
+# -- Fonts --
+ttf-font-awesome            # Font Awesome vector icons
+ttf-cascadia-mono-nerd      # Cascadia Mono font with Nerd Fonts icons
+noto-fonts                  # Google Noto font family
+noto-fonts-emoji            # Noto emoji fonts
+ttf-jetbrains-mono-nerd     # JetBrains Mono font with Nerd Fonts icons
+noto-fonts-cjk              # Noto fonts for Chinese, Japanese and Korean
+noto-fonts-extra            # Additional Noto fonts
+woff2-font-awesome          # Font Awesome in WOFF2 format
+
+# -- Boot --
+plymouth                    # Boot splash screen with animations
+
+# -- Themes -- (AUR)
+catppuccin-gtk-theme-mocha  # [AUR] Catppuccin Mocha GTK theme
+bibata-cursor-theme         # [AUR] Bibata cursor theme
+papirus-icon-theme          # Papirus icon theme
+
+# ============================================================================
+# HYPRLAND (Wayland compositor and components)
+# ============================================================================
+
+# -- Core --
+hyprland                    # Wayland compositor and window manager
+hyprland-guiutils           # [AUR] GUI utilities for Hyprland
+hypridle                    # Idle management daemon
+hyprlock                    # Screen locking utility with blur effects
+hyprpicker                  # Color picker tool for theming
+hyprsunset                  # Color temperature adjustment utility
+
+# -- Integration --
+xdg-desktop-portal-hyprland # Desktop portal for Hyprland
+xdg-desktop-portal-gtk      # GTK desktop portal support
+qt5-wayland                 # Qt5 Wayland compatibility layer
+qt6-wayland                 # Qt6 Wayland compatibility layer
+
+# -- Utilities --
+xdg-terminal-exec           # [AUR] Terminal execution utility
+swayosd                     # [AUR] OSD (On-Screen Display) for Sway/Hyprland
+
+# -- Desktop components --
+waybar                      # Highly customizable status bar for Wayland
+swaync                      # Lightweight notification daemon for Wayland
+swaybg                      # Static wallpaper management tool
+wl-clipboard                # Wayland clipboard management utility
+wl-clip-persist             # Persistent clipboard history for Wayland
+uwsm                        # Wayland session manager
+
+# -- Walker application launcher -- (AUR)
+walker                      # [AUR] Wayland-native application launcher
+walker-bin-debug            # [AUR] Debug version of Walker
+elephant                    # [AUR] Backend for app launcher
+elephant-calc               # [AUR] Calculator plugin for Walker
+elephant-clipboard          # [AUR] Clipboard plugin for Walker
+elephant-bluetooth          # [AUR] Bluetooth plugin for Walker
+elephant-desktopapplications # [AUR] Desktop applications plugin
+elephant-files              # [AUR] File management plugin
+elephant-menus              # [AUR] Application menu plugin
+elephant-providerlist       # [AUR] Provider listing plugin
+elephant-runner             # [AUR] Command runner plugin
+elephant-unicode            # [AUR] Unicode symbol picker plugin
+elephant-websearch          # [AUR] Web search plugin
+elephant-todo               # [AUR] Task management plugin
+elephant-symbols            # [AUR] Symbol picker plugin
+
+# ============================================================================
+# DEVELOPMENT - Terminal and Shell
+# ============================================================================
+
+ghostty                     # [AUR] Modern terminal emulator with GPU acceleration
+zsh                         # Powerful shell with advanced features
+starship                    # [AUR] Customizable shell prompt with rich formatting
+tmux                        # Terminal multiplexer for multiple sessions
+
+# ============================================================================
+# DEVELOPMENT - Editors
+# ============================================================================
+
+nvim                        # Modern modal text editor with LSP support (Neovim)
+nano                        # Simple terminal-based text editor
+visual-studio-code-bin      # [AUR] Popular IDE with extensive plugin ecosystem
+jetbrains-toolbox           # [AUR] JetBrains IDE suite management tool
+
+# ============================================================================
+# DEVELOPMENT - Git tools
+# ============================================================================
+
+lazygit                     # [AUR] TUI interface for Git
+diff-so-fancy               # [AUR] Enhanced diff display with colors
+git-delta                   # Improved diff viewer with syntax highlighting
+
+# ============================================================================
+# DEVELOPMENT - Containers
+# ============================================================================
+
+docker                      # Container platform for app deployment
+docker-compose              # Multi-container orchestration tool
+docker-buildx               # Extended Docker build capabilities
+lazydocker                  # [AUR] TUI interface for Docker management
+
+# ============================================================================
+# DEVELOPMENT - Development tools
+# ============================================================================
+
+dbeaver                     # [AUR] Universal database GUI client
+bruno-bin                   # [AUR] Modern API testing and documentation tool
+mise                        # [AUR] Development environment manager (language versions)
+github-cli                  # CLI application for GitHub management
+
+# ============================================================================
+# DEVELOPMENT - Terminal utilities
+# ============================================================================
+
+fzf                         # Command-line fuzzy finder
+fd                          # Fast find alternative with better defaults
+ripgrep                     # Ultra-fast text search tool (rg)
+zoxide                      # [AUR] Smart directory navigation (improved z)
+bat                         # Enhanced cat with syntax highlighting
+less                        # Terminal pager for viewing large files
+jq                          # JSON processor and formatter
+tldr                        # [AUR] Simplified man pages with practical examples
+man                         # System manual pages
+gum                         # [AUR] Interactive CLI tools for scripts
+libyaml                     # YAML parsing library
+inxi                        # System information tool
+jless                       # [AUR] Enhanced JSON viewer and pager
+plac                        # [AUR] DNS lookup and network troubleshooting tool
+usage                       # [AUR] Disk usage analysis tool
+asciinema                   # Terminal session recorder for sharing and playback
+croc                        # Simple and secure file transfer tool between computers
+ttyd                        # Share terminal over the web browser
+
+# ============================================================================
+# APPLICATIONS - System
+# ============================================================================
+
+gnome-keyring               # GNOME keyring for password management
+libsecret                   # Secret management library
+polkit-gnome                # PolicyKit integration for privilege escalation
+1password-beta              # [AUR] Password manager with CLI integration
+1password-cli               # [AUR] Command-line interface for 1Password
+localsend-bin               # [AUR] Local file transfer tool
+
+# ============================================================================
+# APPLICATIONS - Office
+# ============================================================================
+
+evince                      # Document viewer with PDF support
+xournalpp                   # Note-taking and handwriting application
+udiskie                     # Removable disk management utility
+ntfs-3g                     # NTFS filesystem support
+gnome-disk-utility          # Disk analyzer and manager
+typora                      # [AUR] Modern markdown editor with live preview
+libreoffice                 # Complete office productivity suite
+cups                        # Printing system and CUPS server
+cups-pdf                    # PDF printing filters for CUPS
+cups-filters                # Additional CUPS printing filters
+system-config-printer       # Printer configuration utility
+jrnl                        # Command-line journal application for daily notes
+
+# ============================================================================
+# APPLICATIONS - Browser
+# ============================================================================
+
+brave-bin                   # [AUR] Privacy-focused web browser with ad blocking
+
+# ============================================================================
+# APPLICATIONS - Multimedia
+# ============================================================================
+
+playerctl                   # Media player controller
+brightnessctl               # Display brightness control
+spotify                     # [AUR] Music streaming service and application
+imv                         # Minimal video player with Wayland support
+obs-studio                  # [AUR] Screen recording and streaming software
+wf-recorder                 # [AUR] Wayland-native screen recorder
+wl-screenrec                # [AUR] Simple Wayland screen recorder
+gpu-screen-recorder         # [AUR] GPU-accelerated screen recorder
+kdenlive                    # Professional video editing suite
+pinta                       # Simple image editing application
+newsboat                    # RSS/Atom feed reader for the terminal
+
+# ============================================================================
+# APPLICATIONS - Fonts and input
+# ============================================================================
+
+fcitx-5                     # Input method framework
+fcitx-qt5                   # Input method integration for Qt5
+fcitx-gtk                   # Input method integration for GTK
+
+# ============================================================================
+# APPLICATIONS - Screenshots
+# ============================================================================
+
+imagemagick                 # Image manipulation and conversion suite
+flameshot                   # [AUR] Screenshot tool with annotations
+kvantum                     # [AUR] SVG theme engine for Qt
+kvantum-qt5                 # [AUR] Qt5 version of Kvantum
+
+# ============================================================================
+# APPLICATIONS - Filesystem
+# ============================================================================
+
+gvfs-mtp                    # MTP protocol support for Android devices
+gvfs-gphoto2                # Digital camera support via PTP protocol
