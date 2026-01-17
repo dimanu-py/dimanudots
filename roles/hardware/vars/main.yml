@@ -50,7 +50,7 @@ gpu_packages:
     reason: "Vulkan support for AMD GPUs"
     vendor: amd
     aur: false
-  
+
   # Intel
   - name: xf86-video-intel
     vendor: intel
@@ -70,7 +70,7 @@ gpu_packages:
     reason: "Intel GPU media acceleration and codecs"
     vendor: intel
     aur: false
-  
+
   # Universal
   - name: dkms
     category: gpu
@@ -103,9 +103,6 @@ audio_packages:
   - name: wireplumber
     category: audio
     reason: "Session manager for Pipewire media session"
-    aur: false
-  - name: pulseaudio-utils
-    category: tools
     aur: false
   - name: helvum
     category: audio
