@@ -4,6 +4,7 @@ set -euo pipefail
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 source "$SCRIPT_DIR/lib/logging.sh"
+source "$SCRIPT_DIR/../common/create-directory-with-permissions.sh"
 
 YAY_BUILD_DIR="/tmp/yay"
 YAY_GIT_REPO_URL="https://aur.archlinux.org/yay.git"
@@ -18,14 +19,6 @@ clean_up_existing_build_directory() {
     if [ -d "$build_dir" ]; then
         rm -rf "$build_dir"
     fi
-}
-
-create_directory_with_permissions() {
-    local dir_name="$1"
-    local permissions="$2"
-
-    mkdir -p "$dir_name"
-    chmod "$permissions" "$dir_name"
 }
 
 set_build_dir_owner_to_current_user() {

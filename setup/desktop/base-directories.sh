@@ -2,13 +2,8 @@
 
 set -euo pipefail
 
-create_directory_with_permissions() {
-    local dir_name="$1"
-    local permissions="$2"
-
-    mkdir -p "$dir_name"
-    chmod "$permissions" "$dir_name"
-}
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+source "$SCRIPT_DIR/../common/create-directory-with-permissions.sh"
 
 create_base_directories() {
     create_directory_with_permissions "$HOME/Documents" 0755
