@@ -1,13 +1,8 @@
 #!/bin/bash
 
-# -e: Exit immediately if any command exits with a non-zero status
-# -u: Exit if an undefined variable is referenced
-# -o pipefail: Exit if any command in a pipeline fails (not just the last one)
-set -euo pipefail
-
 ensure_pacman_and_yay_are_installed() {
-  verify-command-exists pacman
-  verify-command-exists yay
+  verify_command_exists pacman
+  verify_command_exists yay
 }
 
 has_packages() {
@@ -15,28 +10,21 @@ has_packages() {
     [[ ${#pkgs[@]} -gt 0 && -n "${pkgs[*]}" ]]
 }
 
-run_installer() {
-    local cmd="$1"
-    shift
-    $cmd ${NEEDED_FLAG:+$NEEDED_FLAG} -- "$@"
-    echo
-}
-
 print_section_header() {
     local title="$1"
     echo "== $title =="
 }
 
-pacman_install() {
+install_with_pacman() {
     has_packages "$@" || return 0
     print_section_header "Installing with pacman"
-    run_installer "sudo pacman -Syu" "$@"
+    pacman_install "$@"
 }
 
-yay_install() {
+install_with_yay() {
     has_packages "$@" || return 0
     print_section_header "Installing with yay (AUR)"
-    run_installer "yay -S" "$@"
+    yay_install "$@"
 }
 
 warn_unknown_and_exit() {
@@ -48,12 +36,12 @@ warn_unknown_and_exit() {
 }
 
 install_packages() {
-    args-parser "$@"
+    parse_args "$@"
     ensure_pacman_and_yay_are_installed
-    mapfile -t all_packages < <(collect-packages "${CLI_PACKAGES[@]}")
+    mapfile -t all_packages < <(collect_packages "${CLI_PACKAGES[@]}")
 
     local plan
-    plan="$(classify plan "${all_packages[@]}")"
+    plan="$(plan_installation "${all_packages[@]}")"
 
     IFS=$'\0' read -r installed_block pacman_block aur_block unknown_block <<<"$plan" || true
 
@@ -62,11 +50,9 @@ install_packages() {
     mapfile -t aur_yay < <(printf '%s\n' "$aur_block" | sed '/^$/d')
     mapfile -t unknown_packages < <(printf '%s\n' "$unknown_block" | sed '/^$/d')
 
-    classify print "${already_installed[*]}" "${pacman[*]}" "${aur_yay[*]}" "${unknown_packages[*]}"
+    print_plan "${already_installed[*]}" "${pacman[*]}" "${aur_yay[*]}" "${unknown_packages[*]}"
 
-    pacman_install "${pacman[@]}"
-    yay_install "${aur_yay[@]}"
+    install_with_pacman "${pacman[@]}"
+    install_with_yay "${aur_yay[@]}"
     warn_unknown_and_exit "${unknown_packages[@]}"
 }
-
-install_packages "$@"

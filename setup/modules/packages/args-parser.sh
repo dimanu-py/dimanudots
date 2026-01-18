@@ -62,5 +62,3 @@ parse_args() {
         esac
     done
 }
-
-parse_args "$@"

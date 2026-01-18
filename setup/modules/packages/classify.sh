@@ -1,17 +1,5 @@
 #!/bin/bash
 
-is_installed() {
-    pacman -Qq "$1" >/dev/null 2>&1
-}
-
-is_in_official_repos() {
-    pacman -Si "$1" >/dev/null 2>&1
-}
-
-is_in_aur() {
-    yay -a -Ss --color=never -- "$1" 2>/dev/null | grep -qE "aur/${1}\b"
-}
-
 plan_installation() {
     local -a installed=() pacman_packages=() aur_packages=() unknown=()
     local package
@@ -56,9 +44,3 @@ print_plan() {
     fi
     echo
 }
-
-case "$1" in
-  plan) print_plan "${@:2}" ;;
-  print) print_plan "${@:2}" ;;
-  *) exit-with-error "Unknown action: $1" ;;
-esac
