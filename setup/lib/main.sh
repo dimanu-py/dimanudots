@@ -1,3 +1,5 @@
-source "$DIMANUDOTS_SCRIPTS/lib/error.sh"
+source "$DIMANUDOTS_SCRIPTS/lib/aur.sh"
 source "$DIMANUDOTS_SCRIPTS/lib/command.sh"
+source "$DIMANUDOTS_SCRIPTS/lib/error.sh"
 source "$DIMANUDOTS_SCRIPTS/lib/file_system.sh"
+source "$DIMANUDOTS_SCRIPTS/lib/pacman.sh"
