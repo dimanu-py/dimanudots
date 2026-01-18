@@ -66,7 +66,7 @@ verify_yay_installation() {
 setup_yay() {
     if yay_is_installed; then
         echo "yay is already installed"
-        exit 0
+        return 0
     fi
     
     echo "yay not found, installing yay..."
