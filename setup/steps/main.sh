@@ -1,1 +1,1 @@
-source $DIMANUDOTS_SCRIPTS/modules/10-packages.sh
+source $DIMANUDOTS_SCRIPTS/steps/10-packages.sh
