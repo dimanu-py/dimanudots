@@ -11,3 +11,9 @@ export DIMANUDOTS_SCRIPTS="$DIMANUDOTS_PATH/setup"
 source "$DIMANUDOTS_SCRIPTS/lib/main.sh"
 source "$DIMANUDOTS_SCRIPTS/modules/main.sh"
 source "$DIMANUDOTS_SCRIPTS/steps/main.sh"
+
+main() {
+    step_10_packages
+}
+
+main
