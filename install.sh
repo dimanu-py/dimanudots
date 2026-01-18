@@ -1,5 +1,8 @@
 #!/bin/bash
 
+# -e: Exit immediately if any command exits with a non-zero status
+# -u: Exit if an undefined variable is referenced
+# -o pipefail: Exit if any command in a pipeline fails (not just the last one)
 set -euo pipefail
 
 export DIMANUDOTS_PATH="$HOME/.local/share/dimanudots"
