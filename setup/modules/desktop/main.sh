@@ -1,0 +1,1 @@
+source $DIMANUDOTS_SCRIPTS/modules/desktop/base-directories.sh
