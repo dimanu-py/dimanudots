@@ -2,6 +2,14 @@
 
 A comprehensive Ansible project for fully automating the installation and configuration of an Arch Linux desktop environment with Hyprland.
 
+# Installation
+
+Run the following command to download the main installation script and begin the configuration:
+
+```bash
+curl -fsSL https://raw.githubusercontent.com/dimanu-py/dimanudots/main/boot.sh | bash
+```
+
 ## Features
 
 - 🚀 **Idempotent Automation** - Safe to re-run without breaking
@@ -57,16 +65,16 @@ ansible-playbook playbooks/site.yml --tags display
 
 ### Tags Overview
 
-| Tag | Component | Purpose |
-|-----|-----------|---------|
-| `bootstrap` | Foundation | Yay, base tools, Ansible collections |
-| `base` | System | Essential packages, user setup |
-| `hardware` | Hardware | GPU, audio, bluetooth, network |
-| `display` | Display | SDDM, fonts, themes |
-| `hyprland` | Desktop | Hyprland WM and desktop components |
-| `development` | Dev Tools | Terminal, editors, development stack |
-| `applications` | Apps | User applications and utilities |
-| `dotfiles` | Config | Personal dotfiles and finalization |
+| Tag            | Component  | Purpose                              |
+| -------------- | ---------- | ------------------------------------ |
+| `bootstrap`    | Foundation | Yay, base tools, Ansible collections |
+| `base`         | System     | Essential packages, user setup       |
+| `hardware`     | Hardware   | GPU, audio, bluetooth, network       |
+| `display`      | Display    | SDDM, fonts, themes                  |
+| `hyprland`     | Desktop    | Hyprland WM and desktop components   |
+| `development`  | Dev Tools  | Terminal, editors, development stack |
+| `applications` | Apps       | User applications and utilities      |
+| `dotfiles`     | Config     | Personal dotfiles and finalization   |
 
 ### Common Usage Patterns
 
