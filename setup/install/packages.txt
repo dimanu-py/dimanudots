@@ -3,20 +3,7 @@
 # ============================================================================
 
 # ============================================================================
-# BOOTSTRAP (Essential packages for initial setup)
-# ============================================================================
-
-base-devel                  # Base development tools for building packages (gcc, make, etc.)
-git                         # Distributed version control system
-wget                        # File download utility from the web
-curl                        # Data transfer tool with multi-protocol support
-python                      # Programming language, Ansible dependency
-ansible                     # Configuration management and automation tool
-go                          # Go programming language, required to build yay (AUR helper)
-openssh                     # Secure shell protocol for remote access and file transfer
-
-# ============================================================================
-# BASE (Base system and utilities)
+# SYSTEM (Base system and utilities)
 # ============================================================================
 
 btop                        # Advanced system monitor with TUI interface (htop alternative)

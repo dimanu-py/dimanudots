@@ -1,0 +1,15 @@
+# ============================================================================
+# DIMANUDOTS - Basic package list
+# ============================================================================
+
+# ============================================================================
+# BOOTSTRAP (Essential packages for initial setup)
+# ============================================================================
+
+base-devel                  # Base development tools for building packages (gcc, make, etc.)
+git                         # Distributed version control system
+wget                        # File download utility from the web
+curl                        # Data transfer tool with multi-protocol support
+python                      # Programming language, Ansible dependency
+go                          # Go programming language, required to build yay (AUR helper)
+openssh                     # Secure shell protocol for remote access and file transfer
