@@ -78,4 +78,4 @@ setup_yay() {
     verify_yay_installation
 }
 
-setup_yay "$@"
+setup_yay
