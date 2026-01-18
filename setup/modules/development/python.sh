@@ -1,7 +1,5 @@
 #!/bin/bash
 
-set -euo pipefail
-
 UV_INSTALL_COMMAND="curl -LsSf https://astral.sh/uv/install.sh | sh"
 
 install_uv() {
@@ -9,7 +7,5 @@ install_uv() {
     
     source "$HOME/.cargo/env" 2>/dev/null || true
     
-    verify-command-exists uv
+    verify_command_exists uv
 }
-
-install_uv
