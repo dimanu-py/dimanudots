@@ -1,7 +1,5 @@
 #!/bin/bash
 
-set -euo pipefail
-
 create_directory() {
     local dir_name="$1"
 
@@ -22,5 +20,3 @@ create_directory_with_permissions() {
     create_directory "$dir_name"
     set_permissions "$dir_name" "$permissions"
 }
-
-create_directory_with_permissions "$@"
