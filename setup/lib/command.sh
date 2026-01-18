@@ -9,6 +9,6 @@ verify_command_exists() {
 run_installer() {
     local cmd="$1"
     shift
-    $cmd ${NEEDED_FLAG:+$NEEDED_FLAG} -- "$@"
+    $cmd -- "$@"
     echo
 }

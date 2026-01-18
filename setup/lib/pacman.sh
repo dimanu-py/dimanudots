@@ -9,5 +9,5 @@ is_in_official_repos() {
 }
 
 pacman_install() {
-    run_installer "sudo pacman -Syu" "$@"
+    run_installer "sudo pacman -Syu --needed" "$@"
 }
