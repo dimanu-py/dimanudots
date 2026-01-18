@@ -17,9 +17,52 @@ source "${LIB_DIR}/packages.sh"
 source "${LIB_DIR}/classify.sh"
 source "${LIB_DIR}/install.sh"
 
-# ─────────────────────────────────────────────────────────────
-# Main function
-# ─────────────────────────────────────────────────────────────
+require_command() {
+  command -v "$1" >/dev/null 2>&1 || exit_with_error "Required command not found: $1"
+}
+
+ensure_pacman_and_yay_are_installed() {
+  require_command pacman
+  require_command yay
+}
+
+has_packages() {
+    local -a pkgs=("$@")
+    [[ ${#pkgs[@]} -gt 0 && -n "${pkgs[*]}" ]]
+}
+
+run_installer() {
+    local cmd="$1"
+    shift
+    $cmd ${NEEDED_FLAG:+$NEEDED_FLAG} -- "$@"
+    echo
+}
+
+print_section_header() {
+    local title="$1"
+    echo "== $title =="
+}
+
+pacman_install() {
+    has_packages "$@" || return 0
+    print_section_header "Installing with pacman"
+    run_installer "sudo pacman -Syu" "$@"
+}
+
+yay_install() {
+    has_packages "$@" || return 0
+    print_section_header "Installing with yay (AUR)"
+    run_installer "yay -S" "$@"
+}
+
+warn_unknown_and_exit() {
+    has_packages "$@" || return 0
+    print_section_header "Done (with warnings)"
+    echo "These packages were not found in pacman repos nor AUR:"
+    printf ' - %s\n' "$@"
+    exit 2
+}
+
 install_packages() {
     parse_args "$@"
     ensure_pacman_and_yay_are_installed
@@ -41,7 +84,6 @@ install_packages() {
     yay_install "${aur_yay[@]}"
     warn_unknown_and_exit "${unknown_packages[@]}"
 
-    print_section_header "Done"
 }
 
 install_packages "$@"

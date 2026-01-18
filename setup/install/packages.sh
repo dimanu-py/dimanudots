@@ -1,7 +1,16 @@
 #!/bin/bash
 
+is_empty() {
+    [[ -z "$1" ]]
+}
+
 strip_comments_from_file_and_trim_whitespace() {
     echo "$1" | sed 's/#.*//' | xargs
+}
+
+verify_file_exists() {
+    local file="$1"
+    [[ -f "$file" ]] || exit_with_error "File not found: $file"
 }
 
 read_packages_from_file() {
@@ -33,7 +42,6 @@ mark_as_seen() {
     seen_ref["$item"]=1
 }
 
-# Remove duplicate packages while preserving order
 remove_duplicate_packages_preserving_order() {
     local -A seen=()
     local unique_items=()
@@ -77,7 +85,7 @@ collect_packages() {
     mapfile -t all_packages < <(remove_duplicate_packages_preserving_order "${all_packages[@]}")
 
     if has_no_packages all_packages; then
-        die "No packages provided. Use arguments or --file FILE."
+        exit_with_error "No packages provided. Use arguments or --file FILE."
     fi
 
     printf '%s\n' "${all_packages[@]}"

@@ -2,15 +2,11 @@
 
 set -euo pipefail
 
-SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-source "$SCRIPT_DIR/lib/logging.sh"
-source "$SCRIPT_DIR/../common/create-directory-with-permissions.sh"
-
 YAY_BUILD_DIR="/tmp/yay"
 YAY_GIT_REPO_URL="https://aur.archlinux.org/yay.git"
 
 yay_is_installed() {
-    command -v yay &> /dev/null
+    verify_command_exists "yay"
 }
 
 clean_up_existing_build_directory() {
@@ -59,21 +55,21 @@ cleanup_build_directory() {
 
 verify_yay_installation() {
     if yay_is_installed; then
-        log_success "yay installed successfully"
+        echo "yay installed successfully"
         return 0
     else
-        log_error "yay installation failed"
+        echo "yay installation failed" >&2
         return 1
     fi
 }
 
 setup_yay() {
     if yay_is_installed; then
-        log_info "yay is already installed"
+        echo "yay is already installed"
         exit 0
     fi
     
-    log_info "yay not found, installing yay..."
+    echo "yay not found, installing yay..."
     
     create_build_directory "$YAY_BUILD_DIR"
     clone_yay_repository "$YAY_BUILD_DIR"
