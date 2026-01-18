@@ -6,7 +6,7 @@ YAY_BUILD_DIR="/tmp/yay"
 YAY_GIT_REPO_URL="https://aur.archlinux.org/yay.git"
 
 yay_is_installed() {
-    verify_command_exists "yay"
+    verify-command-exists "yay"
 }
 
 clean_up_existing_build_directory() {
@@ -31,7 +31,7 @@ create_build_directory() {
     local build_dir="$1"
 
     clean_up_existing_build_directory "$build_dir"
-    create_directory_with_permissions "$build_dir" 0755
+    create-directory-with-permissions "$build_dir" 0755
     set_build_dir_owner_to_current_user "$build_dir"
 }
 

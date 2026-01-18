@@ -5,25 +5,9 @@
 # -o pipefail: Exit if any command in a pipeline fails (not just the last one)
 set -euo pipefail
 
-# ─────────────────────────────────────────────────────────────
-# Determine script directory and source libraries
-# ─────────────────────────────────────────────────────────────
-SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-LIB_DIR="${SCRIPT_DIR}/lib"
-
-source "${LIB_DIR}/utils.sh"
-source "${LIB_DIR}/args.sh"
-source "${LIB_DIR}/packages.sh"
-source "${LIB_DIR}/classify.sh"
-source "${LIB_DIR}/install.sh"
-
-require_command() {
-  command -v "$1" >/dev/null 2>&1 || exit_with_error "Required command not found: $1"
-}
-
 ensure_pacman_and_yay_are_installed() {
-  require_command pacman
-  require_command yay
+  verify-command-exists pacman
+  verify-command-exists yay
 }
 
 has_packages() {
@@ -64,12 +48,12 @@ warn_unknown_and_exit() {
 }
 
 install_packages() {
-    parse_args "$@"
+    args-parser "$@"
     ensure_pacman_and_yay_are_installed
-    mapfile -t all_packages < <(collect_packages "${CLI_PACKAGES[@]}")
+    mapfile -t all_packages < <(collect-packages "${CLI_PACKAGES[@]}")
 
     local plan
-    plan="$(plan_installation "${all_packages[@]}")"
+    plan="$(classify plan "${all_packages[@]}")"
 
     IFS=$'\0' read -r installed_block pacman_block aur_block unknown_block <<<"$plan" || true
 
@@ -78,12 +62,11 @@ install_packages() {
     mapfile -t aur_yay < <(printf '%s\n' "$aur_block" | sed '/^$/d')
     mapfile -t unknown_packages < <(printf '%s\n' "$unknown_block" | sed '/^$/d')
 
-    print_plan "${already_installed[*]}" "${pacman[*]}" "${aur_yay[*]}" "${unknown_packages[*]}"
+    classify print "${already_installed[*]}" "${pacman[*]}" "${aur_yay[*]}" "${unknown_packages[*]}"
 
     pacman_install "${pacman[@]}"
     yay_install "${aur_yay[@]}"
     warn_unknown_and_exit "${unknown_packages[@]}"
-
 }
 
 install_packages "$@"

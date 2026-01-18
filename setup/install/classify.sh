@@ -56,3 +56,9 @@ print_plan() {
     fi
     echo
 }
+
+case "$1" in
+  plan) print_plan "${@:2}" ;;
+  print) print_plan "${@:2}" ;;
+  *) exit-with-error "Unknown action: $1" ;;
+esac

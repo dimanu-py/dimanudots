@@ -9,7 +9,7 @@ install_uv() {
     
     source "$HOME/.cargo/env" 2>/dev/null || true
     
-    verify_command_exists uv
+    verify-command-exists uv
 }
 
 install_uv

@@ -10,7 +10,7 @@ strip_comments_from_file_and_trim_whitespace() {
 
 verify_file_exists() {
     local file="$1"
-    [[ -f "$file" ]] || exit_with_error "File not found: $file"
+    [[ -f "$file" ]] || exit-with-error "File not found: $file"
 }
 
 read_packages_from_file() {
@@ -85,8 +85,10 @@ collect_packages() {
     mapfile -t all_packages < <(remove_duplicate_packages_preserving_order "${all_packages[@]}")
 
     if has_no_packages all_packages; then
-        exit_with_error "No packages provided. Use arguments or --file FILE."
+        exit-with-error "No packages provided. Use arguments or --file FILE."
     fi
 
     printf '%s\n' "${all_packages[@]}"
 }
+
+collect_packages "$@"

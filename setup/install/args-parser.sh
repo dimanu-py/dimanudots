@@ -28,7 +28,7 @@ override_needed_flag() {
 
 handle_file_and_verify_is_passed() {
     PACKAGE_FILE="${1:-}"
-    [[ -z "$PACKAGE_FILE" ]] && exit_with_error "--file requires a file argument"
+    [[ -z "$PACKAGE_FILE" ]] && exit-with-error "--file requires a file argument"
 }
 
 print_help() {
@@ -53,7 +53,7 @@ parse_args() {
                 print_help
                 ;;
             --*)
-                exit_with_error "Unknown option: $1"
+                exit-with-error "Unknown option: $1"
                 ;;
             *)
                 CLI_PACKAGES+=("$1")
@@ -62,3 +62,5 @@ parse_args() {
         esac
     done
 }
+
+parse_args "$@"
