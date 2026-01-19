@@ -21,7 +21,7 @@ EOF
 
 handle_file_and_verify_is_passed() {
     PACKAGE_FILE="${1:-}"
-    [[ -z "$PACKAGE_FILE" ]] && exit-with-error "--file requires a file argument"
+    [[ -z "$PACKAGE_FILE" ]] && die "--file requires a file argument"
 }
 
 print_help() {
@@ -42,7 +42,7 @@ parse_args() {
                 print_help
                 ;;
             --*)
-                exit-with-error "Unknown option: $1"
+                die "Unknown option: $1"
                 ;;
             *)
                 CLI_PACKAGES+=("$1")
