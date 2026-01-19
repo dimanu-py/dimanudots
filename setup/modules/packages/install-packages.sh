@@ -41,8 +41,13 @@ warn_unknown_and_exit() {
 }
 
 install_packages() {
-    parse_args "$@"
-    mapfile -t all_packages < <(collect_packages "${CLI_PACKAGES[@]}")
+    local package_file="$1"
+    
+    if [[ ! -f "$package_file" ]]; then
+        die "Package file not found: $package_file"
+    fi
+    
+    mapfile -t all_packages < <(collect_packages "$package_file")
 
     local plan
     plan="$(plan_installation "${all_packages[@]}")"
