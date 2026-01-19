@@ -1,99 +1,55 @@
 #!/bin/bash
 
-is_empty() {
-    [[ -z "$1" ]]
+strip_inline_comment_and_trim() {
+  local line="$1"
+
+  # 1) Remove everything after the first '#'
+  line="${line%%#*}"
+
+  # 2) Trim leading/trailing whitespace
+  line="$(trim_whitespace "$line")"
+
+  printf '%s' "$line"
 }
 
-remove_comments_and_trim() {
-    local line="$1"
-    echo "$line" | sed 's/#.*//' | xargs
-}
-
-is_valid_package_line() {
-    local line="$1"
-    ! is_empty "$line"
-}
-
-extract_package_from_line() {
-    local line="$1"
-    remove_comments_and_trim "$line"
-}
-
-was_already_seen() {
-    local -n seen_array_ref="$1"
-    local item="$2"
-    [[ -n "${seen_array_ref[$item]:-}" ]]
-}
-
-mark_as_seen() {
-    local -n seen_array_ref="$1"
-    local item="$2"
-    seen_array_ref["$item"]=1
-}
-
-add_to_unique_list() {
-    local -n seen_ref="$1"
-    local -n unique_ref="$2"
-    local item="$3"
-    
-    was_already_seen seen_ref "$item" && return 0
-    mark_as_seen seen_ref "$item"
-    unique_ref+=("$item")
-}
-
-remove_duplicate_packages_preserving_order() {
-    local -A seen_items=()
-    local -a unique_items=()
-
-    for item in "$@"; do
-        is_empty "$item" && continue
-        add_to_unique_list seen_items unique_items "$item"
-    done
-
-    printf '%s\n' "${unique_items[@]}"
-}
-
-process_file_line() {
-    local line="$1"
-    local -n packages_ref="$2"
-    local cleaned_line
-
-    cleaned_line="$(extract_package_from_line "$line")"
-    
-    if is_valid_package_line "$cleaned_line"; then
-        packages_ref+=("$cleaned_line")
-    fi
+trim_whitespace() {
+  local s="$1"
+  # trim leading
+  s="${s#"${s%%[![:space:]]*}"}"
+  # trim trailing
+  s="${s%"${s##*[![:space:]]}"}"
+  printf '%s' "$s"
 }
 
 read_packages_from_file() {
-    local package_file="$1"
-    local -a file_packages=()
-    local line
-
-    while IFS= read -r line || [[ -n "$line" ]]; do
-        process_file_line "$line" file_packages
-    done < "$package_file"
-
-    echo "${file_packages[@]}"
+  local file_path="$1"
+  while IFS= read -r line || [[ -n "$line" ]]; do
+    local cleaned
+    cleaned="$(strip_inline_comment_and_trim "$line")"
+    if [[ -n "$cleaned" ]]; then
+      printf '%s\n' "$cleaned"
+    fi
+  done < "$file_path"
 }
 
-validate_packages_not_empty() {
-    local -n packages_ref="$1"
-    local file="$2"
-    [[ ${#packages_ref[@]} -gt 0 ]] || die "No packages found in file: $file"
+dedupe_keep_first() {
+  # Keeps first occurrence, removes subsequent duplicates.
+  declare -A seen=()
+  local pkg
+  for pkg in "$@"; do
+    if [[ -z "${seen[$pkg]+x}" ]]; then
+      seen["$pkg"]=1
+      printf '%s\n' "$pkg"
+    fi
+  done
 }
 
-collect_packages() {
-    local package_file="$1"
-    local -a file_packages=()
-    local -a unique_packages=()
-
-    validate_file_exists "$package_file"
-
-    mapfile -t file_packages < <(read_packages_from_file "$package_file")
-    mapfile -t unique_packages < <(remove_duplicate_packages_preserving_order "${file_packages[@]}")
-
-    validate_packages_not_empty unique_packages "$package_file"
-
-    printf '%s\n' "${unique_packages[@]}"
+ensure_there_are_packages() {
+  local list_name="$1"
+  # shellcheck disable=SC2178
+  local -n list_ref="$list_name"
+  if (( ${#list_ref[@]} == 0 )); then
+    echo "Error: no packages found after cleaning comments/duplicates." >&2
+    return 1
+  fi
 }

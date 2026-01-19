@@ -1,8 +1,11 @@
 #!/bin/bash
 
-validate_file_exists() {
-    local file="$1"
-    [[ -f "$file" ]] || die "File not found: $file"
+ensure_file_exists() {
+    local file_path="$1"
+      if [[ ! -f "$file_path" ]]; then
+        echo "Error: file not found: $file_path" >&2
+        return 1
+      fi
 }
 
 create_directory() {

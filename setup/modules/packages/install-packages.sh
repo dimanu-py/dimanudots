@@ -41,25 +41,50 @@ warn_unknown_and_exit() {
 }
 
 install_packages() {
-    local package_file="$1"
-    
-    validate_file_exists "$package_file"
-    
-    mapfile -t all_packages < <(collect_packages "$package_file")
+  local package_file="$1"
 
-    local plan
-    plan="$(plan_installation "${all_packages[@]}")"
+  ensure_file_is_passed "$package_file"
+  ensure_file_exists "$package_file"
 
-    IFS=$'\0' read -r installed_block pacman_block aur_block unknown_block <<<"$plan" || true
+  local -a raw_packages=()
+  mapfile -t raw_packages < <(read_packages_from_file "$package_file")
 
-    mapfile -t already_installed < <(printf '%s\n' "$installed_block" | sed '/^$/d')
-    mapfile -t pacman < <(printf '%s\n' "$pacman_block" | sed '/^$/d')
-    mapfile -t aur_yay < <(printf '%s\n' "$aur_block" | sed '/^$/d')
-    mapfile -t unknown_packages < <(printf '%s\n' "$unknown_block" | sed '/^$/d')
+  local -a unique_packages=()
+  mapfile -t unique_packages < <(dedupe_keep_first "${raw_packages[@]}")
 
-    print_plan "${already_installed[*]}" "${pacman[*]}" "${aur_yay[*]}" "${unknown_packages[*]}"
+  ensure_there_are_packages unique_packages
 
-    install_with_pacman "${pacman[@]}"
-    install_with_yay "${aur_yay[@]}"
-    warn_unknown_and_exit "${unknown_packages[@]}"
+  local -a installed=() pacman_targets=() yay_targets=() unknown=()
+  classify_packages unique_packages installed pacman_targets yay_targets unknown
+
+  print_package_summary installed pacman_targets yay_targets unknown
+
+  install_with_pacman_if_needed pacman_targets
+  install_with_yay_if_needed yay_targets
+}
+
+ensure_file_is_passed() {
+    local file_path="${1:-}"
+    if [[ -z "$file_path" ]]; then
+        echo "Error: missing required argument: <packages_file>" >&2
+        exit 1
+    fi
+}
+
+install_with_pacman_if_needed() {
+  local -n pkgs="$1"
+  if (( ${#pkgs[@]} == 0 )); then
+    return 0
+  fi
+
+  sudo pacman -S --needed "${pkgs[@]}"
+}
+
+install_with_yay_if_needed() {
+  local -n pkgs="$1"
+  if (( ${#pkgs[@]} == 0 )); then
+    return 0
+  fi
+
+  yay -S --needed "${pkgs[@]}"
 }
