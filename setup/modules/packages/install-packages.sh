@@ -18,41 +18,34 @@ install_packages() {
 }
 
 ensure_file_is_passed() {
-    local file_path="${1:-}"
-    if is_empty "$file_path"; then
-        die "Error: missing required argument: <packages_file>"
-    fi
+  local file_path="${1:-}"
+  if is_empty "$file_path"; then
+      die "Error: missing required argument: <packages_file>"
+  fi
 }
 
 is_empty() {
-    local val="${1:-}"
-    [[ -z "$val" ]]
+  local val="${1:-}"
+  [[ -z "$val" ]]
 }
 
 install_with_pacman_if_needed() {
   local -n _packages="$1"
-  ensure_packages_has_values _packages
+  has_packages _packages || return 0
   ensure_pacman_is_installed
   pacman_install "${_packages[@]}"
 }
 
 install_with_yay_if_needed() {
   local -n _packages="$1"
-  ensure_packages_has_values _packages
+  has_packages "${_packages[@]}" || return 0
   ensure_yay_is_installed
   yay_install "${_packages[@]}"
 }
 
-ensure_packages_has_values() {
-  local -n pkgs="$1"
-  if ! has_packages "${pkgs[@]}"; then
-    die "Error: no packages to install."
-  fi
-}
-
 has_packages() {
-    local -a pkgs=("$@")
-    [[ ${#pkgs[@]} -gt 0 && -n "${pkgs[*]}" ]]
+  local -a pkgs=("$@")
+  [[ ${#pkgs[@]} -gt 0 && -n "${pkgs[*]}" ]]
 }
 
 ensure_pacman_is_installed() {
