@@ -45,29 +45,29 @@ is_available_in_yay() {
 }
 
 print_package_summary() {
-  local -n installed="$1"
-  local -n pacman_targets="$2"
-  local -n yay_targets="$3"
-  local -n unknown="$4"
+  local -n _installed="$1"
+  local -n _pacman_targets="$2"
+  local -n _yay_targets="$3"
+  local -n _unknown="$4"
 
-  print_list "Already installed" installed
-  print_list "Will install with pacman" pacman_targets
-  print_list "Will install with yay" yay_targets
-  print_list "Unknown package (skipped)" unknown
+  print_list "Already installed" _installed
+  print_list "Will install with pacman" _pacman_targets
+  print_list "Will install with yay" _yay_targets
+  print_list "Unknown package (skipped)" _unknown
 }
 
 print_list() {
   local title="$1"
-  local -n items="$2"
+  local -n _items="$2"
 
   echo "==> $title:"
-  if (( ${#items[@]} == 0 )); then
+  if (( ${#_items[@]} == 0 )); then
     echo "  (none)"
     return 0
   fi
 
   local item
-  for item in "${items[@]}"; do
+  for item in "${_items[@]}"; do
     echo "  - $item"
   done
 }
