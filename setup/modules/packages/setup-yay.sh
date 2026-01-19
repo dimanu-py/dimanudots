@@ -6,7 +6,8 @@ YAY_BUILD_DIR="/tmp/yay"
 YAY_GIT_REPO_URL="https://aur.archlinux.org/yay.git"
 
 yay_is_installed() {
-    verify_command_exists "yay"
+    local should_die="${1:-false}"
+    verify_command_exists "yay" --die "$should_die"
 }
 
 clean_up_existing_build_directory() {
@@ -54,7 +55,7 @@ cleanup_build_directory() {
 }
 
 verify_yay_installation() {
-    if yay_is_installed; then
+    if yay_is_installed "true"; then
         echo "yay installed successfully"
         return 0
     else
@@ -64,7 +65,7 @@ verify_yay_installation() {
 }
 
 setup_yay() {
-    if yay_is_installed; then
+    if yay_is_installed "false"; then
         echo "yay is already installed"
         return 0
     fi
