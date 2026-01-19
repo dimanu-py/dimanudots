@@ -20,25 +20,25 @@ extract_package_from_line() {
 }
 
 was_already_seen() {
-    local -n seen_ref="$1"
+    local -n seen_array_ref="$1"
     local item="$2"
-    [[ -n "${seen_ref[$item]:-}" ]]
+    [[ -n "${seen_array_ref[$item]:-}" ]]
 }
 
 mark_as_seen() {
-    local -n seen_ref="$1"
+    local -n seen_array_ref="$1"
     local item="$2"
-    seen_ref["$item"]=1
+    seen_array_ref["$item"]=1
 }
 
 add_to_unique_list() {
-    local -n seen_ref="$1"
-    local -n unique_ref="$2"
+    local -n seen_array_ref="$1"
+    local -n unique_array_ref="$2"
     local item="$3"
     
-    was_already_seen seen_ref "$item" && return 0
-    mark_as_seen seen_ref "$item"
-    unique_ref+=("$item")
+    was_already_seen seen_array_ref "$item" && return 0
+    mark_as_seen seen_array_ref "$item"
+    unique_array_ref+=("$item")
 }
 
 remove_duplicate_packages_preserving_order() {
