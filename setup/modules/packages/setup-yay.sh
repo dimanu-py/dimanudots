@@ -44,7 +44,7 @@ clone_yay_repository() {
 }
 
 build_and_install_yay() {
-    makepkg -si
+    makepkg -si --noconfirm
 }
 
 cleanup_build_directory() {
