@@ -5,5 +5,5 @@ is_in_aur() {
 }
 
 yay_install() {
-    run_installer "yay -S" "$@"
+    run_installer "yay -S --noconfirm" "$@"
 }
