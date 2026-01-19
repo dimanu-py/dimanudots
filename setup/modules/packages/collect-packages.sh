@@ -53,3 +53,19 @@ ensure_there_are_packages() {
     return 1
   fi
 }
+
+collect_packages() {
+  local package_file="$1"
+
+  ensure_file_exists "$package_file"
+
+  local -a raw_packages=()
+  mapfile -t raw_packages < <(read_packages_from_file "$package_file")
+
+  local -a unique_packages=()
+  mapfile -t unique_packages < <(dedupe_keep_first "${raw_packages[@]}")
+
+  ensure_there_are_packages unique_packages
+
+  printf '%s\n' "${unique_packages[@]}"
+}

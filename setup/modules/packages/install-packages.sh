@@ -44,15 +44,9 @@ install_packages() {
   local package_file="$1"
 
   ensure_file_is_passed "$package_file"
-  ensure_file_exists "$package_file"
-
-  local -a raw_packages=()
-  mapfile -t raw_packages < <(read_packages_from_file "$package_file")
 
   local -a unique_packages=()
-  mapfile -t unique_packages < <(dedupe_keep_first "${raw_packages[@]}")
-
-  ensure_there_are_packages unique_packages
+  mapfile -t unique_packages < <(collect_packages "$package_file")
 
   local -a installed=() pacman_targets=() yay_targets=() unknown=()
   classify_packages unique_packages installed pacman_targets yay_targets unknown
