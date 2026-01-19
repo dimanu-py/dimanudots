@@ -32,22 +32,22 @@ mark_as_seen() {
 }
 
 add_to_unique_list() {
-    local -n seen_array_ref="$1"
-    local -n unique_array_ref="$2"
+    local -n seen_ref="$1"
+    local -n unique_ref="$2"
     local item="$3"
     
-    was_already_seen seen_array_ref "$item" && return 0
-    mark_as_seen seen_array_ref "$item"
-    unique_array_ref+=("$item")
+    was_already_seen seen_ref "$item" && return 0
+    mark_as_seen seen_ref "$item"
+    unique_ref+=("$item")
 }
 
 remove_duplicate_packages_preserving_order() {
-    local -A seen=()
+    local -A seen_items=()
     local -a unique_items=()
 
     for item in "$@"; do
         is_empty "$item" && continue
-        add_to_unique_list seen unique_items "$item"
+        add_to_unique_list seen_items unique_items "$item"
     done
 
     printf '%s\n' "${unique_items[@]}"
