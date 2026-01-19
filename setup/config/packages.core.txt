@@ -12,4 +12,8 @@ wget                        # File download utility from the web
 curl                        # Data transfer tool with multi-protocol support
 python                      # Programming language, Ansible dependency
 go                          # Go programming language, required to build yay (AUR helper)
+make                        # Build automation tool for compiling software
+gcc                         # GNU Compiler Collection for C/C++ and other languages
+fakeroot                    # Tool for simulating superuser privileges during package builds
+binutils                    # Collection of binary tools (linker, assembler, etc.)
 openssh                     # Secure shell protocol for remote access and file transfer
