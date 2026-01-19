@@ -4,11 +4,6 @@ is_empty() {
     [[ -z "$1" ]]
 }
 
-validate_file_exists() {
-    local file="$1"
-    [[ -f "$file" ]] || die "File not found: $file"
-}
-
 remove_comments_and_trim() {
     local line="$1"
     echo "$line" | sed 's/#.*//' | xargs

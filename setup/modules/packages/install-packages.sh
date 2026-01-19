@@ -43,9 +43,7 @@ warn_unknown_and_exit() {
 install_packages() {
     local package_file="$1"
     
-    if [[ ! -f "$package_file" ]]; then
-        die "Package file not found: $package_file"
-    fi
+    validate_file_exists "$package_file"
     
     mapfile -t all_packages < <(collect_packages "$package_file")
 

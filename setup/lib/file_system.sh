@@ -1,5 +1,10 @@
 #!/bin/bash
 
+validate_file_exists() {
+    local file="$1"
+    [[ -f "$file" ]] || die "File not found: $file"
+}
+
 create_directory() {
     local dir_name="$1"
 
