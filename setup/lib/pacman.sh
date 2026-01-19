@@ -1,7 +1,7 @@
 #!/bin/bash
 
 is_installed() {
-    pacman -Qq "$1" >/dev/null 2>&1
+    pacman -Qi "$1" >/dev/null 2>&1
 }
 
 is_in_official_repos() {
