@@ -1,7 +1,10 @@
 #!/bin/bash
 
-ensure_pacman_and_yay_are_installed() {
+ensure_pacman_is_installed() {
   verify_command_exists pacman
+}
+
+ensure_yay_is_installed() {
   verify_command_exists yay
 }
 
@@ -17,12 +20,14 @@ print_section_header() {
 
 install_with_pacman() {
     has_packages "$@" || return 0
+    ensure_pacman_is_installed
     print_section_header "Installing with pacman"
     pacman_install "$@"
 }
 
 install_with_yay() {
     has_packages "$@" || return 0
+    ensure_yay_is_installed
     print_section_header "Installing with yay (AUR)"
     yay_install "$@"
 }
@@ -37,7 +42,6 @@ warn_unknown_and_exit() {
 
 install_packages() {
     parse_args "$@"
-    ensure_pacman_and_yay_are_installed
     mapfile -t all_packages < <(collect_packages "${CLI_PACKAGES[@]}")
 
     local plan
