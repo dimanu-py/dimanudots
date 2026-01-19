@@ -3,7 +3,7 @@
 set -euo pipefail
 
 YAY_BUILD_DIR="/tmp/yay"
-YAY_GIT_REPO_URL="https://aur.archlinux.org/yay.git"
+YAY_GIT_REPO_URL="https://aur.archlinux.org/yay-git.git"
 
 yay_is_installed() {
     local should_die="${1:-false}"
