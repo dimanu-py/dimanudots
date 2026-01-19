@@ -19,9 +19,17 @@ Examples:
 EOF
 }
 
+file_exists() {
+    local file_path="$1"
+    [[ -f "$file_path" ]]
+}
+
 handle_file_and_verify_is_passed() {
     PACKAGE_FILE="${1:-}"
-    [[ -z "$PACKAGE_FILE" ]] && die "--file requires a file argument"
+
+    if ! file_exists "$PACKAGE_FILE"; then
+        die "The specified file does not exist: $PACKAGE_FILE"
+    fi
 }
 
 print_help() {
