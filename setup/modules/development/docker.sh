@@ -25,8 +25,8 @@ limit_docker_log_size() {
   }
 }
 EOF
-  sudo set_owner root $DOCKER_DAEMON_DIR/daemon.json
-  sudo set_permissions 0644 $DOCKER_DAEMON_DIR/daemon.json
+  set_owner root $DOCKER_DAEMON_DIR/daemon.json --sudo
+  set_permissions 0644 $DOCKER_DAEMON_DIR/daemon.json --sudo
 }
 
 enable_docker_services() {

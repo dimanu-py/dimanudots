@@ -10,13 +10,13 @@ setup_display_manager() {
 }
 
 create_sddm_config_dir() {
-  create_directory_with_permissions "$SDDM_CONFIG_DIR" "0755"
+  create_directory_with_permissions "$SDDM_CONFIG_DIR" "0755" --sudo
 }
 
 configure_sddm_theme() {
   local themes=("Theme=sddm-sugar-candy", "CursorTheme=bibata-cursor-theme")
 
-  sudo create_file "$SDDM_THEME_CONFIG"
+  create_file "$SDDM_THEME_CONFIG" --sudo
   for line in "${themes[@]}"; do
     fill_sddm_theme_config "$line"
   done

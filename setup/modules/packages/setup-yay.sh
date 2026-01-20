@@ -1,9 +1,22 @@
 #!/bin/bash
 
-set -euo pipefail
-
 YAY_BUILD_DIR="/tmp/yay"
 YAY_GIT_REPO_URL="https://aur.archlinux.org/yay-git.git"
+
+setup_yay() {
+    if yay_is_installed "false"; then
+        echo "yay is already installed"
+        return 0
+    fi
+
+    echo "yay not found, installing yay..."
+
+    create_build_directory "$YAY_BUILD_DIR"
+    clone_yay_repository "$YAY_BUILD_DIR"
+    build_and_install_yay
+    cleanup_build_directory "$YAY_BUILD_DIR"
+    verify_yay_installation
+}
 
 yay_is_installed() {
     local should_die="${1:-false}"
@@ -24,7 +37,7 @@ set_build_dir_owner_to_current_user() {
 
     current_user=$(logname || echo "$SUDO_USER")
     if [[ -n "$current_user" ]]; then
-        chown "$current_user:$current_user" "$build_dir"
+        set_owner "$current_user" "$build_dir"
     fi
 }
 
@@ -62,19 +75,4 @@ verify_yay_installation() {
         echo "yay installation failed" >&2
         return 1
     fi
-}
-
-setup_yay() {
-    if yay_is_installed "false"; then
-        echo "yay is already installed"
-        return 0
-    fi
-    
-    echo "yay not found, installing yay..."
-    
-    create_build_directory "$YAY_BUILD_DIR"
-    clone_yay_repository "$YAY_BUILD_DIR"
-    build_and_install_yay
-    cleanup_build_directory "$YAY_BUILD_DIR"
-    verify_yay_installation
 }
