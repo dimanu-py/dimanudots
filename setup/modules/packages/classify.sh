@@ -28,20 +28,15 @@ classify_packages() {
   done
 }
 
-is_installed() {
-  local pkg="$1"
-  pacman -Qi "$pkg" >/dev/null 2>&1
-}
-
 is_available_in_pacman() {
   local pkg="$1"
-  pacman -Si "$pkg" >/dev/null 2>&1
+  is_in_official_repos "$pkg"
 }
 
 is_available_in_yay() {
   local pkg="$1"
-  command -v yay >/dev/null 2>&1 || return 1
-  yay -Si "$pkg" >/dev/null 2>&1
+  verify_command_exists "yay" --die false || return 1
+  is_in_aur "$pkg"
 }
 
 print_package_summary() {
