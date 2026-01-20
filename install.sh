@@ -16,6 +16,7 @@ source "$DIMANUDOTS_SCRIPTS/steps/main.sh"
 main() {
     step_10_packages
     step_20_desktop
+    step_30_development_tools
 }
 
 main
