@@ -2,6 +2,7 @@
 
 step_20_desktop() {
   create_base_directories
+  install_wallpapers
   enable_bluetooth
   enable_network
   setup_display_manager
