@@ -1,5 +1,5 @@
 #!/bin/bash
 
-enable_network_service() {
+enable_network() {
   enable_service "iwd.service"
 }
