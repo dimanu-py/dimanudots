@@ -14,7 +14,7 @@ create_sddm_config_dir() {
 }
 
 configure_sddm_theme() {
-  local themes=("Theme=sddm-sugar-candy", "CursorTheme=bibata-cursor-theme")
+  local themes=("Theme=sugar-candy", "CursorTheme=bibata-cursor-theme")
 
   create_file "$SDDM_THEME_CONFIG" --sudo
   for line in "${themes[@]}"; do
