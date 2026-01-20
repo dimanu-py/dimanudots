@@ -41,7 +41,7 @@ set_owner() {
     local group="${2:-$user}"
     local file_path="$3"
 
-    chown "$owner" "$file_path"
+    chown "$user:$group" "$file_path"
 }
 
 create_file() {
