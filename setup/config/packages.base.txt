@@ -15,6 +15,10 @@ tree                        # Directory tree visualization tool
 zip                         # File compression utility
 unzip                       # File extraction utility
 stow                        # Symlink farm manager for dotfiles management
+timeshift                   # System restore and backup utility
+timeshift-autosnap          # Automatic snapshot management for Timeshift
+grub-btrfs                  # GRUB module for Btrfs filesystem support
+inotify-tools               # File system event monitoring tools
 
 # ============================================================================
 # HARDWARE - GPU (Graphics drivers)
