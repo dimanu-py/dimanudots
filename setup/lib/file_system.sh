@@ -28,3 +28,10 @@ create_directory_with_permissions() {
     create_directory "$dir_name"
     set_permissions "$dir_name" "$permissions"
 }
+
+sym_link_file() {
+    local source_file="$1"
+    local target_file="$2"
+
+    ln -sf "$source_file" "$target_file"
+}
