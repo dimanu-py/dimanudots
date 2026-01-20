@@ -1,5 +1,5 @@
 #!/bin/bash
 
 enable_bluetooth_service() {
-    enable_service "bluetooth.service"
+  enable_service "bluetooth.service"
 }

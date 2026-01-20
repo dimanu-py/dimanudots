@@ -1,13 +1,13 @@
 #!/bin/bash
 
 is_installed() {
-    pacman -Qi "$1" >/dev/null 2>&1
+  pacman -Qi "$1" >/dev/null 2>&1
 }
 
 is_in_official_repos() {
-    pacman -Si "$1" >/dev/null 2>&1
+  pacman -Si "$1" >/dev/null 2>&1
 }
 
 pacman_install() {
-    run_installer "sudo pacman -Syu --needed --noconfirm" "$@"
+  run_installer "sudo pacman -Syu --needed --noconfirm" "$@"
 }

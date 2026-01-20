@@ -14,29 +14,18 @@ classify_packages() {
       continue
     fi
 
-    if is_available_in_pacman "$pkg"; then
+    if is_in_official_repos "$pkg"; then
       out_pacman+=("$pkg")
       continue
     fi
 
-    if is_available_in_yay "$pkg"; then
+    if _is_available_in_yay "$pkg"; then
       out_yay+=("$pkg")
       continue
     fi
 
     out_unknown+=("$pkg")
   done
-}
-
-is_available_in_pacman() {
-  local pkg="$1"
-  is_in_official_repos "$pkg"
-}
-
-is_available_in_yay() {
-  local pkg="$1"
-  verify_command_exists "yay" --die false || return 1
-  is_in_aur "$pkg"
 }
 
 print_package_summary() {
@@ -51,7 +40,13 @@ print_package_summary() {
   print_list "Unknown package (skipped)" _unknown
 }
 
-print_list() {
+_is_available_in_yay() {
+  local pkg="$1"
+  verify_command_exists "yay" --die false || return 1
+  is_in_aur "$pkg"
+}
+
+_print_list() {
   local title="$1"
   local -n _items="$2"
 

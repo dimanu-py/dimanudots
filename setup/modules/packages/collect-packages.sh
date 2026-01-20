@@ -6,30 +6,40 @@ collect_packages() {
   ensure_file_exists "$package_file"
 
   local -a raw_packages=()
-  mapfile -t raw_packages < <(read_packages_from_file "$package_file")
+  mapfile -t raw_packages < <(_read_packages_from_file "$package_file")
 
   local -a unique_packages=()
-  mapfile -t unique_packages < <(dedupe_keep_first "${raw_packages[@]}")
+  mapfile -t unique_packages < <(_dedupe_keep_first "${raw_packages[@]}")
 
-  ensure_there_are_packages unique_packages
+  _ensure_there_are_packages unique_packages
 
   printf '%s\n' "${unique_packages[@]}"
 }
 
+_read_packages_from_file() {
+  local file_path="$1"
+  while IFS= read -r line || [[ -n "$line" ]]; do
+    local cleaned
+    cleaned="$(_strip_inline_comment_and_trim "$line")"
+    if [[ -n "$cleaned" ]]; then
+      printf '%s\n' "$cleaned"
+    fi
+  done < "$file_path"
+}
 
-strip_inline_comment_and_trim() {
+_strip_inline_comment_and_trim() {
   local line="$1"
 
   # 1) Remove everything after the first '#'
   line="${line%%#*}"
 
   # 2) Trim leading/trailing whitespace
-  line="$(trim_whitespace "$line")"
+  line="$(_trim_whitespace "$line")"
 
   printf '%s' "$line"
 }
 
-trim_whitespace() {
+_trim_whitespace() {
   local s="$1"
   # trim leading
   s="${s#"${s%%[![:space:]]*}"}"
@@ -38,18 +48,7 @@ trim_whitespace() {
   printf '%s' "$s"
 }
 
-read_packages_from_file() {
-  local file_path="$1"
-  while IFS= read -r line || [[ -n "$line" ]]; do
-    local cleaned
-    cleaned="$(strip_inline_comment_and_trim "$line")"
-    if [[ -n "$cleaned" ]]; then
-      printf '%s\n' "$cleaned"
-    fi
-  done < "$file_path"
-}
-
-dedupe_keep_first() {
+_dedupe_keep_first() {
   # Keeps first occurrence, removes subsequent duplicates.
   declare -A seen=()
   local pkg
@@ -61,7 +60,7 @@ dedupe_keep_first() {
   done
 }
 
-ensure_there_are_packages() {
+_ensure_there_are_packages() {
   local list_name="$1"
   # shellcheck disable=SC2178
   local -n list_ref="$list_name"

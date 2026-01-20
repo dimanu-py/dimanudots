@@ -3,8 +3,6 @@
 GIT_CONFIG_FILES_DIR="${DIMANUDOTS_DOTFILES}/gitconfig"
 
 setup_git() {
-  echo "Setting up Git configuration..."
-
   _set_username_and_email
   _copy_configuration_files
 }
