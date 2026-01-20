@@ -43,3 +43,9 @@ set_owner() {
 
     chown "$owner" "$file_path"
 }
+
+create_file() {
+  local file_path="$1"
+
+  touch "$file_path"
+}

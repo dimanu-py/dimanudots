@@ -80,6 +80,8 @@ power-profiles-daemon       # Power management profiles (power saving, balanced,
 # DISPLAY (Display manager and themes)
 # ============================================================================
 
+sddm                        # Simple and fast display manager
+
 # -- Fonts --
 ttf-font-awesome            # Font Awesome vector icons
 ttf-cascadia-mono-nerd      # Cascadia Mono font with Nerd Fonts icons
@@ -94,6 +96,7 @@ woff2-font-awesome          # Font Awesome in WOFF2 format
 plymouth                    # Boot splash screen with animations
 
 # -- Themes -- (AUR)
+sddm-sugar-candy            # [AUR] SDDM theme with Sugar Candy design
 catppuccin-gtk-theme-mocha  # [AUR] Catppuccin Mocha GTK theme
 bibata-cursor-theme         # [AUR] Bibata cursor theme
 papirus-icon-theme          # Papirus icon theme
