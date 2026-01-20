@@ -35,3 +35,11 @@ sym_link_file() {
 
     ln -sf "$source_file" "$target_file"
 }
+
+set_owner() {
+    local user="$1"
+    local group="${2:-$user}"
+    local file_path="$3"
+
+    chown "$owner" "$file_path"
+}
