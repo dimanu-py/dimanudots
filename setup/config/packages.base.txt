@@ -104,6 +104,7 @@ sddm-sugar-candy            # [AUR] SDDM theme with Sugar Candy design
 catppuccin-gtk-theme-mocha  # [AUR] Catppuccin Mocha GTK theme
 bibata-cursor-theme         # [AUR] Bibata cursor theme
 papirus-icon-theme          # Papirus icon theme
+yaru-icon-theme             # Yaru icon theme
 
 # ============================================================================
 # HYPRLAND (Wayland compositor and components)
