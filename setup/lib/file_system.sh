@@ -13,8 +13,7 @@ _maybe_sudo() {
 ensure_file_exists() {
     local file_path="$1"
       if [[ ! -f "$file_path" ]]; then
-        echo "Error: file not found: $file_path" >&2
-        return 1
+        die "Error: file not found: $file_path"
       fi
 }
 
