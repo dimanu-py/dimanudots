@@ -69,7 +69,7 @@ bluetui                     # TUI interface for Bluetooth management
 # HARDWARE - Network
 # ============================================================================
 
-networkmanager              # Network connection management daemon
+iwd                         # Internet Wireless Daemon for WiFi management
 network-manager-applet      # System tray applet for NetworkManager
 nm-connection-editor        # Graphical network connection editor
 whois                       # Domain information lookup tool
