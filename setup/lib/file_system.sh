@@ -25,7 +25,7 @@ set_permissions() {
 create_directory_with_permissions() {
   local dir_name="$1"
   local permissions="$2"
-  local sudo_flag="$3"
+  local sudo_flag="${3:--no-sudo}"
 
   create_directory "$dir_name" "$sudo_flag"
   set_permissions "$dir_name" "$permissions" "$sudo_flag"
