@@ -14,7 +14,6 @@ SELECTED_CONFIG_PACKAGES=(
 #  plymouth
 #  sddm
   starship
-  sway
   swaync
   swayosd
   systemd

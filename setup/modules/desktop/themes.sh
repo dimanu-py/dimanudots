@@ -44,8 +44,8 @@ _symlink_themes_to_config_directory() {
 
 _set_initial_theme() {
   create_directory "$CONFIG_THEMES_DIR/active"
-  sym_link_file "$CONFIG_THEMES_DIR/osaka-jade" "$CONFIG_THEMES_DIR/active/theme"
-  sym_link_file "$CONFIG_THEMES_DIR/osaka-jade/2-osaka-jade-bg.jpg" "$CONFIG_THEMES_DIR/active/background"
+  sym_link_file "$CONFIG_THEMES_DIR/tokyo-night" "$CONFIG_THEMES_DIR/active/theme"
+  sym_link_file "$CONFIG_THEMES_DIR/tokyo-night/1-tokyo-night.jpg" "$CONFIG_THEMES_DIR/active/background"
 }
 
 _set_btop_theme() {
