@@ -43,9 +43,9 @@ sym_link_file() {
 
 set_owner() {
   local user="$1"
-  local group="${2:-$user}"
-  local file_path="$3"
+  local file_path="$2"
   local sudo_flag="${4:-$DEFAULT_SUDO_FLAG}"
+  local group="$user"
 
   _maybe_sudo "$sudo_flag" chown "$user:$group" "$file_path"
 }
