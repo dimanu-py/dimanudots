@@ -15,3 +15,14 @@ alias gcm="git commit -m"
 alias gs="git status"
 alias gca="git commit --amend"
 alias gsw="git switch (git branch -a | fzf | sed 's/origin\///')"
+
+alias weather="curl wttr.in"
+
+alias -s md="bat"
+alias -s mov="open"
+alias -s yaml="bat -l yaml"
+alias -s yml="bat -l yaml"
+alias -s json="jless"
+alias -s py="nvim"
+
+alias -g C="| wl-copy"

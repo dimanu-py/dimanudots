@@ -12,6 +12,9 @@ source "${ZINIT_HOME}/zinit.zsh"
 autoload -U compinit && compinit
 zinit cdreplay -q
 
+# Load vitaminated move command
+autoload zmv
+
 # Current plugins
 zinit light zsh-users/zsh-syntax-highlighting
 zinit light zsh-users/zsh-completions

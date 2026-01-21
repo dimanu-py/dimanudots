@@ -1,6 +1,7 @@
 source ~/.config/zsh/history
 source ~/.config/zsh/aliases
 source ~/.config/zsh/init
+source ~/.config/zsh/widgets
 source ~/.config/zsh/functions
 source ~/.config/zsh/plugins
 
