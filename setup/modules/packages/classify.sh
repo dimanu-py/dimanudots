@@ -34,10 +34,10 @@ print_package_summary() {
   local -n _yay_targets="$3"
   local -n _unknown="$4"
 
-  print_list "Already installed" _installed
-  print_list "Will install with pacman" _pacman_targets
-  print_list "Will install with yay" _yay_targets
-  print_list "Unknown package (skipped)" _unknown
+  _print_list "Already installed" _installed
+  _print_list "Will install with pacman" _pacman_targets
+  _print_list "Will install with yay" _yay_targets
+  _print_list "Unknown package (skipped)" _unknown
 }
 
 _is_available_in_yay() {
