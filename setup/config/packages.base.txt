@@ -21,33 +21,6 @@ grub-btrfs                  # GRUB module for Btrfs filesystem support
 inotify-tools               # File system event monitoring tools
 
 # ============================================================================
-# HARDWARE - GPU (Graphics drivers)
-# ============================================================================
-
-# -- NVIDIA --
-nvidia-dkms                 # NVIDIA proprietary drivers with DKMS support
-nvidia-open-dkms            # NVIDIA open-source drivers for better compatibility
-nvidia-utils                # NVIDIA userspace utilities
-lib32-nvidia-utils          # NVIDIA 32-bit libraries for compatibility
-libva-nvidia-driver         # NVIDIA VA-API driver for video acceleration
-
-# -- AMD --
-xf86-video-amdgpu           # Xorg driver for AMD GPUs
-mesa                        # OpenGL implementation and 3D graphics library
-amdgpu                      # AMD GPU support with integrated driver
-lib32-mesa                  # 32-bit Mesa libraries
-vulkan-radeon               # Vulkan support for AMD GPUs
-
-# -- Intel --
-xf86-video-intel            # Xorg driver for Intel integrated GPUs
-vulkan-intel                # Vulkan support for Intel GPUs
-intel-media-driver          # Intel multimedia acceleration driver
-
-# -- Universal --
-dkms                        # Dynamic Kernel Module Support for kernel modules
-hwinfo                      # Hardware information tool
-
-# ============================================================================
 # HARDWARE - Audio
 # ============================================================================
 
@@ -102,8 +75,6 @@ plymouth                    # Boot splash screen with animations
 # -- Themes -- (AUR)
 sddm-sugar-candy            # [AUR] SDDM theme with Sugar Candy design
 catppuccin-gtk-theme-mocha  # [AUR] Catppuccin Mocha GTK theme
-bibata-cursor-theme         # [AUR] Bibata cursor theme
-papirus-icon-theme          # Papirus icon theme
 yaru-icon-theme             # Yaru icon theme
 
 # ============================================================================
