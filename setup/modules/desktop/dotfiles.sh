@@ -31,7 +31,7 @@ apply_dimanu_dotfiles() {
 }
 
 _make_bin_folder_executable() {
-  set_permissions "+x" "$DIMANUDOTS_DOTFILES/local/.local/bin"
+  set_permissions "$DIMANUDOTS_DOTFILES/local/.local/bin" "+x"
 }
 
 _symlink_dotfiles() {
