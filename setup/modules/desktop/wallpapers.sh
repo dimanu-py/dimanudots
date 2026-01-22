@@ -15,7 +15,7 @@ _clone_wallpapers_repository() {
   local wallpapers_repo_url="https://github.com/dimanu-py/wallpapers.git"
   local wallpapers_dir="wallpapers"
 
-  if _is_empty $wallpapers_dir; then
+  if _directory_exists $wallpapers_dir; then
       echo "Wallpapers directory already exists. Skipping clone."
       return 0
   fi
@@ -23,6 +23,6 @@ _clone_wallpapers_repository() {
   git clone "$wallpapers_repo_url" "$wallpapers_dir"
 }
 
-_is_empty() {
+_directory_exists() {
   [ -d "$1" ]
 }
