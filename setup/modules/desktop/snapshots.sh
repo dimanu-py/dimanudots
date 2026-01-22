@@ -58,7 +58,7 @@ _update_grub_menu() {
 }
 
 _regenerate_grub_config() {
-  sudo grup-mkconfig -o /boot/grub/grub.cfg
+  sudo grub-mkconfig -o /boot/grub/grub.cfg
 }
 
 _configure_grub_btrfsd_service_to_work_with_timeshift() {
