@@ -35,7 +35,7 @@ _setup_config_themes() {
 _symlink_themes_to_config_directory() {
   local themes_dir="$DIMANUDOTS_PATH/themes"
 
-  for theme in $(themes_dir/*); do
+  for theme in "$themes_dir"/*; do
     local theme_name
     theme_name=$(basename "$theme")
     sym_link_file "$theme" "$CONFIG_THEMES_DIR/$theme_name"
