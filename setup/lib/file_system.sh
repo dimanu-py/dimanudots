@@ -38,7 +38,7 @@ sym_link_file() {
   local target_file="$2"
   local sudo_flag="${3:-$DEFAULT_SUDO_FLAG}"
 
-  _maybe_sudo "$sudo_flag" ln -sf "$source_file" "$target_file"
+  _maybe_sudo "$sudo_flag" ln -snf "$source_file" "$target_file"
 }
 
 set_owner() {
