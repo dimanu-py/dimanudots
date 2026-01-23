@@ -1,4 +1,4 @@
-@import "../themes/current/waybar.css";
+@import "../themes/active/theme/waybar.css";
 
 * {
   background-color: @background;
