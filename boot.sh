@@ -24,7 +24,7 @@ _git_is_installed() {
 }
 
 _make_install_script_executable() {
-    chmod +x ./install.sh
+    chmod +x $CLONE_DIR/install.sh
 }
 
 _clone_dotfiles_repo() {
