@@ -10,6 +10,7 @@ alias ff="fzf --preview 'bat --style=numbers --color=always {}'"
 alias cd="z"
 alias ..="cd .."
 
+alias gp="git pull"
 alias ga="git add"
 alias gcm="git commit -m"
 alias gs="git status"
