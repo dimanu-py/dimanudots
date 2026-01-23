@@ -55,7 +55,7 @@
   verbose = true
 
 [branch]
-  sort = -commiterdate
+  sort = -committerdate
 
 [tag]
   sort = -version:refname
