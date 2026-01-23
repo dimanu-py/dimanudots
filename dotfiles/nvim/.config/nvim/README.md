@@ -1,7 +1,7 @@
-![Neovim](./neovim.png)
+![Neovim](neovim.png)
 
 ***Language***
-- [🇪🇸 Español](./README.es.md)
+- [🇪🇸 Español](README.es.md)
 - 🇺🇸 English
 
 

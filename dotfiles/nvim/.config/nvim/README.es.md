@@ -1,4 +1,4 @@
-![Neovim](./neovim.png)
+![Neovim](neovim.png)
 
 ***Idioma***
 - 🇪🇸 Español

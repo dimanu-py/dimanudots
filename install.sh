@@ -7,7 +7,7 @@ set -euo pipefail
 
 export DIMANUDOTS_PATH="$HOME/.local/share/dimanudots"
 export DIMANUDOTS_SCRIPTS="$DIMANUDOTS_PATH/setup"
-export DIMANUDOTS_DOTFILES="$DIMANUDOTS_PATH/files/dotfiles"
+export DIMANUDOTS_DOTFILES="$DIMANUDOTS_PATH/dotfiles"
 
 source "$DIMANUDOTS_SCRIPTS/lib/main.sh"
 source "$DIMANUDOTS_SCRIPTS/modules/main.sh"
