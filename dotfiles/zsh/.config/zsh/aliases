@@ -9,6 +9,7 @@ alias cat="bat --style=plain --paging=never"
 alias ff="fzf --preview 'bat --style=numbers --color=always {}'"
 alias cd="z"
 alias ..="cd .."
+alias dots="cd $HOME/.local/share/dimanudots"
 
 alias gp="git pull"
 alias ga="git add"
