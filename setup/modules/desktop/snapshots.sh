@@ -62,7 +62,7 @@ _regenerate_grub_config() {
 }
 
 _configure_grub_btrfsd_service_to_work_with_timeshift() {
-  local service_file="/etc/systemd/system/grub-btrfsd.service"
+  local service_file="/usr/lib/systemd/system/grub-btrfsd.service"
 
   ensure_file_exists "$service_file"
 
