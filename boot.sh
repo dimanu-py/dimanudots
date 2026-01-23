@@ -6,7 +6,6 @@ CLONE_DIR="$HOME/.local/share/dimanudots"
 
 begin_dotfiles_installation() {
     _install_git
-    _make_install_script_executable
     _clone_dotfiles_repo
     echo -e "\nInstallation of dimanudots starting..."
     source "$CLONE_DIR/install.sh"
@@ -21,10 +20,6 @@ _install_git() {
 
 _git_is_installed() {
     command -v git >/dev/null 2>&1
-}
-
-_make_install_script_executable() {
-    chmod +x ./install.sh
 }
 
 _clone_dotfiles_repo() {
