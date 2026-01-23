@@ -50,16 +50,29 @@ _run_step() {
         step_30_development_tools
         ;;
       -h|--help)
-        usage
+        _usage
         return 0
         ;;
       *)
         echo "Unknown step: $step"
-        usage
+        _usage
         return 1
         ;;
   esac
 }
 
+_usage() {
+    cat <<'EOF'
+Usage: install.sh [steps...]
+
+Available steps:
+  packages
+  desktop
+  dotfiles
+  development-tools
+
+If no steps are provided, all steps will run in order.
+EOF
+}
 
 run_steps
