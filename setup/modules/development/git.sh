@@ -8,8 +8,8 @@ setup_git() {
 }
 
 _set_username_and_email() {
-  set -e "Enter your Git username: " git_username
-  set -e "Enter your Git email: " git_email
+  read -p "Enter your Git username: " git_username
+  read -p "Enter your Git email: " git_email
 
   _config_git "user.name" "${git_username}"
   _config_git "user.email" "${git_email}"
