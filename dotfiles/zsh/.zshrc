@@ -4,3 +4,5 @@ source ~/.config/zsh/config
 
 # opencode
 export PATH=/home/dimanu/.opencode/bin:$PATH
+
+. "$HOME/.local/bin/env"
