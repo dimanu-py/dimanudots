@@ -15,10 +15,10 @@ source "$DIMANUDOTS_SCRIPTS/steps/main.sh"
 
 run_steps() {
   local all_steps=(
-    step_10_packages
-    step_15_dotfiles
-    step_20_desktop
-    step_30_development_tools
+    packages
+    dotfiles
+    desktop
+    development-tools
   )
   local steps_to_run=("$@")
 
