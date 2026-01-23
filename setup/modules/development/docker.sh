@@ -1,6 +1,5 @@
 #!/bin/bash
 
-USER_TO_ADD="${1:-$USER}"
 DOCKER_DAEMON_DIR="/etc/docker"
 
 setup_docker() {
@@ -42,5 +41,5 @@ _ensure_docker_group_exists() {
 }
 
 _add_user_to_docker_group() {
-  sudo usermod -aG docker "$USER_TO_ADD"
+  sudo usermod -aG docker "$USER"
 }
