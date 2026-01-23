@@ -6,6 +6,4 @@ install_uv() {
   eval "$UV_INSTALL_COMMAND"
 
   source "$HOME/.cargo/env" 2>/dev/null || true
-
-  verify_command_exists uv
 }
