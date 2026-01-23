@@ -173,6 +173,7 @@ github-cli                  # CLI application for GitHub management
 # ============================================================================
 
 fzf                         # Command-line fuzzy finder
+eza                         # Modern replacement for ls
 fd                          # Fast find alternative with better defaults
 ripgrep                     # Ultra-fast text search tool (rg)
 zoxide                      # [AUR] Smart directory navigation (improved z)
