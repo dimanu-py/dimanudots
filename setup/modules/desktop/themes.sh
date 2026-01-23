@@ -46,7 +46,7 @@ _set_initial_theme() {
   create_directory "$CONFIG_THEMES_DIR/active"
   create_directory "$CONFIG_THEMES_DIR/active/theme"
   create_directory "$CONFIG_THEMES_DIR/active/background"
-  sym_link_file "$CONFIG_THEMES_DIR/tokyo-night" "$CONFIG_THEMES_DIR/active/theme"
+  sym_link_file "$CONFIG_THEMES_DIR/tokyo-night/*" "$CONFIG_THEMES_DIR/active/theme"
   sym_link_file "$CONFIG_THEMES_DIR/tokyo-night/backgrounds/1-tokyo-night.jpg" "$CONFIG_THEMES_DIR/active/background"
 }
 
