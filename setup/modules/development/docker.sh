@@ -12,7 +12,7 @@ setup_docker() {
 }
 
 _ensure_docker_dir_exists() {
-  create_directory_with_permissions "$DOCKER_DAEMON_DIR" "0755"
+  create_directory_with_permissions "$DOCKER_DAEMON_DIR" "0755" --sudo
 }
 
 _limit_docker_log_size() {
