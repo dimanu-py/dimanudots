@@ -22,7 +22,7 @@ run_steps() {
   )
   local steps_to_run=("$@")
 
-  if _no_steps_are_specified "${steps_to_run[@]}"; then
+  if _no_steps_are_specified "${#steps_to_run[@]}"; then
     steps_to_run=("${all_steps[@]}")
   fi
 
@@ -32,7 +32,7 @@ run_steps() {
 }
 
 _no_steps_are_specified() {
-  [[ $# -eq 0 ]]
+  [[ $1 -eq 0 ]]
 }
 
 _run_step() {
@@ -75,4 +75,4 @@ If no steps are provided, all steps will run in order.
 EOF
 }
 
-run_steps
+run_steps "$@"
