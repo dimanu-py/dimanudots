@@ -9,10 +9,11 @@ set_initial_power_profile() {
         powerprofilesctl set balanced || true
     else
         powerprofilesctl set performance || true
+    fi
 }
 
 enable_battery_watchdog_timer() {
-    systemctl --user enable --now battery-watchdog.timer
+    systemctl --user enable --now battery-monitor.timer
 }
 
 set_initial_power_profile
