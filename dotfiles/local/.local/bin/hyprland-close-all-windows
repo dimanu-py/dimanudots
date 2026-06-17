@@ -5,7 +5,7 @@ get_all_windows_addresses() {
 }
 
 close_window() {
-    xarg -I{} hyprctl dispatch closewindow address:{}
+    xargs -I{} hyprctl dispatch closewindow address:{}
 }
 
 close_all_windows() {
