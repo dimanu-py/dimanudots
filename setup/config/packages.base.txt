@@ -105,6 +105,7 @@ swaync                      # Lightweight notification daemon for Wayland
 swaybg                      # Static wallpaper management tool
 wl-clipboard                # Wayland clipboard management utility
 wl-clip-persist             # Persistent clipboard history for Wayland
+wtype                       # Wayland keystroke injection for automation
 uwsm                        # Wayland session manager
 
 # -- Walker application launcher -- (AUR)

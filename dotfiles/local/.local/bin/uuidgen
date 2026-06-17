@@ -1,0 +1,61 @@
+#!/bin/bash
+
+generate_uuid_v4() {
+    uuidgen -r
+}
+
+generate_uuid_v7() {
+    uuidgen -7
+}
+
+pick_uuid_version() {
+    printf "UUID v4 (random)\nUUID v7 (time-ordered)" | launch-walker --dmenu -p "Pick UUID version"
+}
+
+extract_version_from_choice() {
+    local choice="$1"
+    if [[ "$choice" == *"v7"* ]]; then
+        echo "v7"
+    else
+        echo "v4"
+    fi
+}
+
+generate_uuid() {
+    local version="$1"
+    case "$version" in
+        v7) generate_uuid_v7 ;;
+        *) generate_uuid_v4 ;;
+    esac
+}
+
+copy_to_clipboard() {
+    local uuid="$1"
+    echo -n "$uuid" | wl-copy
+}
+
+type_at_cursor() {
+    local text="$1"
+    wtype "$text"
+}
+
+pick_version() {
+    local choice
+    choice=$(pick_uuid_version)
+    extract_version_from_choice "$choice"
+}
+
+main() {
+    local version
+    version=$(pick_version)
+
+    [[ -z "$version" ]] && exit 1
+
+    local uuid
+    uuid=$(generate_uuid "$version")
+
+    copy_to_clipboard "$uuid"
+    type_at_cursor "$uuid"
+}
+
+main
