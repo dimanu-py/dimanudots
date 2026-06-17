@@ -5,7 +5,7 @@ is_elephant_running() {
 }
 
 start_elephant() {
-    setsid uswm-app -- elephant &
+    setsid uwsm-app -- elephant &
 }
 
 ensure_elephant_is_running() {
@@ -19,7 +19,7 @@ is_walker_service_running() {
 }
 
 start_walker_service() {
-    setsid uswm-app -- walker --gapplication-service &
+    setsid uwsm-app -- walker --gapplication-service &
 }
 
 ensure_walker_service_is_running() {

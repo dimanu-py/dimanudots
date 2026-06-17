@@ -9,7 +9,7 @@ stop_hypridle() {
 }
 
 start_hypridle() {
-    uswm-app -- hypridle > /dev/null 2>&1 &
+    uwsm-app -- hypridle > /dev/null 2>&1 &
 }
 
 notify() {
