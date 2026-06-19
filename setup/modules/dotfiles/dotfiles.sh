@@ -6,6 +6,7 @@ SELECTED_CONFIG_PACKAGES=(
   elephant
   fastfetch
   fcitx5
+  flameshot
   ghostty
   hyprland
   ivm

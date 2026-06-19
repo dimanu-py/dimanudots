@@ -255,6 +255,7 @@ fcitx-gtk                   # Input method integration for GTK
 # APPLICATIONS - Screenshots
 # ============================================================================
 
+grim                        # Screenshot utility for Wayland
 imagemagick                 # Image manipulation and conversion suite
 flameshot                   # [AUR] Screenshot tool with annotations
 kvantum                     # [AUR] SVG theme engine for Qt
