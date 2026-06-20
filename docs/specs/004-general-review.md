@@ -34,12 +34,15 @@ Each section corresponds to a future task that can be fixed independently. After
 
 ### ~~1.3 `battery-monitor.service` — Wrong ExecStart path~~ ✅ FIXED
 
-### 1.4 `hyprland-monitor-watch.service` — Non-existent script
+### 1.4 `hyprland-monitor-watch.service` — Non-existent script (partially fixed)
 
 - **Severity**: ERROR
 - **File**: `dotfiles/systemd/.config/systemd/user/hyprland-monitor-watch.service:6`
-- **Issue**: `ExecStart=/home/dimanu/.config/hypr/conf/monitors/monitor_watchdog.sh` — this file does not exist anywhere in the repo. The whole service is dead.
-- **Fix**: Either create the watchdog script, update to point to a real script, or remove the service entirely.
+- **Issue**: The hardcoded `/home/dimanu/` path was replaced with `~/.config/hypr/...`. However:
+  - `~` is not expanded in systemd unit file `ExecStart` paths — the path is taken literally
+  - The script `monitor_watchdog.sh` still does not exist anywhere in the repo
+  - The service is still dead
+- **Fix**: Use `%h/.config/...` (systemd user unit specifier for home) instead of `~/.config/...`. Either create the watchdog script, point to a real script, or remove the service entirely.
 
 ### ~~1.5 `toggle-idle` — Typo: `uswm-app` → `uwsm-app`~~ ✅ FIXED
 
@@ -274,7 +277,54 @@ Each section corresponds to a future task that can be fixed independently. After
 
 ---
 
-## Priority Order for Fixing
+## 10. Setup Module Errors — Snapshots
+
+### 10.1 `snapshots.sh` — `timeshift --btrfs` is interactive, will hang on fresh install
+
+- **Severity**: ERROR
+- **File**: `setup/modules/desktop/snapshots.sh:31`
+- **Issue**: `sudo timeshift --btrfs` runs timeshift in interactive mode. On a fresh system with no timeshift config, it will prompt the user to select a snapshot device/location. The setup script is non-interactive, so this command hangs indefinitely.
+- **Fix**: Pre-place a pre-configured `timeshift.json` at `/etc/timeshift/timeshift.json` (using the existing `setup/config/timeshift-example.json` as a template) before running `timeshift --btrfs`, so it runs non-interactively.
+
+### 10.2 `snapshots.sh` — Unquoted variable in filesystem check
+
+- **Severity**: WARNING
+- **File**: `setup/modules/desktop/snapshots.sh:12`
+- **Issue**: `_file_system_is_not_btrfs $file_path` — `$file_path` is not quoted. If this function is ever called with a path containing spaces (e.g., a bind mount), the argument will split.
+- **Fix**: Change to `_file_system_is_not_btrfs "$file_path"`.
+
+### 10.3 `snapshots.sh` — Runs grub hook script directly
+
+- **Severity**: ERROR
+- **File**: `setup/modules/desktop/snapshots.sh:57`
+- **Issue**: `sudo /etc/grub.d/41_snapshots-btrfs` runs the grub-btrfs hook directly. This script is designed to be called by `grub-mkconfig`, not executed standalone. Running it directly may produce unexpected output or errors. Additionally, the script may not exist or be executable if the `grub-btrfs` package is not installed.
+- **Fix**: Remove this direct call — `grub-mkconfig` on line 61 already invokes all hooks in `/etc/grub.d/`. Or, if a separate step is needed, use `bash /etc/grub.d/41_snapshots-btrfs` and add a package check for `grub-btrfs`.
+
+### 10.4 `snapshots.sh` — No prerequisite package checks
+
+- **Severity**: WARNING
+- **File**: `setup/modules/desktop/snapshots.sh:31,57,61,67`
+- **Issue**: The script calls `timeshift`, `grub-mkconfig`, and references `/etc/grub.d/41_snapshots-btrfs` and `/etc/systemd/system/grub-btrfsd.service` without verifying the required packages are installed (`timeshift`, `grub-btrfs`, `grub`).
+- **Fix**: Add checks that required commands exist before running them, or ensure these packages are listed as dependencies earlier in the setup.
+
+### 10.5 `snapshots.sh` — JSON editing with sed is fragile
+
+- **Severity**: WARNING
+- **File**: `setup/modules/desktop/snapshots.sh:39-46`
+- **Issue**: `sudo sed -i` modifies `/etc/timeshift/timeshift.json` using regex substitutions. JSON is not a regular language — sed patterns can break if:
+  - Key names or value formats differ across timeshift versions
+  - The JSON formatting changes (e.g., different indentation)
+  - New keys are added between existing ones
+- **Fix**: Use `jq` for JSON manipulation, or use the pre-configured `timeshift-example.json` template directly.
+
+### 10.6 `snapshots.sh` — Never uses the existing `timeshift-example.json` template
+
+- **Severity**: SUGGESTION
+- **File**: `setup/config/timeshift-example.json` (unused)
+- **Issue**: A pre-configured `timeshift.json` template exists at `setup/config/timeshift-example.json` but is never referenced by the snapshots setup script. It could be used to bootstrap the timeshift config non-interactively.
+- **Fix**: Either use the template in `snapshots.sh` (copy to `/etc/timeshift/timeshift.json` before calling `timeshift --btrfs`), or remove the orphaned file.
+
+---
 
 | Priority | Issue | Status | Effort |
 |----------|-------|--------|--------|
@@ -286,7 +336,7 @@ Each section corresponds to a future task that can be fixed independently. After
 | P0 | 1.11 `autostart.conf` `uwsm app` typo | ✅ FIXED | — |
 | P0 | 4.1 `.zshrc` hardcoded path | ✅ FIXED | — |
 | P1 | 1.2-1.3 Wrong timer/service names | ✅ FIXED | — |
-| P1 | 1.4 Dead systemd service | ⏸️ SKIPPED | — |
+| P1 | 1.4 Dead systemd service | ⏸️ PARTIALLY FIXED | — |
 | P1 | 2.1 `uuidgen.sh` X11 tool | ✅ FIXED | — |
 | P1 | 5.1 Missing `wtype`/`grim` packages | ✅ FIXED | — |
 | P1 | 4.2 `.gitconfig` hardcoded path | ✅ FIXED | — |
@@ -300,6 +350,12 @@ Each section corresponds to a future task that can be fixed independently. After
 | P3 | 8.2 `.gitignore` improvements (bakup, .env) | 🔴 OPEN | 5 min |
 | P3 | 8.3 `boot.sh` unquoted variable | 🔴 OPEN | 1 line |
 | P4 | 9.1-9.7 Minor issues | 🔴 OPEN | Various |
+| P1 | 10.1 Snapshots — timeshift interactive | 🔴 OPEN | 1 file |
+| P1 | 10.3 Snapshots — grub hook direct call | 🔴 OPEN | 1 line |
+| P2 | 10.2 Snapshots — unquoted variable | 🔴 OPEN | 1 line |
+| P2 | 10.4 Snapshots — missing package checks | 🔴 OPEN | 5 lines |
+| P2 | 10.5 Snapshots — fragile JSON editing | 🔴 OPEN | 5 lines |
+| P3 | 10.6 Snapshots — unused template file | 🔴 OPEN | 1 line |
 
 ---
 
