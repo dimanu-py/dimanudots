@@ -28,44 +28,11 @@ Each section corresponds to a future task that can be fixed independently. After
 
 ## 1. Shell Script Errors
 
-### 1.1 `monitor-battery` — Missing `fi` (syntax error)
+### ~~1.1 `monitor-battery` — Missing `fi` (syntax error)~~ ✅ FIXED
 
-- **Severity**: ERROR
-- **File**: `dotfiles/local/.local/bin/monitor-battery:12`
-- **Issue**: The `set_initial_power_profile()` function is missing the closing `fi` for the `if` block, and the function closing `}` is misplaced. `bash -n` confirms a syntax error.
-- **Current code** (lines 7-12):
-  ```bash
-  set_initial_power_profile() {
-      if runs_on_battery; then
-          powerprofilesctl set balanced || true
-      else
-          powerprofilesctl set performance || true
-  }
-  ```
-- **Fix**: Add `fi` before `}`:
-  ```bash
-  set_initial_power_profile() {
-      if runs_on_battery; then
-          powerprofilesctl set balanced || true
-      else
-          powerprofilesctl set performance || true
-      fi
-  }
-  ```
+### ~~1.2 `monitor-battery` — Wrong timer name~~ ✅ FIXED
 
-### 1.2 `monitor-battery` — Wrong timer name
-
-- **Severity**: ERROR
-- **File**: `dotfiles/local/.local/bin/monitor-battery:15`
-- **Issue**: Calls `systemctl --user enable --now battery-watchdog.timer` but the actual systemd file is named `battery-monitor.timer`.
-- **Fix**: Change to `systemctl --user enable --now battery-monitor.timer`.
-
-### 1.3 `battery-monitor.service` — Wrong ExecStart path
-
-- **Severity**: ERROR
-- **File**: `dotfiles/systemd/.config/systemd/user/battery-monitor.service:7`
-- **Issue**: `ExecStart=%h/.local/share/dimanu/bin/battery-monitor` — this path does not exist. The actual script is at `~/.local/bin/monitor-battery`.
-- **Fix**: Change to `ExecStart=%h/.local/bin/monitor-battery`.
+### ~~1.3 `battery-monitor.service` — Wrong ExecStart path~~ ✅ FIXED
 
 ### 1.4 `hyprland-monitor-watch.service` — Non-existent script
 
@@ -74,58 +41,27 @@ Each section corresponds to a future task that can be fixed independently. After
 - **Issue**: `ExecStart=/home/dimanu/.config/hypr/conf/monitors/monitor_watchdog.sh` — this file does not exist anywhere in the repo. The whole service is dead.
 - **Fix**: Either create the watchdog script, update to point to a real script, or remove the service entirely.
 
-### 1.5 `toggle-idle` — Typo: `uswm-app` → `uwsm-app`
+### ~~1.5 `toggle-idle` — Typo: `uswm-app` → `uwsm-app`~~ ✅ FIXED
 
-- **Severity**: ERROR
-- **File**: `dotfiles/local/.local/bin/toggle-idle:12`
-- **Issue**: `uswm-app -- hypridle` — missing the `w` in `uwsm`.
-- **Fix**: Change to `uwsm-app -- hypridle`.
+### ~~1.6 `take-screenshot` — Typo: `uswm-app` → `uwsm-app`~~ ✅ FIXED
 
-### 1.6 `take-screenshot` — Typo: `uswm-app` → `uwsm-app`
+### ~~1.7 `launch-walker` — Typo: `uswm-app` → `uwsm-app` (two instances)~~ ✅ FIXED
 
-- **Severity**: ERROR
-- **File**: `dotfiles/local/.local/bin/take-screenshot:8`
-- **Issue**: `uswm-app -- flameshot` — missing the `w`.
-- **Fix**: Change to `uwsm-app -- flameshot`.
+### ~~1.8 `launch-floating-terminal-with-presentation` — `show_done` not available in zsh context~~ ✅ FIXED
 
-### 1.7 `launch-walker` — Typo: `uswm-app` → `uwsm-app` (two instances)
+### ~~1.9 `hyprland-close-all-windows` — Typo: `xarg` → `xargs`~~ ✅ FIXED
 
-- **Severity**: ERROR
-- **File**: `dotfiles/local/.local/bin/launch-walker:8,22`
-- **Issue**: Both `start_elephant()` and `start_walker_service()` use `uswm-app` instead of `uwsm-app`.
-- **Fix**: Replace both occurrences with `uwsm-app`.
+### ~~1.10 `autostart.conf` — Typo: `systemclt` → `systemctl`~~ ✅ FIXED
 
-### 1.8 `launch-floating-terminal-with-presentation` — Undefined variable `$cmd`
-
-- **Severity**: ERROR
-- **File**: `dotfiles/local/.local/bin/launch-floating-terminal-with-presentation:10`
-- **Issue**: `command="$*"` sets `$command`, but line 10 references `$cmd` (undefined). Also line 7 has `gum sping` instead of `gum spin`.
-- **Fix**: Change `$cmd` to `$command` and `sping` to `spin`.
-
-### 1.9 `hyprland-close-all-windows` — Typo: `xarg` → `xargs`
-
-- **Severity**: ERROR
-- **File**: `dotfiles/local/.local/bin/hyprland-close-all-windows:8`
-- **Issue**: `xarg` is not a valid command.
-- **Fix**: Change to `xargs` (the full `xargs` pipeline also needs fixing — `close_window` is a separate function that should use `xargs` directly).
-
-### 1.10 `autostart.conf` — Typo: `systemclt` → `systemctl`
-
-- **Severity**: ERROR
-- **File**: `dotfiles/hyprland/.config/hypr/config/autostart.conf:13`
-- **Issue**: `systemclt --user import-environment` — missing the `s`.
-- **Fix**: Change to `systemctl --user import-environment`.
+### ~~1.11 `autostart.conf` — Typo: `uwsm app` → `uwsm-app`~~ ✅ FIXED
 
 ---
 
 ## 2. X11 Compatibility Issues in Wayland Environment
 
-### 2.1 `uuidgen.sh` — Uses `xdotool` (X11)
+### ~~2.1 `uuidgen.sh` — Uses `xdotool` (X11)~~ ✅ FIXED
 
-- **Severity**: ERROR
-- **File**: `dotfiles/local/.local/bin/uuidgen.sh:7`
-- **Issue**: `xdotool type "$uuid"` fails on Wayland. Already handled in [spec 002](./002-uuidgen-script.md).
-- **Fix**: Replace with `wtype "$uuid"`. Add `wtype` to `packages.base.txt`.
+- Rewritten as `dotfiles/local/.local/bin/uuidgen` using `wtype` and `wl-copy`. The old `uuidgen.sh` no longer exists.
 
 ---
 
@@ -156,15 +92,14 @@ Each section corresponds to a future task that can be fixed independently. After
   dotfiles/vs-code/.config/Code/Preferences
   ```
 
-### 3.2 `non-executable scripts` — Missing +x permission
+### 3.2 `non-executable scripts` — Missing +x permission (partially fixed)
 
 - **Severity**: WARNING
 - **Files**:
-  - `dotfiles/local/.local/bin/env`
-  - `dotfiles/local/.local/bin/env.fish`
-  - `dotfiles/local/.local/bin/monitor-battery`
-- **Issue**: Files have permissions `644` instead of `755`. They will not be executable after stow deployment (unless `dotfiles.sh` handles this — check `make_executable` logic).
-- **Fix**: Run `chmod +x` on these files in the repo.
+  - ~~`dotfiles/local/.local/bin/monitor-battery`~~ ✅ FIXED
+  - `dotfiles/local/.local/bin/env` — left as-is (sourced, not executed)
+  - `dotfiles/local/.local/bin/env.fish` — left as-is (sourced, not executed)
+- **Issue**: `monitor-battery` was missing +x. `env` and `env.fish` are sourced, not executed, so left as 644.
 
 ### 3.3 `env` and `env.fish` — Should these be executable?
 
@@ -173,12 +108,9 @@ Each section corresponds to a future task that can be fixed independently. After
 - **Issue**: These are PATH setup scripts. `env` is sourced by `.zshrc`, not executed directly. Making them executable is harmless but unnecessary.
 - **Fix**: Confirm intent. If they should only be sourced, leave as-is (but then 3.2 doesn't apply to them).
 
-### 3.4 Sway config files (dead code)
+### ~~3.4 Sway config files (dead code)~~ ✅ FIXED
 
-- **Severity**: WARNING
-- **Directory**: `dotfiles/sway/`
-- **Issue**: Contains legacy Sway config files (`appearance.conf`, `bar.conf`, `keybindings.conf`, `config.bakup`). The system uses Hyprland now. `config.bakup` is also tracked in git unnecessarily.
-- **Fix**: Remove `dotfiles/sway/` entirely, or keep as reference but exclude from stowing and document.
+- Removed `dotfiles/sway/` directory.
 
 ### 3.5 SDDM and Plymouth stow packages commented out
 
@@ -191,19 +123,9 @@ Each section corresponds to a future task that can be fixed independently. After
 
 ## 4. Path Hardcoding Issues
 
-### 4.1 `.zshrc` — Hardcoded `/home/dimanu/` path
+### ~~4.1 `.zshrc` — Hardcoded `/home/dimanu/` path~~ ✅ FIXED
 
-- **Severity**: ERROR
-- **File**: `dotfiles/zsh/.zshrc:6`
-- **Issue**: `export PATH=/home/dimanu/.opencode/bin:$PATH` — will break for any other user.
-- **Fix**: Change to `export PATH=$HOME/.opencode/bin:$PATH`.
-
-### 4.2 `.gitconfig` — Hardcoded `/home/dimanu/` path
-
-- **Severity**: WARNING
-- **File**: `dotfiles/gitconfig/.gitconfig:8`
-- **Issue**: `excludesfile = /home/dimanu/.gitignore` — hardcoded.
-- **Fix**: Change to `excludesfile = ~/.gitignore`.
+### ~~4.2 `.gitconfig` — Hardcoded `/home/dimanu/` path~~ ✅ FIXED
 
 ### 4.3 VS Code `settings.json` — Stale workspace path
 
@@ -222,12 +144,9 @@ Each section corresponds to a future task that can be fixed independently. After
 
 ## 5. Package Management Issues
 
-### 5.1 Missing `wtype` package
+### ~~5.1 Missing `wtype` package~~ ✅ FIXED
 
-- **Severity**: ERROR
-- **File**: `setup/config/packages.base.txt`
-- **Issue**: `wtype` (Wayland keystroke injection, needed by `uuidgen.sh`) is not in the package list.
-- **Fix**: Add `wtype` to `packages.base.txt`.
+- `wtype` and `grim` have been added to `packages.base.txt`.
 
 ### 5.2 Potentially invalid AUR package names
 
@@ -378,27 +297,30 @@ Each section corresponds to a future task that can be fixed independently. After
 
 ## Priority Order for Fixing
 
-| Priority | Issue | Effort |
-|----------|-------|--------|
-| P0 | 1.1 `monitor-battery` syntax error (shell breaks) | 1 line |
-| P0 | 1.5-1.7 `uswm-app` typos (3 scripts broken) | 1 min each |
-| P0 | 1.8 `$cmd` undefined (script silently fails) | 1 line |
-| P0 | 1.9 `xarg` typo (script silently fails) | 1 line |
-| P0 | 1.10 `systemclt` typo (env import fails) | 1 line |
-| P0 | 4.1 `.zshrc` hardcoded path (breaks for others) | 1 line |
-| P1 | 1.2-1.3 Wrong timer/service names | 2 files |
-| P1 | 1.4 Dead systemd service | 1 file |
-| P1 | 2.1 `uuidgen.sh` X11 tool (Wayland fix) | Already spec'd |
-| P1 | 5.1 Missing `wtype` package | 1 line |
-| P1 | 4.2 `.gitconfig` hardcoded path | 1 line |
-| P2 | 3.1 VS Code runtime garbage cleanup | 30 min |
-| P2 | 3.5 Commented-out stow packages | 5 min |
-| P2 | 6.1-6.5 Theme/config issues | Various |
-| P2 | 7.1 `is_in_aur()` variable scoping | 2 lines |
-| P3 | 8.1 Large binaries in git | 10 min |
-| P3 | 8.2 `.gitignore` improvements | 10 min |
-| P3 | 3.4 Sway dead code | 5 min |
-| P4 | 9.1-9.7 Minor issues | Various |
+| Priority | Issue | Status | Effort |
+|----------|-------|--------|--------|
+| P0 | 1.1 `monitor-battery` syntax error | ✅ FIXED | — |
+| P0 | 1.5-1.7 `uswm-app` typos | ✅ FIXED | — |
+| P0 | 1.8 `show_done` not available in zsh context | ✅ FIXED | — |
+| P0 | 1.9 `xarg` typo | ✅ FIXED | — |
+| P0 | 1.10 `systemclt` typo | ✅ FIXED | — |
+| P0 | 1.11 `autostart.conf` `uwsm app` typo | ✅ FIXED | — |
+| P0 | 4.1 `.zshrc` hardcoded path | ✅ FIXED | — |
+| P1 | 1.2-1.3 Wrong timer/service names | ✅ FIXED | — |
+| P1 | 1.4 Dead systemd service | ⏸️ SKIPPED | — |
+| P1 | 2.1 `uuidgen.sh` X11 tool | ✅ FIXED | — |
+| P1 | 5.1 Missing `wtype`/`grim` packages | ✅ FIXED | — |
+| P1 | 4.2 `.gitconfig` hardcoded path | ✅ FIXED | — |
+| P2 | 3.1 VS Code runtime garbage cleanup | 🔴 OPEN | 30 min |
+| P2 | 3.2 Non-executable scripts (+x perms) | ✅ FIXED | — |
+| P2 | 3.4 Sway dead code | ✅ FIXED | — |
+| P2 | 3.5 Commented-out stow packages | 🔴 OPEN | 5 min |
+| P2 | 6.1-6.5 Theme/config issues | 🔴 OPEN | Various |
+| P2 | 7.1 `is_in_aur()` variable scoping | 🔴 OPEN | 2 lines |
+| P3 | 8.1 Large binaries in git | 🔴 OPEN | 10 min |
+| P3 | 8.2 `.gitignore` improvements | 🔴 OPEN | 10 min |
+| P3 | 8.3 `boot.sh` unquoted variable | 🔴 OPEN | 1 line |
+| P4 | 9.1-9.7 Minor issues | 🔴 OPEN | Various |
 
 ---
 
