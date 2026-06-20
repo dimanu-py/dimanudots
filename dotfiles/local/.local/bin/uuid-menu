@@ -1,0 +1,42 @@
+#!/bin/bash
+set -euo pipefail
+
+show_menu() {
+    printf 'V4\nV7\n' | launch-walker --dmenu --width 240 --minheight 1 --maxheight 180 -p 'UUID version' 2>/dev/null
+}
+
+generate_uuid_v4() {
+    uuidgen -r
+}
+
+generate_uuid_v7() {
+    uuidgen -7
+}
+
+copy_and_type_uuid() {
+    local uuid=$1
+
+    printf '%s' "$uuid" | wl-copy
+    wtype "$uuid"
+}
+
+main() {
+    local version uuid
+
+    version=$(show_menu || true)
+
+    case "$version" in
+        V4)
+            uuid=$(generate_uuid_v4)
+            ;;
+        V7)
+            uuid=$(generate_uuid_v7)
+            ;;
+        *)
+            exit 0
+            ;;
+    esac
+    copy_and_type_uuid "$uuid"
+}
+
+main
