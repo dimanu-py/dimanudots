@@ -31,3 +31,11 @@ Thumbs.db
 # Secrets (should be encrypted anyway, but double protection)
 secrets.yml
 .vault/decrypted/
+
+# VS Code — ignore all runtime garbage, keep only config that matters
+dotfiles/vs-code/.config/Code/*
+!dotfiles/vs-code/.config/Code/User/
+dotfiles/vs-code/.config/Code/User/*
+!dotfiles/vs-code/.config/Code/User/settings.json
+!dotfiles/vs-code/.config/Code/User/keybindings.json
+!dotfiles/vs-code/.config/Code/User/snippets/

@@ -64,10 +64,6 @@
     // Navigation
     "breadcrumbs.symbolPath": "off",
     "editor.dragAndDrop": false,
-    // Atlassian
-    "yaml.schemas": {
-        "file:///home/dmartinez/.vscode/extensions/atlassian.atlascode-3.0.10/resources/schemas/pipelines-schema.json": "bitbucket-pipelines.yml"
-    },
     // Distractions
     "focus.highlightRange": "block",
     "editor.overviewRulerBorder": false,

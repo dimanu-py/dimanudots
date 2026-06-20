@@ -67,30 +67,9 @@ Each section corresponds to a future task that can be fixed independently. After
 
 ## 3. Dotfile Issues
 
-### 3.1 VS Code directory — 389 files of runtime garbage
+### ~~3.1 VS Code directory — Runtime garbage~~ ✅ FIXED
 
-- **Severity**: WARNING
-- **File**: `dotfiles/vs-code/.config/Code/` (entire directory)
-- **Issue**: Contains 187+ log files, Chromium caches (LevelDB, vscdb), Session Storage, Local Storage, Crashpad, Cookies, GPUCache, Dawn caches, and other machine-specific runtime data. This bloats the repo (~hundreds of MB) and contains machine-specific state that should never be in a dotfile repo.
-- **Fix**: Keep only `User/settings.json`, `User/keybindings.json`, and optionally `User/snippets/`. Add comprehensive VS Code ignore patterns to `.gitignore`:
-  ```
-  dotfiles/vs-code/.config/Code/Cache/
-  dotfiles/vs-code/.config/Code/Cached*/
-  dotfiles/vs-code/.config/Code/logs/
-  dotfiles/vs-code/.config/Code/*.vscdb*
-  dotfiles/vs-code/.config/Code/blob_storage/
-  dotfiles/vs-code/.config/Code/Local Storage/
-  dotfiles/vs-code/.config/Code/Session Storage/
-  dotfiles/vs-code/.config/Code/GPUCache/
-  dotfiles/vs-code/.config/Code/Dawn*/
-  dotfiles/vs-code/.config/Code/Crashpad/
-  dotfiles/vs-code/.config/Code/Backups/
-  dotfiles/vs-code/.config/Code/Cookies*
-  dotfiles/vs-code/.config/Code/DIPS*
-  dotfiles/vs-code/.config/Code/Network*
-  dotfiles/vs-code/.config/Code/code.lock
-  dotfiles/vs-code/.config/Code/Preferences
-  ```
+- Added gitignore negation patterns: ignore everything under `dotfiles/vs-code/.config/Code/` except `User/settings.json`, `User/keybindings.json`, and `User/snippets/`.
 
 ### 3.2 `non-executable scripts` — Missing +x permission (partially fixed)
 
@@ -223,15 +202,15 @@ Each section corresponds to a future task that can be fixed independently. After
 - **Issue**: Large binaries bloat the repo and the symlinks point to uv-managed Python installations that may not exist on other machines.
 - **Fix**: Remove from the dotfiles repo and have the setup script install them instead. Add to `.gitignore`.
 
-### 8.2 `.gitignore` is too minimal
+### 8.2 `.gitignore` is too minimal (partially fixed)
 
 - **Severity**: SUGGESTION
 - **File**: `.gitignore`
 - **Issue**: Missing patterns for:
-  - VS Code runtime data (Cache, logs, databases, etc.)
+  - ~~VS Code runtime data (Cache, logs, databases, etc.)~~ ✅ FIXED — added negation patterns
   - `*.bakup` files (see `config.bakup`)
   - `.env` files
-- **Fix**: Add comprehensive ignore patterns.
+- **Fix**: Add remaining ignore patterns.
 
 ### 8.3 `boot.sh` — Unquoted variable
 
@@ -311,14 +290,14 @@ Each section corresponds to a future task that can be fixed independently. After
 | P1 | 2.1 `uuidgen.sh` X11 tool | ✅ FIXED | — |
 | P1 | 5.1 Missing `wtype`/`grim` packages | ✅ FIXED | — |
 | P1 | 4.2 `.gitconfig` hardcoded path | ✅ FIXED | — |
-| P2 | 3.1 VS Code runtime garbage cleanup | 🔴 OPEN | 30 min |
+| P2 | 3.1 VS Code runtime garbage | ✅ FIXED | — |
 | P2 | 3.2 Non-executable scripts (+x perms) | ✅ FIXED | — |
 | P2 | 3.4 Sway dead code | ✅ FIXED | — |
 | P2 | 3.5 Commented-out stow packages | 🔴 OPEN | 5 min |
 | P2 | 6.1-6.5 Theme/config issues | 🔴 OPEN | Various |
 | P2 | 7.1 `is_in_aur()` variable scoping | 🔴 OPEN | 2 lines |
-| P3 | 8.1 Large binaries in git | 🔴 OPEN | 10 min |
-| P3 | 8.2 `.gitignore` improvements | 🔴 OPEN | 10 min |
+| P3 | 8.1 Large binaries in git (uv/uvx/python) | 🔴 OPEN | 10 min |
+| P3 | 8.2 `.gitignore` improvements (bakup, .env) | 🔴 OPEN | 5 min |
 | P3 | 8.3 `boot.sh` unquoted variable | 🔴 OPEN | 1 line |
 | P4 | 9.1-9.7 Minor issues | 🔴 OPEN | Various |
 
