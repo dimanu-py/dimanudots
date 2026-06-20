@@ -1,0 +1,11 @@
+Host bark
+  HostName github.com
+  User git
+  IdentityFile ~/.ssh/work/id_ed25519
+  IdentitiesOnly yes
+
+Host dimanu
+  HostName github.com
+  User git
+  IdentityFile ~/.ssh/github/id_ed25519
+  IdentitiesOnly yes

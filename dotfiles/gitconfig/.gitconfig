@@ -1,6 +1,14 @@
-[user]
-  name = dimanu-py
-  email = dimanu.py@gmail.com
+[url "git@dimanu:dimanu-py"]
+  insteadOf = git@github.com:dimanu-py/
+
+[includeIf "gitdir:~/Developer/"]
+  path = ~/.gitconfig-dimanu
+
+[includeIf "gitdir:~/.local/share/dimanudots/"]
+  path = ~/.gitconfig-dimanu
+
+[includeIf "gitdir:~/Developer/work/"]
+  path = ~/.gitconfig-work
 
 [core]
   pager = delta
