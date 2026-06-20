@@ -2,9 +2,4 @@
 
 command="$*"
 
-show_done() {
-    echo
-    gum spin --spinner "globe" --title "Done! Press any key to close..." -- zsh -c 'read -n 1 -s'
-}
-
-exec setsid uwsm-app -- xdg-terminal-exec -e zsh -c "$command; show_done"
+exec setsid uwsm-app -- xdg-terminal-exec -e zsh -c "$command"$'\n'"echo"$'\n'"gum spin --spinner globe --title 'Done! Press any key to close...' -- zsh -c 'read -n 1 -s'"
