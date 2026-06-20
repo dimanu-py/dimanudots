@@ -5,7 +5,7 @@
 [core]
   pager = delta
   editor = nano
-  excludesfile = /home/dimanu/.gitignore
+  excludesfile = ~/.gitignore
 	autocrlf = input
 
 [alias]
@@ -15,7 +15,7 @@
   st = status
   local-name = config user.name
   local-email = config user.email
-  author = commit --amend --author="dimanu-py <diegomtz126@gmail.com>"
+  author = commit --amend --author="dimanu-py <dimanu.py@gmail.com>"
   clear = reset --hard HEAD
   force = push --force-with-lease
   continue = rebase --continue
