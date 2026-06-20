@@ -1,0 +1,29 @@
+#!/bin/bash
+
+POWER_OPTIONS=$'  Shutdown\n  Reboot\n  Suspend'
+
+show_menu() {
+    local prompt="$1"
+    local options="$2"
+
+    printf "$options" | launch-walker --dmenu --width 295 --minheight 1 --maxheight 630 -p "$prompt" 2>/dev/null
+}
+
+select_action() {
+    local action
+    action=$(show_menu "Power" "$POWER_OPTIONS")
+
+    case "$action" in
+        *Shutdown)
+            systemctl poweroff
+            ;;
+        *Reboot)
+            systemctl reboot
+            ;;
+        *Suspend)
+            systemctl suspend
+            ;;
+    esac
+}
+
+select_action

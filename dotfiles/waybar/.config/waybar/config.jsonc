@@ -113,6 +113,7 @@
     "tooltip-format-charging": "{power:>1.0f}W↑ {capacity}%",
     "interval": 5,
     "on-click": "power-profiles-menu",
+    "on-click-right": "power-menu",
     "states": {
       "warning": 20,
       "critical": 10
