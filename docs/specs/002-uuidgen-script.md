@@ -1,6 +1,6 @@
 # 002 - UUID Generation Script with Keybinding
 
-**Status**: Implemented  
+**Status**: Done  
 **Priority**: Medium  
 **Created**: 2026-06-13  
 

@@ -1,297 +1,476 @@
-# Arch Linux + Hyprland Desktop Automation
+# dimanudots
 
-A comprehensive Ansible project for fully automating the installation and configuration of an Arch Linux desktop environment with Hyprland.
+> A fully automated Arch Linux + Hyprland desktop environment setup and dotfiles management system.
 
-# Installation
+## Table of Contents
 
-Run the following command to download the main installation script and begin the configuration:
+1. [Overview](#overview)
+2. [Features](#features)
+3. [Prerequisites](#prerequisites)
+4. [Quick Start](#quick-start)
+5. [Project Structure](#project-structure)
+6. [Installation Steps](#installation-steps)
+   - [10-packages](#10-packages)
+   - [15-dotfiles](#15-dotfiles)
+   - [20-desktop](#20-desktop)
+   - [30-development-tools](#30-development-tools)
+7. [Step Selection](#step-selection)
+8. [Dotfiles](#dotfiles)
+   - [What Gets Stowed](#what-gets-stowed)
+   - [How to Add a New Package](#how-to-add-a-new-package)
+9. [Hyprland Configuration](#hyprland-configuration)
+   - [Config Structure](#config-structure)
+   - [Keybindings](#keybindings)
+   - [Theme Integration](#theme-integration)
+10. [Theme System](#theme-system)
+    - [Available Themes](#available-themes)
+    - [How It Works](#how-it-works)
+    - [Switching Themes](#switching-themes)
+    - [Creating a New Theme](#creating-a-new-theme)
+11. [Custom Scripts](#custom-scripts)
+12. [Package Management](#package-management)
+    - [Package Lists](#package-lists)
+    - [Classification Flow](#classification-flow)
+    - [Adding a Package](#adding-a-package)
+13. [Idempotency & Safety](#idempotency--safety)
+14. [Troubleshooting](#troubleshooting)
+15. [Maintenance](#maintenance)
+
+---
+
+## Overview
+
+dimanudots is a personal Arch Linux desktop automation system. It provisions a full Hyprland-based environment from a fresh Arch install in minutes — packages, dotfiles, themes, and development tools — using a modular bash-based installer and GNU Stow for config management.
+
+The project is designed for its author but structured to be understandable and adaptable by others.
+
+---
+
+## Features
+
+- **Modular bash-based installer** — four independent steps run sequentially or selectively
+- **GNU Stow dotfile management** — atomic symlink deployment per package
+- **Full Hyprland desktop** — Wayland-native compositor with 14 built-in themes
+- **Theme-aware components** — Waybar, Hyprland, Hyprlock, SwayOSD, Walker, Ghostty, Btop, Neovim, VS Code
+- **Automatic hardware support** — GPU drivers, Pipewire audio, Bluetooth, networking
+- **Package management** — dual pacman + yay (AUR) classification, deduplication
+- **Idempotent** — safe to re-run without breaking existing configuration
+- **Development environment** — Python (uv), Node.js, Docker, Git, Neovim
+
+---
+
+## Prerequisites
+
+1. **Fresh Arch Linux installation** — base system with a user account and sudo access
+2. **Internet connection** — required for package downloads
+3. **Btrfs filesystem on /** — required for Timeshift snapshot support (optional)
+
+---
+
+## Quick Start
 
 ```bash
 curl -fsSL https://raw.githubusercontent.com/dimanu-py/dimanudots/main/boot.sh | bash
 ```
 
-## Features
+This clones the repo to `~/.local/share/dimanudots` and runs `install.sh` which executes all four setup steps in order.
 
-- 🚀 **Idempotent Automation** - Safe to re-run without breaking
-- 🧩 **Modular Design** - Enable/disable components as needed
-- 🎯 **Best Practices** - Follows Ansible and Arch Linux conventions
-- 🔧 **Hardware Support** - Automatic GPU/Audio/Bluetooth setup
-- 🎨 **Complete Desktop** - Hyprland + theming + applications
-- 💻 **Dev Ready** - Full development environment included
+---
 
-## Quick Start
+## Project Structure
 
-### Prerequisites
+```
+~/.local/share/dimanudots/
+├── boot.sh                 # Bootstrap: installs git, clones repo, triggers install.sh
+├── install.sh              # Orchestrator: sources library, modules, and runs steps
+├── setup/
+│   ├── lib/                # Reusable library functions
+│   │   ├── pacman.sh       #   pacman_install(), is_installed(), is_in_official_repos()
+│   │   ├── aur.sh          #   yay_install(), is_in_aur()
+│   │   ├── file_system.sh  #   sym_link_file(), ensure_file_exists(), create_directory()
+│   │   ├── systemd.sh      #   enable_service()
+│   │   ├── command.sh      #   run_installer(), verify_command_exists()
+│   │   └── error.sh        #   die()
+│   ├── modules/            # Functional modules implementing each step
+│   │   ├── packages/       #   Package install, yay setup, package classification
+│   │   ├── dotfiles/       #   Stow orchestration
+│   │   └── desktop/        #   Themes, wallpapers, display manager, snapshots
+│   ├── steps/              # Step definitions that wire modules together
+│   │   ├── 10-packages.sh
+│   │   ├── 15-dotfiles.sh
+│   │   ├── 20-desktop.sh
+│   │   └── 30-development-tools.sh
+│   └── config/
+│       ├── packages.core.txt    # Bootstrap packages (installed via pacman)
+│       └── packages.base.txt    # All remaining packages (pacman + AUR)
+├── dotfiles/               # Stow packages — each directory is a stow root
+│   ├── hyprland/
+│   ├── waybar/
+│   ├── zsh/
+│   ├── nvim/
+│   ├── local/              # ~/.local/bin scripts
+│   └── ...                 # 20+ packages total
+├── themes/                 # Theme collection (14 themes)
+│   ├── tokyo-night/
+│   ├── catppuccin/
+│   ├── nord/
+│   └── ...
+└── docs/
+    ├── README.md           # This file
+    └── specs/              # Implementation specifications
+```
 
-1. **Fresh Arch Linux Installation** - Minimal base install with user account
-2. **User with Sudo Access** - User must be in sudoers group
-3. **Internet Connection** - Required for package downloads
+---
 
-### Bootstrap Ansible
+## Installation Steps
+
+### 10-packages
+
+**What it does:** Installs all required packages on a fresh system.
+
+1. Installs core packages from `packages.core.txt` via pacman (git, base-devel, python, stow, etc.)
+2. Builds and installs `yay` from AUR if not present (for AUR package support)
+3. Installs all remaining packages from `packages.base.txt` — each is classified as already-installed, pacman-installable, yay-installable, or unknown
+
+**Files:** `setup/steps/10-packages.sh`, `setup/modules/packages/`
+
+### 15-dotfiles
+
+**What it does:** Deploys all dotfiles using GNU Stow.
+
+For each package in the `SELECTED_CONFIG_PACKAGES` array, it runs `stow --target $HOME <package>` inside the `dotfiles/` directory. If files already exist at the target, stow retries with `--override='.*'` to force-overwrite.
+
+**Files:** `setup/steps/15-dotfiles.sh`, `setup/modules/dotfiles/dotfiles.sh`
+
+### 20-desktop
+
+**What it does:** Configures the desktop environment.
+
+1. Creates standard base directories (Desktop, Downloads, etc.)
+2. Clones wallpaper repository to `~/Pictures/wallpapers/`
+3. Enables Bluetooth and NetworkManager services
+4. Configures SDDM display manager
+5. Symlinks all themes to `~/.config/themes/` and sets the initial theme (tokyo-night)
+6. Configures GTK theme, icons, and color scheme
+7. Sets up Timeshift snapshots (requires Btrfs)
+
+**Sources:** `setup/modules/desktop/` — base-directories, bluetooth, network, display-manager, themes, wallpapers, snapshots
+
+**Files:** `setup/steps/20-desktop.sh`
+
+### 30-development-tools
+
+**What it does:** Installs development tooling.
+
+1. Installs `uv` (Python package manager)
+2. Installs `opencode` (AI coding assistant)
+3. Configures Git aliases and delta diff viewer
+4. Enables and starts Docker service
+
+**Files:** `setup/steps/30-development-tools.sh`, `setup/modules/development/`
+
+---
+
+## Step Selection
+
+Run only specific steps by passing them as arguments:
 
 ```bash
-# Install Ansible on Arch
-sudo pacman -Syu ansible python
+# Only deploy dotfiles
+./install.sh dotfiles
 
-# Clone this repository
-git clone https://github.com/yourusername/dimanudots.git
-cd dimanudots
+# Install packages and development tools
+./install.sh packages development-tools
 
-# Install Ansible collections
-ansible-galaxy install -r requirements.yml
+# Full install (all steps)
+./install.sh
 ```
 
-### Full System Setup
+Available steps: `packages`, `dotfiles`, `desktop`, `development-tools`
+
+---
+
+## Dotfiles
+
+Dotfiles are managed with [GNU Stow](https://www.gnu.org/software/stow/). Each subdirectory under `dotfiles/` is a stow package — the directory tree mirrors `$HOME`:
+
+```
+dotfiles/btop/.config/btop/btop.conf  →  ~/.config/btop/btop.conf
+dotfiles/zsh/.zshrc                    →  ~/.zshrc
+dotfiles/hyprland/.config/hypr/       →  ~/.config/hypr/
+```
+
+### What Gets Stowed
+
+| Package | Target | Description |
+|---------|--------|-------------|
+| bat | `~/.config/bat/` | Bat syntax highlighting theme |
+| btop | `~/.config/btop/` | System monitor with theme integration |
+| elephant | `~/.config/elephant/` | Calculator launcher config |
+| fastfetch | `~/.config/fastfetch/` | System info tool |
+| fcitx5 | `~/.config/fcitx5/` | Input method framework |
+| flameshot | `~/.config/flameshot/` | Screenshot tool (grim adapter) |
+| ghostty | `~/.config/ghostty/` | Terminal emulator |
+| hyprland | `~/.config/hypr/` | Window manager config |
+| ivm | `~/.config/ivm/` | Image viewer config |
+| local | `~/.local/bin/` | Custom scripts |
+| nvim | `~/.config/nvim/` | Neovim editor |
+| starship | `~/.config/starship/` | Shell prompt |
+| swaync | `~/.config/swaync/` | Notification daemon |
+| swayosd | `~/.config/swayosd/` | On-screen display |
+| systemd | `~/.config/systemd/user/` | User systemd services |
+| typora | `~/.config/typora/` | Markdown editor |
+| uwsm | `~/.config/uwsm/` | Wayland session manager |
+| vs-code | `~/.config/Code/` | VS Code editor (only User/settings.json + keybindings) |
+| walker | `~/.config/walker/` | Application launcher |
+| waybar | `~/.config/waybar/` | Status bar |
+| zsh | `~/.zshrc` | Shell config |
+
+### How to Add a New Package
+
+1. Create a directory under `dotfiles/<name>/` mirroring the target path
+2. Add `"<name>"` to the `SELECTED_CONFIG_PACKAGES` array in `setup/modules/dotfiles/dotfiles.sh`
+3. Run `stow --target "$HOME" <name>` from the `dotfiles/` directory
+
+---
+
+## Hyprland Configuration
+
+### Config Structure
+
+```
+~/.config/hypr/
+├── hyprland.conf          # Main entry point
+├── hypridle.conf          # Idle/lock settings
+├── hyprlock.conf          # Lock screen appearance
+├── hyprsunset.conf        # Night light settings
+└── config/
+    ├── monitors.conf      # Monitor layouts
+    ├── autostart.conf     # Startup applications
+    └── bindings/
+        ├── applications.conf   # App launch keybinds
+        ├── media.conf          # Media/volume controls
+        ├── menu.conf           # Launcher/menu keybinds
+        ├── notifications.conf  # Notification toggles
+        ├── system.conf         # System actions (lock, power)
+        └── tiling_management.conf  # Window management
+```
+
+The config is modular: `hyprland.conf` sources each file from the `config/` directory, and the theme system overrides colors via symlinked `config/themes/active/theme/hyprland.conf`.
+
+### Keybindings
+
+| Category | File | Examples |
+|----------|------|----------|
+| Applications | `applications.conf` | Browser, terminal, file manager, launcher |
+| Media | `media.conf` | Volume, brightness, media playback |
+| Menu | `menu.conf` | Power menu, keybindings menu, clipboard |
+| Notifications | `notifications.conf` | DND toggle, notification center |
+| System | `system.conf` | Lock screen, logout, battery check |
+| Tiling | `tiling_management.conf` | Window movement, resize, workspace management |
+
+### Theme Integration
+
+The last line in `hyprland.conf` sources `~/.config/themes/active/theme/hyprland.conf`, which overrides border colors and other theme-specific values. See [Theme System](#theme-system) for details.
+
+---
+
+## Theme System
+
+14 themes are built in. Each theme provides colors and assets for all desktop components.
+
+### Available Themes
+
+catppuccin, catppuccin-latte, ethereal, everforest, flexoki-light, gruvbox, hackerman, kanagawa, matte-black, nord, osaka-jade, ristretto, rose-pine, tokyo-night
+
+### How It Works
+
+Themes use a two-level symlink structure:
+
+```
+~/.config/themes/tokyo-night/  →  <repo>/themes/tokyo-night/      (symlink)
+~/.config/themes/active/
+  ├── theme/                   →  ~/.config/themes/tokyo-night/   (symlink)
+  └── background               →  ~/.config/themes/tokyo-night/backgrounds/1-tokyo-night.jpg
+```
+
+Each theme provides:
+
+| File | Used By |
+|------|---------|
+| `hyprland.conf` | Border colors, active window hints |
+| `hyprlock.conf` | Lock screen colors |
+| `waybar.css` | Status bar colors (`@foreground`, `@background`) |
+| `swayosd.css` | On-screen display styling |
+| `walker.css` | Application launcher theme |
+| `ghostty.conf` | Terminal colors |
+| `btop.theme` | System monitor colors |
+| `neovim.lua` | Editor colorscheme |
+| `vscode.json` | VS Code theme (manual import) |
+| `backgrounds/` | Wallpaper images |
+
+Components reference the active theme via symlinks:
+
+- Waybar: `@import "../themes/active/theme/waybar.css"`
+- Hyprland: `source = ~/.config/themes/active/theme/hyprland.conf`
+- Btop: `~/.config/btop/themes/active.theme` → `active/theme/btop.theme`
+- swaybg: `~/.config/themes/active/background`
+
+### Switching Themes
+
+Run the theme switcher script:
 
 ```bash
-# Run complete installation (takes ~30-60 minutes)
-ansible-playbook playbooks/site.yml
-
-# Or run phases progressively
-ansible-playbook playbooks/site.yml --tags bootstrap,base
-ansible-playbook playbooks/site.yml --tags hardware
-ansible-playbook playbooks/site.yml --tags display
-ansible-playbook playbooks/site.yml --tags desktop
-ansible-playbook playbooks/site.yml --tags development
-
-# Or run specific roles
-ansible-playbook playbooks/site.yml --tags bootstrap
-ansible-playbook playbooks/site.yml --tags base
-ansible-playbook playbooks/site.yml --tags hardware
-ansible-playbook playbooks/site.yml --tags display
+theme-switcher
 ```
 
-## Modular Execution
+This opens a Walker dmenu with all available themes, preselected to the current one. Selecting a theme updates the `active/theme` and `active/background` symlinks.
 
-### Tags Overview
+### Creating a New Theme
 
-| Tag            | Component  | Purpose                              |
-| -------------- | ---------- | ------------------------------------ |
-| `bootstrap`    | Foundation | Yay, base tools, Ansible collections |
-| `base`         | System     | Essential packages, user setup       |
-| `hardware`     | Hardware   | GPU, audio, bluetooth, network       |
-| `display`      | Display    | SDDM, fonts, themes                  |
-| `hyprland`     | Desktop    | Hyprland WM and desktop components   |
-| `development`  | Dev Tools  | Terminal, editors, development stack |
-| `applications` | Apps       | User applications and utilities      |
-| `dotfiles`     | Config     | Personal dotfiles and finalization   |
+1. Copy an existing theme: `cp -r themes/tokyo-night themes/my-theme`
+2. Update `waybar.css` with your `@define-color foreground` and `@define-color background`
+3. Update each component config file with your colors
+4. Add a background image to `backgrounds/`
+5. Run `./install.sh dotfiles` — the setup script symlinks the new theme to `~/.config/themes/`
 
-### Common Usage Patterns
+---
 
-```bash
-# Desktop environment only
-ansible-playbook playbooks/site.yml --tags display
+## Custom Scripts
 
-# Development environment only
-ansible-playbook playbooks/site.yml --tags base
+All custom scripts are installed to `~/.local/bin/` via the `local` stow package.
 
-# Specific hardware components
-ansible-playbook playbooks/site.yml --tags audio,bluetooth
+| Script | Description |
+|--------|-------------|
+| `battery-remaining` | Show battery percentage via upower |
+| `check-wifi` | Check Wi-Fi connection status |
+| `dismiss-notification` | Dismiss swaync notification |
+| `hyprland-close-all-windows` | Close all windows and go to workspace 1 |
+| `keybindings-menu` | Show Hyprland keybindings in Walker dmenu |
+| `launch-bluetooth` | Open Bluetooth manager |
+| `launch-floating-terminal-with-presentation` | Run a command in a floating terminal with completion spinner |
+| `launch-or-focus` | Launch or focus an application by class name |
+| `launch-or-focus-tui` | Same for terminal apps |
+| `launch-tui` | Launch a terminal application |
+| `launch-walker` | Start/launch Walker application launcher |
+| `launch-webapp` | Open a URL as a web app in the default browser |
+| `launch-wifi` | Open Wi-Fi network manager |
+| `lock-screen` | Lock the screen via hyprlock |
+| `monitor-battery` | Set power profile and enable battery monitoring timer |
+| `power-menu` | Shutdown, reboot, or suspend via Walker dmenu |
+| `power-profiles-menu` | Switch power profiles via Walker dmenu |
+| `restart-waybar` | Restart the Waybar status bar |
+| `start-elephant` | Start elephant calculator launcher |
+| `take-screenshot` | Launch flameshot for interactive screenshot |
+| `theme-switcher` | Switch active theme via Walker dmenu |
+| `toggle-dnd` | Toggle Do Not Disturb in swaync |
+| `toggle-idle` | Toggle hypridle (auto-lock on idle) |
+| `toggle-nightlight` | Toggle hyprsunset night light temperature |
+| `tz-select` | Select timezone via Walker dmenu |
+| `uuid-menu` | Generate UUID (v4 or v7), copy to clipboard, and type |
 
-# Update specific packages
-ansible-playbook playbooks/site.yml --tags development --extra-vars "update_packages=true"
+---
+
+## Package Management
+
+### Package Lists
+
+| File | Contents | Install Method |
+|------|----------|----------------|
+| `setup/config/packages.core.txt` | Bootstrap essentials (git, base-devel, python, go, stow) | pacman |
+| `setup/config/packages.base.txt` | Everything else (system tools, Hyprland, apps, dev tools) | pacman + yay |
+
+### Classification Flow
+
+When `install_packages` runs, each package is classified using this logic:
+
+```
+is_installed? → if yes, skip
+is_in_official_repos? → if yes, install via pacman
+is_in_aur? → if yes, install via yay
+otherwise → print warning and skip
 ```
 
-## Configuration
+### Adding a Package
 
-### Role-Based Architecture
+1. Add the package name to `setup/config/packages.base.txt` (or `packages.core.txt` for bootstrap essentials)
+2. Optionally add a comment for context: `package-name  # Purpose of the package`
+3. If it's an AUR package, add `[AUR]` to the comment for clarity
+4. Run `./install.sh packages` to install
 
-This project now uses Ansible roles for better organization:
+---
 
-```
-roles/
-├── bootstrap/    # Yay installation, base tools
-├── base/         # Essential directories, utilities
-├── hardware/     # GPU, audio, bluetooth, network
-├── display/      # SDDM, fonts, themes
-└── [future roles] # hyprland, development, applications, dotfiles
-```
+## Idempotency & Safety
 
-### Variables
+- **Package classification** skips already-installed packages
+- **Stow overrides** existing files only when explicitly needed (`--override='.*'`)
+- **Step selection** allows re-running only the steps that changed
+- **Library functions** check state before acting (e.g., `is_installed()`)
+- **Systemd services** are enabled idempotently (skip if already enabled)
+- **No destructive defaults** — the installer never removes packages or files
 
-Each role has its own variables in `roles/{role}/vars/main.yml`:
-- **Bootstrap role**: Essential packages and collections
-- **Base role**: Directories and system utilities
-- **Hardware role**: GPU, audio, bluetooth, network packages
-- **Display role**: SDDM, fonts, themes configuration
-
-Global variables remain in `inventory/group_vars/all.yml`:
-
-```yaml
-# User configuration
-user: "{{ lookup('env', 'USER') }}"
-home: "{{ lookup('env', 'HOME') }}"
-
-# Hardware preferences
-gpu_driver: "auto"  # auto, nvidia, amdgpu, intel
-audio_backend: "pipewire"  # pipewire, pulseaudio
-
-# Desktop preferences
-desktop_environment: "hyprland"
-terminal_emulator: "alacritty"
-shell: "fish"
-
-# Development tools
-python_version: "3.12"
-nodejs_version: "lts"
-enable_docker: true
-```
-
-### Customization
-
-Create `inventory/host_vars/localhost.yml` for per-machine overrides:
-
-```yaml
-# Override default values here
-gpu_driver: "nvidia"
-terminal_emulator: "kitty"
-enable_docker: false
-```
-
-## AUR Package Management (Yay)
-
-This project uses Yay for AUR packages with full idempotency:
-
-### Bootstrap Process
-
-1. **Yay Installation** - Built from AUR if not present
-2. **Idempotent Check** - Skips if already installed
-3. **Cleanup** - Removes build artifacts after installation
-
-### Usage
-
-```yaml
-# In roles
-- name: Install AUR package
-  community.general.yay:
-    name: package-name
-    state: present
-    become: false  # Run as user for AUR packages
-```
-
-### Safety Features
-
-- **Non-root execution** for AUR packages
-- **Build cleanup** to save disk space
-- **Idempotent checks** to prevent reinstallation
-- **Error handling** for build failures
-
-## Component Rationale
-
-### Why Hyprland?
-- **Performance**: Lightweight and responsive
-- **Wayland Native**: Modern display server with better security
-- **Customization**: Extensive configuration options
-- **Active Development**: Regular updates and community support
-
-### Why Pipewire?
-- **Modern Audio**: Replaces Pulseaudio with better performance
-- **Bluetooth**: Native Bluetooth audio support
-- **Low Latency**: Better for professional audio work
-- **Compatibility**: Drop-in replacement for Pulseaudio
-
-### Why SDDM?
-- **Wayland Support**: Native Wayland session management
-- **Themeable**: Customizable login screen
-- **Secure**: Proper authentication handling
-- **Standard**: Widely used in Linux distributions
-
-### Why Development Tools?
-- **Python**: Essential for scripting and automation
-- **Node.js**: Web development and tooling
-- **Docker**: Containerization for development
-- **Git**: Version control for projects
-- **Neovim**: Powerful terminal editor
-
-## Safety and Idempotency
-
-### Design Principles
-
-1. **Check Before Action** - Verify state before making changes
-2. **Use Handlers** - Restart services only when needed
-3. **Idempotent Modules** - Prefer built-in idempotency
-4. **Rollback Safety** - Maintain system stability
-
-### Safety Commands
-
-```bash
-# Dry run (recommended first)
-ansible-playbook playbooks/site.yml --check
-
-# Step-by-step execution
-ansible-playbook playbooks/site.yml --step
-
-# Verbose output for debugging
-ansible-playbook playbooks/site.yml -v
-
-# Limit to specific hosts
-ansible-playbook playbooks/site.yml --limit localhost
-```
+---
 
 ## Troubleshooting
 
-### Common Issues
+### Stow conflicts
 
-1. **Yay Permission Denied**
-   ```bash
-   # Fix ownership of yay build directory
-   sudo chown -R $USER:users /tmp/yay-git
-   ```
-
-2. **AUR Build Failures**
-   ```bash
-   # Clean and rebuild
-   yay -Scc && yay -Syu
-   ```
-
-3. **Permission Issues**
-   ```bash
-   # Ensure user in required groups
-   sudo usermod -aG audio,video,input,wheel $USER
-   ```
-
-4. **Wayland Application Issues**
-   ```bash
-   # Check Wayland support
-   echo $XDG_SESSION_TYPE
-   # Should output "wayland"
-   ```
-
-### Debug Mode
+If stow refuses to symlink because a file already exists:
 
 ```bash
-# Enable debug logging
-ANSIBLE_DEBUG=1 ansible-playbook playbooks/site.yml -v
+cd ~/.local/share/dimanudots/dotfiles
+stow --target "$HOME" --override='.*' <package>
 ```
+
+### AUR build failures
+
+```bash
+yay -Scc && yay -Syu
+```
+
+### Step fails midway
+
+Fix the issue and re-run only the failed step:
+
+```bash
+./install.sh <step-name>
+```
+
+### Check what a step does
+
+Read the step file directly:
+
+```bash
+cat setup/steps/10-packages.sh
+```
+
+---
 
 ## Maintenance
 
-### Updates
+### Update dotfiles
 
 ```bash
-# Update system
-ansible-playbook playbooks/site.yml --tags update
+cd ~/.local/share/dimanudots
+git pull --rebase
+./install.sh dotfiles
+```
 
-# Update specific components
-ansible-playbook playbooks/site.yml --tags development --extra-vars "update_packages=true"
+### Re-run package installation
+
+```bash
+./install.sh packages
 ```
 
 ### Backup
 
+Dotfiles are in the git repository — push to your fork:
+
 ```bash
-# Backup dotfiles
-stow -d ~/.dotfiles -t ~ -D  # Unstow
-cp -r ~/.config ~/dotfiles-backup/
+cd ~/.local/share/dimanudots
+git add -A
+git commit -m "update dotfiles"
+git push
 ```
 
-## Contributing
-
-1. Fork the repository
-2. Create feature branch
-3. Test with `--check` mode
-4. Ensure idempotency
-5. Submit pull request
-
-## License
-
-MIT License - See LICENSE file for details
+---
